@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle to Databricks Migration Assessment | Blueprint Migration</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+
+    <style>
+        /* --- PRESERVED FORM STYLES --- */
+        
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Removed conflicting .container rule */
+
+        .section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+        .section-header {
+            background: #1d4ed8; /* Updated to Blueprint Blue */
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 14pt;
+            margin: 0;
+            border-radius: 0px; /* Sharp edges */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .na-toggle {
+            display: flex;
+            align-items: center;
+            font-size: 10pt;
+            font-weight: normal;
+        }
+        .na-toggle input {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+        .section-content {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0px; /* Sharp edges */
+            transition: opacity 0.3s;
+        }
+        .section-content.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f9fafb;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #374151;
+            font-size: 10pt;
+        }
+        .group-label {
+            color: #1d4ed8;
+            font-size: 11pt;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 0px; /* Sharp edges */
+            font-size: 10pt;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+        }
+        .is-invalid {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 9pt;
+            display: none;
+            margin-top: 4px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .inline-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .four-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .subsection {
+            margin-bottom: 25px;
+        }
+        .subsection h4 {
+            color: #1d4ed8;
+            margin-bottom: 12px;
+            font-size: 12pt;
+            font-weight: 700;
+            border-bottom: 2px solid #1d4ed8;
+            padding-bottom: 4px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 0px;
+        }
+        .checkbox-item label {
+            font-weight: normal;
+            margin-bottom: 0;
+            font-size: 10pt;
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 8px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+        }
+        .radio-item input[type="radio"] {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+        .radio-item label {
+            font-weight: normal;
+            margin-bottom: 0;
+            font-size: 10pt;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 0px;
+            font-weight: bold;
+            font-size: 11pt;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .btn-submit {
+            background-color: #1d4ed8;
+        }
+        .btn-submit:hover {
+            background-color: #1e40af;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        @media (max-width: 768px) {
+            .inline-inputs,
+            .three-column,
+            .four-column {
+                grid-template-columns: 1fr;
+            }
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="mb-10 border-b border-gray-200 pb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Oracle to Databricks Migration Assessment</h1>
+            <p class="text-lg text-gray-500">Complete the assessment below to generate your migration roadmap.</p>
+        </div>
+
+        <div class="sharp-card p-8 md:p-12 bg-white">
+            <form id="migrationForm" action="https://formspree.io/f/mkgdzqkj" method="POST" novalidate>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span>Executive Summary</span>
+                </div>
+                <div class="section-content" id="exec-content">
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="projectName">Project Name:</label>
+                            <input type="text" id="projectName" name="projectName" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="stakeholder">Primary Stakeholder:</label>
+                            <input type="text" id="stakeholder" name="stakeholder" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="timeline">Timeline Expectations:</label>
+                            <input type="text" id="timeline" name="timeline">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Contact Email:</label>
+                            <input type="email" id="contactEmail" name="contactEmail" required data-required="true">
+                            <span class="error-message">Please enter a valid email address.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessDriver">Business Driver for Migration:</label>
+                        <textarea id="businessDriver" name="businessDriver" placeholder="e.g., Exadata Hardware Refresh, OCI Exit, Licensing Costs, Modernization..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Migration Scope:</label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" id="liftShift" name="migrationStrategy" value="lift_shift"><label for="liftShift">Lift & Shift (IaaS)</label></div>
+                            <div class="radio-item"><input type="radio" id="replatform" name="migrationStrategy" value="replatform"><label for="replatform">Re-platform (Database)</label></div>
+                            <div class="radio-item"><input type="radio" id="rearchitect" name="migrationStrategy" value="rearchitect"><label for="rearchitect">Re-architect (Lakehouse)</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>1. Oracle Database & Infrastructure</span>
+                     <div class="na-toggle">
+                        <input type="checkbox" id="na-db" class="na-checkbox" data-section-content-id="db-content">
+                        <label for="na-db">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="db-content">
+                    <div class="subsection">
+                        <h4>1.1 Deployment & Compute Sizing</h4>
+                        <div class="form-group">
+                            <label>Current Deployment Model:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="onPrem" name="deploymentModel" value="on_prem" required data-required="true"><label for="onPrem">On-Premise (Bare Metal/VM)</label></div>
+                                <div class="radio-item"><input type="radio" id="oci" name="deploymentModel" value="oci"><label for="oci">Oracle Cloud (OCI)</label></div>
+                                <div class="radio-item"><input type="radio" id="exacc" name="deploymentModel" value="exacc"><label for="exacc">Exadata Cloud@Customer</label></div>
+                                <div class="radio-item"><input type="radio" id="cloudDb" name="deploymentModel" value="other_cloud"><label for="cloudDb">AWS RDS / Azure / GCP</label></div>
+                            </div>
+                            <span class="error-message">Please select an option.</span>
+                        </div>
+                        <div class="inline-inputs">
+                            <div class="form-group">
+                                <label for="computeCores">Estimated Total Database Cores/OCPUs:</label>
+                                <input type="number" id="computeCores" name="computeCores" placeholder="e.g., 64 OCPUs or 128 vCPUs" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="concurrentUsers">Peak Concurrent Users:</label>
+                                <input type="number" id="concurrentUsers" name="concurrentUsers" placeholder="e.g., 50, 500" min="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Hardware / Specialized Features:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="hardwareFeatures" value="exadata"><label>Exadata Appliance</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="hardwareFeatures" value="rac"><label>Oracle RAC (Real Application Clusters)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="hardwareFeatures" value="oda"><label>ODA (Oracle Database Appliance)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="hardwareFeatures" value="adw_atp"><label>Autonomous DB (ADW / ATP)</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exadataDetails">If Exadata, specify details (e.g., Quarter/Half Rack, X8M):</label>
+                            <input type="text" id="exadataDetails" name="exadataDetails">
+                        </div>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>1.2 Volumetrics & Object Inventory</h4>
+                        
+                        <div class="group-label">Data Structures</div>
+                        <div class="three-column">
+                            <div class="form-group"><label for="dataVolume">Total Data Size (TB):</label><input type="number" id="dataVolume" name="dataVolume" min="0" step="0.1" required data-required="true"><span class="error-message">Required.</span></div>
+                            <div class="form-group"><label for="schemaCount">Schema Count:</label><input type="number" id="schemaCount" name="schemaCount" min="0"></div>
+                            <div class="form-group"><label for="dbVersion">Oracle Version:</label><input type="text" id="dbVersion" name="dbVersion" placeholder="e.g., 19c"></div>
+                            
+                            <div class="form-group"><label for="tableCount">Table Count:</label><input type="number" id="tableCount" name="tableCount" min="0" placeholder="e.g. 5000"></div>
+                            <div class="form-group"><label for="viewCount">View Count:</label><input type="number" id="viewCount" name="viewCount" min="0" placeholder="e.g. 2500"></div>
+                            <div class="form-group"><label for="mvCount">Materialized View Count:</label><input type="number" id="mvCount" name="mvCount" min="0" placeholder="e.g. 50"></div>
+                        </div>
+
+                        <div class="group-label">PL/SQL Code & Logic (Critical for Migration Effort)</div>
+                        <div class="four-column">
+                            <div class="form-group"><label for="procCount">Stored Procedures:</label><input type="number" id="procCount" name="procCount" min="0" placeholder="Count"></div>
+                            <div class="form-group"><label for="funcCount">Functions:</label><input type="number" id="funcCount" name="funcCount" min="0" placeholder="Count"></div>
+                            <div class="form-group"><label for="packageCount">Packages:</label><input type="number" id="packageCount" name="packageCount" min="0" placeholder="Count"></div>
+                            <div class="form-group"><label for="triggerCount">Triggers:</label><input type="number" id="triggerCount" name="triggerCount" min="0" placeholder="Count"></div>
+                        </div>
+                        
+                        <div class="group-label">Other Database Objects</div>
+                        <div class="four-column">
+                            <div class="form-group"><label for="sequenceCount">Sequences:</label><input type="number" id="sequenceCount" name="sequenceCount" min="0" placeholder="Count"></div>
+                            <div class="form-group"><label for="synonymCount">Synonyms:</label><input type="number" id="synonymCount" name="synonymCount" min="0" placeholder="Count"></div>
+                            <div class="form-group"><label for="dbLinkCount">DB Links (External Deps):</label><input type="number" id="dbLinkCount" name="dbLinkCount" min="0" placeholder="Count"></div>
+                             <div class="form-group"><label for="jobCount">Scheduler Jobs:</label><input type="number" id="jobCount" name="jobCount" min="0" placeholder="Count"></div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label for="charSet">Database Character Set:</label>
+                            <input type="text" id="charSet" name="charSet" placeholder="e.g. AL32UTF8">
+                        </div>
+
+                        <div class="form-group">
+                             <label for="plsqlComplexity">Describe Code Complexity (Lines of Code, Business Logic in DB?):</label>
+                             <textarea id="plsqlComplexity" name="plsqlComplexity" placeholder="e.g., 500k lines of PL/SQL code, logic heavy in Packages, recursive functions..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Specialized Workloads & AI:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="aiWorkloads" value="oml"><label>Oracle Machine Learning (OML) / Data Mining</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="aiWorkloads" value="spatial"><label>Oracle Spatial / Graph</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="aiWorkloads" value="text"><label>Oracle Text (Context Indexes)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="aiWorkloads" value="xml_json"><label>Heavy XML / JSON DB Storage</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Compression & Storage Features:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="storageFeatures" value="hcc"><label>Hybrid Columnar Compression (HCC)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="storageFeatures" value="partitioning"><label>Table Partitioning</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="storageFeatures" value="lobs"><label>Heavy LOB (BLOB/CLOB) usage</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>2. Oracle E-Business Suite (EBS) & Apps</span>
+                     <div class="na-toggle">
+                        <input type="checkbox" id="na-ebs" class="na-checkbox" data-section-content-id="ebs-content">
+                        <label for="na-ebs">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="ebs-content">
+                    <div class="subsection">
+                        <h4>2.1 Application Scope</h4>
+                        <div class="form-group">
+                            <label>Primary Application:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="ebs" name="erpApp" value="ebs" required data-required="true"><label for="ebs">E-Business Suite (R12)</label></div>
+                                <div class="radio-item"><input type="radio" id="peoplesoft" name="erpApp" value="peoplesoft"><label for="peoplesoft">PeopleSoft</label></div>
+                                <div class="radio-item"><input type="radio" id="jde" name="erpApp" value="jde"><label for="jde">JD Edwards</label></div>
+                                <div class="radio-item"><input type="radio" id="fusion" name="erpApp" value="fusion"><label for="fusion">Oracle Fusion Cloud (SaaS)</label></div>
+                            </div>
+                            <span class="error-message">Please select an option.</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Key Modules:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="erpModules" value="financials"><label>Financials (GL, AP, AR)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="erpModules" value="scm"><label>Supply Chain (SCM)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="erpModules" value="hcm"><label>Human Capital (HCM)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="erpModules" value="manufacturing"><label>Manufacturing (WIP, BOM)</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>2.2 Customization & Data</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group">
+                                <label for="customizationLevel">Level of Customization:</label>
+                                <select id="customizationLevel" name="customizationLevel">
+                                    <option value="">Select...</option>
+                                    <option value="low">Low (Standard)</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High (Custom Tables/Views)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="flexfields">Use of Descriptive Flexfields (DFF):</label>
+                                <select id="flexfields" name="flexfields">
+                                    <option value="">Select...</option>
+                                    <option value="extensive">Extensive</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="minimal">Minimal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="extractionMethod">Current Extraction Method:</label>
+                            <textarea id="extractionMethod" name="extractionMethod" placeholder="e.g., Direct SQL access, OTBI, BICC (Fusion), GoldenGate to Data Warehouse..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>3. Analytics & BI (OBIEE / OAS / OAC)</span>
+                     <div class="na-toggle">
+                        <input type="checkbox" id="na-bi" class="na-checkbox" data-section-content-id="bi-content">
+                        <label for="na-bi">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="bi-content">
+                    <div class="subsection">
+                        <h4>3.1 BI Platform</h4>
+                         <div class="form-group">
+                            <label>Current BI Tool:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="obiee" name="biTool" value="obiee" required data-required="true"><label for="obiee">OBIEE (Legacy)</label></div>
+                                <div class="radio-item"><input type="radio" id="oas" name="biTool" value="oas"><label for="oas">Oracle Analytics Server (OAS)</label></div>
+                                <div class="radio-item"><input type="radio" id="oac" name="biTool" value="oac"><label for="oac">Oracle Analytics Cloud (OAC)</label></div>
+                                <div class="radio-item"><input type="radio" id="bip" name="biTool" value="bip"><label for="bip">BI Publisher</label></div>
+                            </div>
+                            <span class="error-message">Please select an option.</span>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>3.2 RPD & Logic</h4>
+                        <div class="form-group">
+                            <label for="rpdComplexity">RPD (Repository) Complexity:</label>
+                            <textarea id="rpdComplexity" name="rpdComplexity" placeholder="Describe the semantic layer. Number of Subject Areas? Complex joins in the Physical Layer?"></textarea>
+                        </div>
+                        <div class="three-column">
+                            <div class="form-group"><label for="dashboardCount">Dashboards:</label><input type="number" id="dashboardCount" name="dashboardCount" min="0"></div>
+                            <div class="form-group"><label for="reportCount">Reports/Analyses:</label><input type="number" id="reportCount" name="reportCount" min="0"></div>
+                            <div class="form-group"><label for="agentCount">Agents (Schedules):</label><input type="number" id="agentCount" name="agentCount" min="0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>4. Hyperion & EPM</span>
+                     <div class="na-toggle">
+                        <input type="checkbox" id="na-epm" class="na-checkbox" data-section-content-id="epm-content">
+                        <label for="na-epm">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="epm-content">
+                    <div class="subsection">
+                        <h4>4.1 Products & Cubes</h4>
+                        <div class="form-group">
+                            <label>EPM Products:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="epmProducts" value="essbase"><label>Essbase</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="epmProducts" value="hfm"><label>Hyperion Financial Mgmt (HFM)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="epmProducts" value="planning"><label>Planning (PBSC / EPBCS)</label></div>
+                            </div>
+                        </div>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label for="cubeCount">Number of Cubes:</label><input type="number" id="cubeCount" name="cubeCount" min="0"></div>
+                             <div class="form-group"><label for="cubeType">Primary Storage Type:</label><select id="cubeType" name="cubeType"><option value="">Select...</option><option value="aso">ASO (Aggregate Storage)</option><option value="bso">BSO (Block Storage)</option><option value="hybrid">Hybrid</option></select></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="calcScripts">Calculation Logic:</label>
+                            <textarea id="calcScripts" name="calcScripts" placeholder="Describe reliance on Calc Scripts or MaxL scripting."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>5. Data Integration (ODI & GoldenGate)</span>
+                     <div class="na-toggle">
+                        <input type="checkbox" id="na-integration" class="na-checkbox" data-section-content-id="integration-content">
+                        <label for="na-integration">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="integration-content">
+                    <div class="subsection">
+                        <h4>5.1 ETL, Orchestration & Movement</h4>
+                        <div class="form-group">
+                            <label>Integration Tools:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="odi"><label>Oracle Data Integrator (ODI)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="goldengate"><label>GoldenGate (Real-time CDC)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="sqlloader"><label>SQL*Loader / Data Pump</label></div>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label for="schedulerTool">Job Scheduler / Orchestrator:</label>
+                            <input type="text" id="schedulerTool" name="schedulerTool" placeholder="e.g., Control-M, Autosys, Cron, ActiveBatch">
+                        </div>
+                         <div class="form-group">
+                            <label for="cdcNeeds">CDC Requirements:</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" id="cdcYes" name="cdcReq" value="yes"><label for="cdcYes">Real-time (< 1 min)</label></div>
+                                <div class="radio-item"><input type="radio" id="cdcNo" name="cdcReq" value="no"><label for="cdcNo">Batch / Scheduled</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>5.2 Logic & Knowledge Modules</h4>
+                        <div class="form-group">
+                            <label for="odiLogic">ODI Complexity:</label>
+                            <textarea id="odiLogic" name="odiLogic" placeholder="Describe usage of Knowledge Modules (KMs). Are you using custom KMs?"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>6. Security & Connectivity</span>
+                     <div class="na-toggle">
+                        <input type="checkbox" id="na-security" class="na-checkbox" data-section-content-id="security-content">
+                        <label for="na-security">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="security-content">
+                    <div class="subsection">
+                        <h4>6.1 Security Features</h4>
+                        <div class="form-group">
+                            <label>Features in Use:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="tde"><label>TDE (Transparent Data Encryption)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="vpd"><label>VPD (Virtual Private Database) / RLS</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="vault"><label>Oracle Database Vault</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="label_sec"><label>Oracle Label Security</label></div>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label for="identityProvider">Identity Provider:</label>
+                            <input type="text" id="identityProvider" name="identityProvider" placeholder="e.g., OID, Active Directory, Native DB Users">
+                        </div>
+                         <div class="form-group">
+                            <label for="networkReq">Connectivity Requirements:</label>
+                            <textarea id="networkReq" name="networkReq" placeholder="e.g., FastConnect, PrivateLink, VPN requirements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>7. Migration Priorities</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="form-group">
+                            <label for="criticalWorkloads">Critical Workloads (Migrate First):</label>
+                            <textarea id="criticalWorkloads" name="criticalWorkloads" placeholder="List high-priority schemas, apps, or reports..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="dependencies">Key Dependencies / Deadlines:</label>
+                            <input type="text" id="dependencies" name="dependencies" placeholder="e.g., Exadata lease expires Dec 31st">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">Form Completion Details</div>
+                <div class="section-content">
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="completedBy">Questionnaire Completed By:</label>
+                            <input type="text" id="completedBy" name="completedBy" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="completionDate">Date:</label>
+                            <input type="date" id="completionDate" name="completionDate" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;" class="no-print">
+                <button type="submit" class="btn btn-submit">Submit Assessment</button>
+            </div>
+        </form>
+        </div>
+
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const completionDateInput = document.getElementById('completionDate');
+            if(completionDateInput) {
+                completionDateInput.valueAsDate = new Date();
+            }
+
+            const form = document.getElementById('migrationForm');
+            const naToggles = form.querySelectorAll('.na-checkbox');
+            
+            naToggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const contentId = this.dataset.sectionContentId;
+                    const contentElement = document.getElementById(contentId);
+                    const inputs = contentElement.querySelectorAll('input, select, textarea');
+
+                    if (this.checked) {
+                        contentElement.classList.add('disabled');
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            if (input.hasAttribute('data-required')) {
+                                input.required = false;
+                            }
+                            input.classList.remove('is-invalid');
+                            const errorSpan = input.closest('.form-group')?.querySelector('.error-message');
+                            if (errorSpan) {
+                                errorSpan.style.display = 'none';
+                            }
+                        });
+                    } else {
+                        contentElement.classList.remove('disabled');
+                        inputs.forEach(input => {
+                            input.disabled = false;
+                            if (input.hasAttribute('data-required')) {
+                                input.required = true;
+                            }
+                        });
+                    }
+                });
+            });
+
+            if (form) {
+                const validateField = (field) => {
+                    if (field.disabled) return true;
+
+                    let isValid = true;
+                    let errorMessage = 'This field is required.';
+                    const value = field.value.trim();
+                    const formGroup = field.closest('.form-group');
+                    const errorSpan = formGroup ? formGroup.querySelector('.error-message') : null;
+
+                    if (!errorSpan) return true; 
+
+                    if (field.type === 'radio' && field.required) {
+                        const radioGroup = form.querySelectorAll(`input[name="${field.name}"]`);
+                        const isAnyChecked = Array.from(radioGroup).some(radio => radio.checked);
+                        if (!isAnyChecked) {
+                            isValid = false;
+                        }
+                    } else if (field.required && value === '') {
+                        isValid = false;
+                    } else if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid email address.';
+                    } else if (field.type === 'number' && field.hasAttribute('min') && value !== '' && parseFloat(value) < parseFloat(field.min)) {
+                        isValid = false;
+                        errorMessage = `Value must be ${field.min} or more.`;
+                    }
+                    
+                    if (isValid) {
+                        field.classList.remove('is-invalid');
+                        errorSpan.style.display = 'none';
+                    } else {
+                        field.classList.add('is-invalid');
+                        errorSpan.textContent = errorMessage;
+                        errorSpan.style.display = 'block';
+                    }
+                    return isValid;
+                };
+
+                form.querySelectorAll('[data-required="true"]').forEach(field => {
+                    field.addEventListener('blur', () => validateField(field));
+                     if(field.type === 'radio') {
+                        const radioGroup = form.querySelectorAll(`input[name="${field.name}"]`);
+                        radioGroup.forEach(radio => radio.addEventListener('change', () => validateField(field)));
+                    }
+                });
+
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    let isFormValid = true;
+                    
+                    form.querySelectorAll('[data-required="true"]').forEach(field => {
+                        if (!field.disabled) { 
+                           if (!validateField(field)) {
+                                isFormValid = false;
+                            }
+                        }
+                    });
+
+                    if (!isFormValid) {
+                        const firstInvalidField = form.querySelector('.is-invalid');
+                        if (firstInvalidField) {
+                            firstInvalidField.focus();
+                            firstInvalidField.closest('.section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                        return;
+                    }
+                    
+                    const formData = new FormData(form);
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    submitButton.textContent = 'Submitting...';
+                    submitButton.disabled = true;
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    }).then(response => {
+                        if (response.ok) {
+                            alert('Form submitted successfully!');
+                            form.reset();
+                            naToggles.forEach(toggle => {
+                                if (toggle.checked) {
+                                    toggle.checked = false;
+                                }
+                                toggle.dispatchEvent(new Event('change'));
+                            });
+                             if(completionDateInput) {
+                                completionDateInput.valueAsDate = new Date();
+                            }
+                        } else {
+                            response.json().then(data => {
+                                alert(data.errors ? data.errors.map(e => e.message).join(", ") : 'Oops! There was a problem submitting the form.');
+                            })
+                        }
+                    }).catch(error => {
+                        console.error('Submission Error:', error);
+                        alert('Oops! There was a network error.');
+                    }).finally(() => {
+                        submitButton.textContent = 'Submit Assessment';
+                        submitButton.disabled = false;
+                    });
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

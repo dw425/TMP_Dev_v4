@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Factory | Blueprint Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #eef2f6;
+            color: #111827;
+        }
+        /* NMP Style Utilities */
+        .bg-blueprint-blue { background-color: #1d4ed8; }
+        .text-blueprint-blue { color: #1d4ed8; }
+        .border-blueprint-blue { border-color: #1d4ed8; }
+        
+        /* LOGO FILTER (Matches Index.html) */
+        .blue-logo-filter {
+            filter: brightness(0) saturate(100%) invert(21%) sepia(99%) saturate(1915%) hue-rotate(206deg) brightness(97%) contrast(96%);
+        }
+        
+        /* Sharp UI Elements */
+        .sharp-card {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-top: 4px solid #1d4ed8;
+            border-radius: 0px;
+        }
+        input, select, textarea, button {
+            border-radius: 0px !important;
+        }
+        .form-error {
+            color: #dc2626;
+            font-size: 0.75rem;
+            height: 1rem;
+            display: block;
+            margin-top: 0.25rem;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; }
+        
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Chevron Process Step CSS */
+        .process-step {
+            position: relative;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            height: 100%;
+        }
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10px;
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 10px solid #e2e8f0;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-4">
+                    <a href="https://bpcs.com/" title="Blueprint Home" class="flex items-center gap-2 group">
+                        <img src="https://bpcs.com/wp-content/uploads/2021/02/BlueprintLogo_White_Tiles-400x81.png" alt="Blueprint" class="h-8 w-auto blue-logo-filter">
+                    </a>
+                    <div class="h-6 w-px bg-gray-300 mx-2"></div>
+                    <span class="text-lg font-medium text-gray-500 tracking-tight">Marketplace</span>
+                </div>
+                <nav class="hidden xl:flex items-center space-x-6 text-sm font-bold tracking-wide text-gray-900">
+                    <a href="#" class="hover:text-blueprint-blue transition-colors flex items-center gap-1">What we do <span>+</span></a>
+                    <a href="#" class="hover:text-blueprint-blue transition-colors flex items-center gap-1">Industries <span>+</span></a>
+                    <a href="#" class="hover:text-blueprint-blue transition-colors flex items-center gap-1">Databricks <span>+</span></a>
+                    <a href="#" class="hover:text-blueprint-blue transition-colors">Our work</a>
+                    <a href="#" class="hover:text-blueprint-blue transition-colors flex items-center gap-1">Insights <span>+</span></a>
+                    <a href="#" class="hover:text-blueprint-blue transition-colors flex items-center gap-1">About <span>+</span></a>
+                </nav>
+                <div class="flex items-center">
+                    <a href="https://bpcs.com/contact" class="bg-blueprint-blue hover:bg-blue-800 text-white text-sm font-bold py-2.5 px-6 transition-colors tracking-wide rounded-sm shadow-sm">
+                        Connect
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <header class="mb-10">
+            <div class="flex items-center gap-4 mb-2">
+                 <h1 class="text-3xl md:text-4xl font-bold text-blueprint-blue tracking-tight">AI Factory</h1>
+            </div>
+            <p class="text-lg text-blueprint-blue font-medium w-full">
+                Bring AI to life with a structured model that delivers production-ready solutions in 12 weeks.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-10 gap-12">
+            <div class="lg:col-span-7 space-y-10">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <section class="sharp-card p-1 border-t-0 border-l border-r border-b shadow-sm flex flex-col justify-center bg-black">
+                        <div class="aspect-video w-full">
+                            <iframe src="https://www.youtube.com/embed/48gEgOcCaKo" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-6 border border-gray-200 flex flex-col justify-center">
+                        <h2 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2 mb-3">Why the AI Factory?</h2>
+                        <h3 class="text-xs font-bold text-blueprint-blue uppercase tracking-wider mb-2">The assembly line for business-ready AI</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            AI factories are essential because they shift enterprises from experimentation to industrialized delivery — reducing risk, aligning teams, and accelerating value. By starting with use case identification, organizations avoid wasted investment and ensure AI efforts solve real business problems. Our five-phase factory model moves from ideation to implementation with the repeatability, scalability, and governance that enterprise-grade AI demands.
+                        </p>
+                    </section>
+                </div>
+
+                <section class="w-full">
+                    <div class="bg-gray-50 border-l-4 border-blueprint-blue p-6 shadow-sm">
+                        <blockquote class="text-lg font-medium text-gray-800 italic mb-2">
+                            "By 2029, <span class="text-blueprint-blue font-bold">70%</span> of large enterprises failing to effectively utilize AI factories will cease to exist."
+                        </blockquote>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">— Gartner, 2025</p>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <div class="flex justify-between items-end mb-6 border-b border-gray-100 pb-4">
+                        <h2 class="text-xl font-bold text-gray-900">Modular Engagements</h2>
+                        <span class="text-xs text-gray-500 font-medium">Modular by design. Built for speed.</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 border border-gray-200 p-5 flex flex-col h-full hover:border-blueprint-blue transition-colors">
+                            <div class="mb-3">
+                                <span class="bg-black text-white text-[10px] font-bold px-2 py-1 uppercase">Step 1</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-3">1-Day Readiness Workshop</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed flex-grow">
+                                This session is designed to identify high-value use cases and quickly assess your organization’s readiness to begin leveraging Databricks for AI. It includes enabling access, validating data sources, reviewing current governance and skills. You’ll leave with a prioritized list of opportunities, a snapshot of your current environment, familiarity with Databricks AI tools, and a recommended path forward.
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-50 border border-gray-200 p-5 flex flex-col h-full hover:border-blueprint-blue transition-colors">
+                             <div class="mb-3">
+                                <span class="bg-black text-white text-[10px] font-bold px-2 py-1 uppercase">Step 2</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-3">6-Week Foundations Engagement</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed flex-grow">
+                                This engagement builds the groundwork for successful AI delivery by evaluating your environment, reﬁning governance, and designing a user experience tailored to your use case. It includes deﬁning success criteria, reviewing Center of Excellence maturity, and selecting the appropriate delivery path whether through Genie, AI/BI, or Databricks apps.
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-50 border border-gray-200 p-5 flex flex-col h-full hover:border-blueprint-blue transition-colors">
+                             <div class="mb-3">
+                                <span class="bg-black text-white text-[10px] font-bold px-2 py-1 uppercase">Step 3</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-3">12-Week Build & Deploy</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed flex-grow">
+                                This engagement takes your AI use cases into production with governance, orchestration, and user experience fully implemented. It includes building models or agents, deploying them using Databricks tools, and integrating them into automated workﬂows and user-facing interfaces. The result is AI solutions in production, governed and cost-optimized, ready to deliver measurable business value on Databricks apps.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-6">90-Day Delivery Framework</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+                        <div class="bg-gray-50 border border-gray-200 p-3 text-center relative">
+                            <div class="text-2xl font-bold text-gray-200 absolute top-1 right-2">1</div>
+                            <h4 class="text-xs font-bold text-blueprint-blue uppercase mb-1 relative z-10">Alignment</h4>
+                            <p class="text-[10px] text-gray-600 leading-tight relative z-10">Identify business priorities & high-value use cases.</p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 p-3 text-center relative">
+                            <div class="text-2xl font-bold text-gray-200 absolute top-1 right-2">2</div>
+                            <h4 class="text-xs font-bold text-blueprint-blue uppercase mb-1 relative z-10">POC</h4>
+                            <p class="text-[10px] text-gray-600 leading-tight relative z-10">Validate feasibility using your data.</p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 p-3 text-center relative">
+                            <div class="text-2xl font-bold text-gray-200 absolute top-1 right-2">3</div>
+                            <h4 class="text-xs font-bold text-blueprint-blue uppercase mb-1 relative z-10">MVP</h4>
+                            <p class="text-[10px] text-gray-600 leading-tight relative z-10">Deploy working solution to test ROI.</p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 p-3 text-center relative">
+                            <div class="text-2xl font-bold text-gray-200 absolute top-1 right-2">4</div>
+                            <h4 class="text-xs font-bold text-blueprint-blue uppercase mb-1 relative z-10">Pre-Prod</h4>
+                            <p class="text-[10px] text-gray-600 leading-tight relative z-10">Operationalize governance & observability.</p>
+                        </div>
+                         <div class="bg-gray-50 border-l-4 border-l-blueprint-blue border-t border-r border-b border-gray-200 p-3 text-center relative shadow-sm">
+                            <div class="text-2xl font-bold text-gray-200 absolute top-1 right-2">5</div>
+                            <h4 class="text-xs font-bold text-blueprint-blue uppercase mb-1 relative z-10">Production</h4>
+                            <p class="text-[10px] text-gray-600 leading-tight relative z-10">Launch KPI-tied AI with measurable value.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-gray-50 p-6 border border-gray-100">
+                        <h3 class="text-sm font-bold text-gray-900 mb-2">Why we deliver in 90 days</h3>
+                        <p class="text-xs text-gray-600 mb-4">Blueprint’s AI Factory doesn’t just promise speed. It’s purpose built for it.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+                            <div class="flex items-start gap-2 text-xs text-gray-600">
+                                <svg class="w-4 h-4 text-blueprint-blue flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Pre-built frameworks and accelerators</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-gray-600">
+                                <svg class="w-4 h-4 text-blueprint-blue flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Industry specific models and use cases</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-gray-600">
+                                <svg class="w-4 h-4 text-blueprint-blue flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Modular delivery</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-xs text-gray-600">
+                                <svg class="w-4 h-4 text-blueprint-blue flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Cross functional teams deliver with governance, cost control, and user centric design</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">Built to scale with the right tools</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-5 bg-gray-50 border-l-4 border-black">
+                            <p class="font-bold text-sm text-gray-900 mb-2">LangChain-powered orchestration</p>
+                            <p class="text-xs text-gray-600 leading-relaxed">Blueprint uses LangChain to build modular, agent-based GenAI applications that integrate memory, retrieval, and reasoning across structured and unstructured data.</p>
+                        </div>
+                        <div class="p-5 bg-gray-50 border-l-4 border-black">
+                            <p class="font-bold text-sm text-gray-900 mb-2">GraphRAG-ready</p>
+                            <p class="text-xs text-gray-600 leading-relaxed">The Blueprint AI Factory is GraphRAG-ready for enterprises with structured data and domain-specific knowledge needs — combining semantic context with performance and cost efficiency.</p>
+                        </div>
+                        <div class="p-5 bg-gray-50 border-l-4 border-black">
+                            <p class="font-bold text-sm text-gray-900 mb-2">RLHF principles built in</p>
+                            <p class="text-xs text-gray-600 leading-relaxed">The Factory incorporates RLHF (Reinforcement Learning from Human Feedback) principles when evaluating, tuning, and validating GenAI use cases through human-in-the-loop feedback and stakeholder input.</p>
+                        </div>
+                        <div class="p-5 bg-gray-50 border-l-4 border-black">
+                            <p class="font-bold text-sm text-gray-900 mb-2">ModelOps by default</p>
+                            <p class="text-xs text-gray-600 leading-relaxed">Lifecycle governance, observability, versioning, and cost control are embedded in every production deployment.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-3">
+                <div class="sticky top-28 space-y-8">
+                    <div class="sharp-card p-6">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-blueprint-blue mb-6">Engagement Pricing</h3>
+                        <div class="space-y-6">
+                            <div class="pb-6 border-b border-gray-100">
+                                <h4 class="text-md font-bold text-gray-900">Enterprise AI Factory</h4>
+                                <p class="text-sm text-gray-500 mt-2">Custom scoped engagements based on maturity and use cases.</p>
+                                <button class="contact-sales-trigger w-full mt-4 bg-blueprint-blue text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors">Contact Sales</button>
+                            </div>
+                            <div class="space-y-4">
+                                <button id="amIReadyBtn" class="w-full bg-amber-500 text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-amber-600 transition-colors">
+                                    Am I Ready?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-gray-200">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Resources</h3>
+                        <ul class="space-y-4">
+                            <li><a href="#" id="techArchLink" class="text-sm font-bold text-blueprint-blue hover:underline">View AI Factory Architecture</a></li>
+                            <li><a href="https://bpcs.com/case-studies" class="text-sm font-bold text-blueprint-blue hover:underline">Case Studies</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sharp-card p-6 border-t-4 border-gray-400">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Sample Use Cases</h3>
+                        <div class="flex flex-wrap gap-2">
+                             <span class="px-2 py-1 bg-gray-100 text-[10px] text-gray-600 border border-gray-200">Predictive Maintenance</span>
+                             <span class="px-2 py-1 bg-gray-100 text-[10px] text-gray-600 border border-gray-200">Digital Twins</span>
+                             <span class="px-2 py-1 bg-gray-100 text-[10px] text-gray-600 border border-gray-200">Process Optimization</span>
+                             <span class="px-2 py-1 bg-gray-100 text-[10px] text-gray-600 border border-gray-200">Financial Services</span>
+                             <span class="px-2 py-1 bg-gray-100 text-[10px] text-gray-600 border border-gray-200">Retail</span>
+                             <span class="px-2 py-1 bg-gray-100 text-[10px] text-gray-600 border border-gray-200">Health & Life Sciences</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <p class="text-sm text-gray-500 font-medium text-center md:text-left">&copy; 2026 Blueprint Technology. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <div id="techArchModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="relative bg-white p-2 border border-gray-200 shadow-xl w-1/2 rounded-none">
+            <button data-close-button class="absolute -top-3 -right-3 text-white bg-black hover:bg-gray-800 rounded-full w-8 h-8 flex items-center justify-center text-xl z-10">&times;</button>
+            <div class="bg-gray-100 w-full h-96 flex items-center justify-center text-gray-500 font-mono text-xs border border-dashed border-gray-300">
+                [AI Factory Architecture Diagram]
+            </div>
+        </div>
+    </div>
+
+    <div id="amIReadyModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white shadow-xl w-full max-w-3xl max-h-[95vh] flex flex-col border-t-8 border-amber-500 rounded-none">
+            <header class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">Are You Ready for the AI Factory?</h2>
+                <button data-close-button class="text-gray-400 hover:text-gray-900 text-3xl">&times;</button>
+            </header>
+            <div class="p-6 overflow-y-auto custom-scrollbar text-sm space-y-3">
+                <p class="text-gray-500 mb-4">To maximize the value of the AI Factory, please confirm the following readiness indicators:</p>
+                <div class="grid grid-cols-1 gap-y-4 text-gray-800">
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q1" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-amber-500"><label for="q1">Do you have access to a Databricks workspace?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q2" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-amber-500"><label for="q2">Have high-value business use cases been identified?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q3" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-amber-500"><label for="q3">Are your key data sources validated and accessible?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q4" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-amber-500"><label for="q4">Is there an existing governance framework in place?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q5" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-amber-500"><label for="q5">Do you have executive sponsorship for AI initiatives?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q6" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-amber-500"><label for="q6">Are you prepared to engage in a 12-week build cycle?</label></div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end space-x-4 p-6 border-t border-gray-100">
+                <button type="button" data-close-button class="px-6 py-2 text-xs font-bold uppercase text-gray-500 hover:text-gray-800">Close</button>
+                <button type="button" id="proceedToContactBtn" class="px-8 py-3 bg-amber-500 text-white font-bold uppercase tracking-widest text-[10px] hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Proceed to Sales</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="contactSalesModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col border-t-8 border-black rounded-none">
+            <header class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">Contact Sales</h2>
+                <button data-close-button class="text-gray-400 hover:text-gray-900 text-2xl">&times;</button>
+            </header>
+            <form id="contactSalesForm" action="https://formspree.io/f/xjkavwle" method="POST" class="p-8 space-y-4">
+                 <input type="hidden" name="form_subject" value="New Sales Inquiry from AI Factory Page">
+                 <div>
+                     <label for="contactFullName" class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
+                     <input type="text" id="contactFullName" name="fullName" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue">
+                 </div>
+                 <div>
+                     <label for="contactBusinessEmail" class="block text-xs font-bold text-gray-500 uppercase mb-1">Business Email</label>
+                     <input type="email" id="contactBusinessEmail" name="email" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue">
+                 </div>
+                 <div>
+                     <label for="contactMessage" class="block text-xs font-bold text-gray-500 uppercase mb-1">Message</label>
+                     <textarea id="contactMessage" name="message" rows="4" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue"></textarea>
+                 </div>
+                 <div class="flex flex-col gap-2 mt-4">
+                    <button type="submit" class="w-full py-4 bg-black text-white font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-colors">Send Message</button>
+                    <button type="button" data-close-button class="w-full py-2 text-xs font-bold uppercase text-gray-400 hover:text-gray-800">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="messageSentModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white shadow-xl w-full max-w-md text-center p-8 border-t-8 border-green-500 rounded-none">
+             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                 <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+             </div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Message Sent!</h2>
+            <p class="text-gray-500 mb-6 text-sm">Our AI specialists will get back to you shortly.</p>
+            <button data-close-button class="mt-4 text-xs font-bold uppercase text-blueprint-blue hover:underline">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const amIReadyBtn = document.getElementById('amIReadyBtn');
+            const proceedToContactBtn = document.getElementById('proceedToContactBtn');
+            const contactSalesTriggers = document.querySelectorAll('.contact-sales-trigger');
+            const techArchLink = document.getElementById('techArchLink');
+            
+            const amIReadyModal = document.getElementById('amIReadyModal');
+            const contactSalesModal = document.getElementById('contactSalesModal');
+            const messageSentModal = document.getElementById('messageSentModal');
+            const techArchModal = document.getElementById('techArchModal');
+            
+            const checklistItems = amIReadyModal.querySelectorAll('.checklist-item');
+            const contactSalesForm = document.getElementById('contactSalesForm');
+
+            // Modal Controls
+            const showModal = (modal) => {
+                if (!modal) return;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            const closeModal = (modal) => {
+                if (!modal) return;
+                modal.classList.add('hidden');
+                if (document.querySelectorAll('.fixed.z-50:not(.hidden)').length === 0) {
+                    document.body.style.overflow = '';
+                }
+            };
+            
+            // Check list validation
+            const validateChecklist = () => {
+                const allChecked = Array.from(checklistItems).every(item => item.checked);
+                proceedToContactBtn.disabled = !allChecked;
+            };
+
+            // Event Listeners
+            amIReadyBtn.addEventListener('click', () => showModal(amIReadyModal));
+            checklistItems.forEach(item => item.addEventListener('change', validateChecklist));
+            
+            // Proceed to Contact instead of Purchase
+            proceedToContactBtn.addEventListener('click', () => {
+                closeModal(amIReadyModal);
+                showModal(contactSalesModal);
+            });
+
+            techArchLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showModal(techArchModal);
+            });
+
+            contactSalesTriggers.forEach(btn => {
+                btn.addEventListener('click', () => showModal(contactSalesModal));
+            });
+
+            if (contactSalesForm) {
+                contactSalesForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    // Mock submission
+                    closeModal(contactSalesModal);
+                    contactSalesForm.reset();
+                    showModal(messageSentModal);
+                });
+            }
+
+            document.querySelectorAll('[data-close-button]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.fixed.z-50');
+                    closeModal(modal);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

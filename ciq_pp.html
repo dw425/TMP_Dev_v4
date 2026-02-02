@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampaignIQ | Blueprint Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <header class="mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-2">CampaignIQ</h1>
+            <p class="text-lg text-blueprint-blue font-medium">
+                The AI-powered, ROAS analysis tool to maximize your advertising investment.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-10 gap-12">
+            <div class="lg:col-span-7 space-y-10">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <section class="sharp-card p-1 border-t-0 border-l border-r border-b shadow-sm flex flex-col justify-center bg-black">
+                        <div class="aspect-video w-full">
+                            <iframe src="https://www.youtube.com/embed/smNEBimkSGI" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-6 border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4">Summary</h2>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            CampaignIQ is a Databricks-native solution that empowers marketers with AI-driven ROAS forecasting, scenario simulation, and spend optimization. It unifies data, governance, and analytics to improve campaign performance and accelerate decision-making.
+                        </p>
+                    </section>
+                </div>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">What It Does</h2>
+                    <div class="space-y-4 text-gray-600 leading-relaxed">
+                        <h3 class="text-lg font-bold text-blueprint-blue">Unlock smarter media planning with CampaignIQ by Blueprint</h3>
+                        <p>Marketing leaders face a new level of complexity when planning and optimizing campaigns across digital, social, and traditional channels. CampaignIQ by Blueprint is an AI-powered marketing accelerator built on the Databricks Data Intelligence Platform.</p>
+                        <p>By leveraging Mosaic AI and Databricks' scalable compute, CampaignIQ enables ROAS forecasting, scenario simulation, and data-driven recommendations that guide smarter spend allocation.</p>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">Benefits</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">AI-driven ROAS Forecasting with in-depth Smart Scenario Simulation.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Intelligent Predictions to guide spending and see what outcomes you can achieve.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Governed, Trusted, Secure Insights for confident decision-making.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-3">
+                <div class="sticky top-28 space-y-8">
+                    <div class="sharp-card p-6">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-blueprint-blue mb-6">Launch Pricing</h3>
+                        <div class="space-y-6">
+                            <div class="pb-6 border-b border-gray-100">
+                                <h4 class="text-md font-bold text-gray-900">Single User</h4>
+                                <p class="text-2xl font-bold text-blueprint-blue mt-1">$1,000.00<span class="text-xs text-gray-500 font-normal"> / mo</span></p>
+                                
+                                <button onclick="Cart.add({ id: 'ciq-1', title: 'CampaignIQ - Single User', price: 1000, type: 'Software', billing: 'monthly' })" class="w-full mt-4 bg-blueprint-blue text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors">
+                                    Add to Cart
+                                </button>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-md font-bold text-gray-900">Team Account</h4>
+                                    <p class="text-sm text-gray-500 mt-1">Starting at $5,000.00/mo</p>
+                                    <button class="contact-sales-trigger w-full mt-3 bg-black text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-colors">Contact Sales</button>
+                                </div>
+                                <button id="amIReadyBtn" class="w-full bg-gray-200 text-gray-800 font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-gray-300 transition-colors">
+                                    Am I Ready?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-gray-200">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Resources</h3>
+                        <ul class="space-y-4">
+                            <li><a href="#" id="techArchLink" class="text-sm font-bold text-blueprint-blue hover:underline">View Technical Architecture</a></li>
+                            <li><a href="https://bpcs.com/case-studies" class="text-sm font-bold text-blueprint-blue hover:underline">Case Studies</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+
+    <div id="techArchModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="relative bg-white p-2 border border-gray-200 shadow-xl w-1/2 rounded-none">
+            <button data-close-button class="absolute -top-3 -right-3 text-white bg-black hover:bg-gray-800 rounded-full w-8 h-8 flex items-center justify-center text-xl z-10">&times;</button>
+            <div class="bg-gray-100 w-full h-96 flex items-center justify-center text-gray-500 font-mono text-xs border border-dashed border-gray-300">
+                [Technical Architecture Diagram]
+            </div>
+        </div>
+    </div>
+
+    <div id="amIReadyModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white shadow-xl w-full max-w-3xl max-h-[95vh] flex flex-col border-t-8 border-blueprint-blue rounded-none">
+            <header class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">Are You Ready?</h2>
+                <button data-close-button class="text-gray-400 hover:text-gray-900 text-3xl">&times;</button>
+            </header>
+            <div class="p-6 overflow-y-auto custom-scrollbar text-sm space-y-3">
+                <p class="text-gray-500 mb-4">This tool is most effective when you can answer "yes" to all of the following statements:</p>
+                <div class="grid grid-cols-1 gap-y-4 text-gray-800">
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q1" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q1">Do you currently have a Databricks Account?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q2" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q2">Do you have a workspace setup to accept the notebook?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q3" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q3">Do you have marketing data setup inside the workspace?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q4" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q4">Are you using unity catalog?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q5" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q5">Do you have a clear and consistent definition of what costs are included in your "Ad Spend"?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q6" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q6">Do you have a basic understanding of your sales attribution model?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q7" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q7">Does your team have the technical skills required to use this notebook?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q8" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q8">Do you have a designated person responsible for maintaining the notebook?</label></div>
+                    <div class="flex items-start bg-gray-50 p-3 border border-gray-100"><input type="checkbox" id="q9" class="checklist-item mr-3 h-4 w-4 mt-1 flex-shrink-0 accent-blue-600"><label for="q9">Do you have a specific business question in mind for ROAS analysis?</label></div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end space-x-4 p-6 border-t border-gray-100">
+                <button type="button" data-close-button class="px-6 py-2 text-xs font-bold uppercase text-gray-500 hover:text-gray-800">Close</button>
+                <button type="button" id="proceedToCartBtn" class="px-8 py-3 bg-blueprint-blue text-white font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Proceed to Cart</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="contactSalesModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col border-t-8 border-black rounded-none">
+            <header class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">Contact Sales</h2>
+                <button data-close-button class="text-gray-400 hover:text-gray-900 text-2xl">&times;</button>
+            </header>
+            <form id="contactSalesForm" action="https://formspree.io/f/xjkavwle" method="POST" class="p-8 space-y-4">
+                 <input type="hidden" name="form_subject" value="New Sales Inquiry from CIQ Page">
+                 <div>
+                     <label for="contactFullName" class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
+                     <input type="text" id="contactFullName" name="fullName" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue">
+                 </div>
+                 <div>
+                     <label for="contactBusinessEmail" class="block text-xs font-bold text-gray-500 uppercase mb-1">Business Email</label>
+                     <input type="email" id="contactBusinessEmail" name="email" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue">
+                 </div>
+                 <div>
+                     <label for="contactMessage" class="block text-xs font-bold text-gray-500 uppercase mb-1">Message</label>
+                     <textarea id="contactMessage" name="message" rows="4" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue"></textarea>
+                 </div>
+                 <div class="flex flex-col gap-2 mt-4">
+                    <button type="submit" class="w-full py-4 bg-black text-white font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-colors">Send Message</button>
+                    <button type="button" data-close-button class="w-full py-2 text-xs font-bold uppercase text-gray-400 hover:text-gray-800">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="messageSentModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white shadow-xl w-full max-w-md text-center p-8 border-t-8 border-green-500 rounded-none">
+             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                 <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+             </div>
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Message Sent!</h2>
+            <p class="text-gray-500 mb-6 text-sm">Our sales team will get back to you shortly.</p>
+            <button data-close-button class="mt-4 text-xs font-bold uppercase text-blueprint-blue hover:underline">Close</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const amIReadyBtn = document.getElementById('amIReadyBtn');
+            const proceedToCartBtn = document.getElementById('proceedToCartBtn');
+            const contactSalesTriggers = document.querySelectorAll('.contact-sales-trigger');
+            const techArchLink = document.getElementById('techArchLink');
+            
+            const amIReadyModal = document.getElementById('amIReadyModal');
+            const contactSalesModal = document.getElementById('contactSalesModal');
+            const messageSentModal = document.getElementById('messageSentModal');
+            const techArchModal = document.getElementById('techArchModal');
+            
+            const checklistItems = amIReadyModal.querySelectorAll('.checklist-item');
+            const contactSalesForm = document.getElementById('contactSalesForm');
+
+            // Modal Controls
+            const showModal = (modal) => {
+                if (!modal) return;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            };
+            
+            const closeModal = (modal) => {
+                if (!modal) return;
+                modal.classList.add('hidden');
+                if (document.querySelectorAll('.fixed.z-50:not(.hidden)').length === 0) {
+                    document.body.style.overflow = '';
+                }
+            };
+            
+            // Checklist Validation
+            const validateChecklist = () => {
+                const allChecked = Array.from(checklistItems).every(item => item.checked);
+                proceedToCartBtn.disabled = !allChecked;
+            };
+
+            // Triggers
+            amIReadyBtn.addEventListener('click', () => showModal(amIReadyModal));
+            checklistItems.forEach(item => item.addEventListener('change', validateChecklist));
+            
+            // Proceed to Cart from Modal
+            proceedToCartBtn.addEventListener('click', () => {
+                // Add the item to cart automatically on success
+                Cart.add({ id: 'ciq-1', title: 'CampaignIQ - Single User', price: 1000, type: 'Software', billing: 'monthly' });
+                closeModal(amIReadyModal);
+            });
+
+            techArchLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showModal(techArchModal);
+            });
+
+            contactSalesTriggers.forEach(btn => {
+                btn.addEventListener('click', () => showModal(contactSalesModal));
+            });
+
+            // Contact Form Logic
+            if (contactSalesForm) {
+                contactSalesForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    closeModal(contactSalesModal);
+                    contactSalesForm.reset();
+                    showModal(messageSentModal);
+                });
+            }
+
+            // Universal Close
+            document.querySelectorAll('[data-close-button]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.fixed.z-50');
+                    closeModal(modal);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

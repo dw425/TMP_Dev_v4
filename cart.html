@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Blueprint Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Your Quote Cart</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-8">
+                <div class="sharp-card bg-white overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th>Product / Service</th>
+                                <th>Type</th>
+                                <th>Billing</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-page-items">
+                            </tbody>
+                    </table>
+                    <div id="empty-cart-msg" class="p-12 text-center hidden">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <p class="text-gray-500 text-lg mb-2">Your cart is currently empty.</p>
+                        <p class="text-sm text-gray-400 mb-6">Add items from the marketplace to request a quote.</p>
+                        <a href="index.html" class="bg-blueprint-blue text-white font-bold py-3 px-6 uppercase tracking-widest text-xs hover:bg-blue-800 transition-colors inline-block">Browse Marketplace</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4">
+                <div class="sharp-card p-6 bg-white sticky top-28">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Summary</h3>
+                    <div class="space-y-3 mb-6 border-b border-gray-100 pb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Monthly Recurring</span>
+                            <span class="font-bold text-gray-900" id="summary-monthly">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">One-Time Implementation</span>
+                            <span class="font-bold text-gray-900" id="summary-onetime">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-lg font-bold text-gray-900">Total Est.</span>
+                        <span class="text-xl font-bold text-blueprint-blue" id="summary-total">$0.00</span>
+                    </div>
+                    <button id="checkoutBtn" class="w-full bg-blueprint-blue text-white font-bold py-4 uppercase tracking-widest text-xs hover:bg-blue-800 transition-colors">
+                        Request Quote / PO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <div id="purchaseModal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[95vh] flex flex-col border-t-8 border-blueprint-blue rounded-none shadow-2xl">
+            <header class="p-6 border-b border-gray-100 flex justify-between items-center flex-shrink-0">
+                <h2 class="text-2xl font-bold text-gray-900">Request Quote / PO</h2>
+                <button data-close-button class="text-gray-400 hover:text-gray-900 text-3xl">&times;</button>
+            </header>
+            
+            <div class="overflow-y-auto custom-scrollbar">
+                <form id="poForm" action="https://formspree.io/f/xwpgdwbd" method="POST" class="p-8 text-sm">
+                    <input type="hidden" name="cart_contents" id="hiddenCartData">
+                    <input type="hidden" name="estimated_total" id="hiddenTotal">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-6">
+                        <div>
+                            <label for="poNumber" class="block text-xs font-bold text-gray-500 uppercase mb-1">PO Number (Optional)</label>
+                            <input type="text" id="poNumber" name="po_number" class="w-full border border-gray-300 p-2 focus:border-blueprint-blue">
+                        </div>
+                        <div>
+                            <label for="poDate" class="block text-xs font-bold text-gray-500 uppercase mb-1">Date</label>
+                            <input type="date" id="poDate" name="po_date" required class="w-full border border-gray-300 p-2 text-gray-900">
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <fieldset class="border border-gray-200 p-4 bg-gray-50">
+                            <legend class="text-sm font-bold text-blueprint-blue px-2 uppercase tracking-wide">1. Customer Information</legend>
+                            <div class="space-y-4 pt-2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Legal Entity Name</label>
+                                        <input type="text" name="legal_name" required class="w-full border border-gray-300 p-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contact Email</label>
+                                        <input type="email" name="email" required class="w-full border border-gray-300 p-2">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="md:col-span-3">
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Street Address</label>
+                                        <input type="text" name="address" required class="w-full border border-gray-300 p-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">City</label>
+                                        <input type="text" name="city" required class="w-full border border-gray-300 p-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">State</label>
+                                        <input type="text" name="state" required maxlength="2" class="w-full border border-gray-300 p-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Zip Code</label>
+                                        <input type="text" name="zip" required maxlength="5" class="w-full border border-gray-300 p-2">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <fieldset class="border border-gray-200 p-4 bg-gray-50">
+                                <legend class="text-sm font-bold text-blueprint-blue px-2 uppercase tracking-wide">2. Order Summary</legend>
+                                <div class="space-y-4 pt-2">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Items in Cart</label>
+                                        <textarea id="poProductSummary" readonly class="w-full border border-gray-300 p-2 bg-gray-100 h-24 font-mono text-xs resize-none"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Requested Start Date</label>
+                                        <input type="date" name="start_date" required class="w-full border border-gray-300 p-2">
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="border border-gray-200 p-4 bg-gray-50">
+                                <legend class="text-sm font-bold text-blueprint-blue px-2 uppercase tracking-wide">3. Deployment</legend>
+                                <div class="space-y-4 pt-2">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Cloud Provider</label>
+                                        <select name="deployment_location" class="w-full border border-gray-300 p-2">
+                                            <option value="AWS">AWS</option>
+                                            <option value="Azure">Azure</option>
+                                            <option value="GCP">GCP</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Technical Contact Email (Optional)</label>
+                                        <input type="email" name="tech_contact" class="w-full border border-gray-300 p-2">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end space-x-4 mt-6 pt-6 border-t border-gray-200">
+                        <button type="button" data-close-button class="px-6 py-2 text-xs font-bold uppercase text-gray-500 hover:text-gray-800">Cancel</button>
+                        <button type="submit" id="submitBtn" class="px-8 py-3 bg-blueprint-blue text-white font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="finalConfirmationModal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4">
+         <div class="bg-white shadow-xl w-full max-w-md text-center p-12 border-t-8 border-green-500 rounded-none">
+               <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                   <svg class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+               </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Order Received!</h2>
+            <p class="text-gray-500 mb-8 text-sm">Thank you for your request. Our team will process your PO and email you the confirmation and next steps shortly.</p>
+            <button data-close-button class="w-full bg-black text-white font-bold py-3 uppercase tracking-widest text-xs hover:bg-gray-800">Close</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Cart.renderCartPage(); 
+
+            // Elements
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const purchaseModal = document.getElementById('purchaseModal');
+            const finalModal = document.getElementById('finalConfirmationModal');
+            const poForm = document.getElementById('poForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // --- DATE PREFILL ---
+            const today = new Date().toISOString().split('T')[0];
+            if(document.getElementById('poDate')) document.getElementById('poDate').value = today;
+
+            // --- MODAL UTILS ---
+            const showModal = (m) => { m.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
+            const closeModal = (m) => { m.classList.add('hidden'); document.body.style.overflow = ''; };
+
+            document.querySelectorAll('[data-close-button]').forEach(btn => {
+                btn.onclick = (e) => closeModal(e.target.closest('.fixed'));
+            });
+
+            // --- STEP 1: OPEN MODAL & PREFILL DATA ---
+            checkoutBtn.addEventListener('click', () => {
+                const cart = Cart.get();
+                if (cart.length === 0) { alert("Cart is empty"); return; }
+
+                // Generate Summary Text
+                const summaryText = cart.map(i => {
+                    const price = i.price === 'Custom' ? 'Custom' : '$' + parseFloat(i.price).toLocaleString();
+                    const qty = i.quantity || 1;
+                    return `• ${i.title} (x${qty}) - ${price}`;
+                }).join('\n');
+                
+                document.getElementById('poProductSummary').value = summaryText;
+                
+                // Set Hidden Inputs for Formspree
+                document.getElementById('hiddenCartData').value = JSON.stringify(cart);
+                document.getElementById('hiddenTotal').value = document.getElementById('summary-total').innerText;
+
+                showModal(purchaseModal);
+            });
+
+            // --- STEP 2: HANDLE SUBMISSION (AJAX) ---
+            poForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Disable Button to prevent double-submit
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Processing...";
+                
+                const formData = new FormData(poForm);
+
+                try {
+                    const response = await fetch(poForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        // 1. Close Form
+                        closeModal(purchaseModal);
+                        
+                        // 2. Clear Cart & Update UI
+                        Cart.clear(); 
+                        Cart.renderCartPage(); 
+                        
+                        // 3. Show Success
+                        showModal(finalModal);
+                        poForm.reset();
+                    } else {
+                        alert("Oops! There was a problem submitting your form.");
+                    }
+                } catch (error) {
+                    alert("Network error. Please try again.");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Submit Request";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

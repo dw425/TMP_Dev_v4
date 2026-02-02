@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Cloud Migration Assessment | Blueprint Migration</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+
+    <style>
+        /* --- PRESERVED FORM STYLES --- */
+        * { box-sizing: border-box; }
+
+        .section { margin-bottom: 40px; page-break-inside: avoid; }
+        .section-header {
+            background: #1d4ed8; /* Blueprint Blue */
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 14pt;
+            margin: 0;
+            border-radius: 0px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .na-toggle { display: flex; align-items: center; font-size: 10pt; font-weight: normal; }
+        .na-toggle input { margin-right: 8px; width: 16px; height: 16px; }
+        .section-content {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0px;
+            transition: opacity 0.3s;
+        }
+        .section-content.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f9fafb;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #374151;
+            font-size: 10pt;
+        }
+        input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 0px;
+            font-size: 10pt;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+        }
+        .is-invalid {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 9pt;
+            display: none;
+            margin-top: 4px;
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .subsection { margin-bottom: 25px; }
+        .subsection h4 {
+            color: #1d4ed8;
+            margin-bottom: 12px;
+            font-size: 12pt;
+            font-weight: 700;
+            border-bottom: 2px solid #1d4ed8;
+            padding-bottom: 4px;
+        }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 8px; }
+        .checkbox-item { display: flex; align-items: center; margin-bottom: 4px; }
+        .checkbox-item input[type="checkbox"] { margin-right: 10px; width: 16px; height: 16px; border-radius: 0px; }
+        .checkbox-item label { font-weight: normal; margin-bottom: 0; font-size: 10pt; }
+        .radio-group { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 8px; }
+        .radio-item { display: flex; align-items: center; }
+        .radio-item input[type="radio"] { margin-right: 8px; width: 16px; height: 16px; }
+        .radio-item label { font-weight: normal; margin-bottom: 0; font-size: 10pt; }
+        .page-break { page-break-before: always; }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 0px;
+            font-weight: bold;
+            font-size: 11pt;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn-submit { background-color: #1d4ed8; }
+        .btn-submit:hover { background-color: #1e40af; }
+
+        @media (max-width: 768px) {
+            .inline-inputs, .three-column { grid-template-columns: 1fr; }
+            .checkbox-group { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="mb-10 border-b border-gray-200 pb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Google Cloud Migration Assessment</h1>
+            <p class="text-lg text-gray-500">Complete the full assessment to generate your migration roadmap and project ROM.</p>
+        </div>
+
+        <div class="sharp-card p-8 md:p-12 bg-white">
+            <form id="migrationForm" novalidate>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span>Executive Summary</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-exec" class="na-checkbox" data-section-content-id="exec-content">
+                        <label for="na-exec">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="exec-content">
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="projectName">Project Name:</label>
+                            <input type="text" id="projectName" name="projectName" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="stakeholder">Primary Stakeholder:</label>
+                            <input type="text" id="stakeholder" name="stakeholder" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="timeline">Timeline Expectations:</label>
+                            <input type="text" id="timeline" name="timeline">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Contact Email:</label>
+                            <input type="email" id="contactEmail" name="contactEmail" required data-required="true">
+                            <span class="error-message">Please enter a valid email address.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessDriver">Business Driver for Migration:</label>
+                        <textarea id="businessDriver" name="businessDriver" placeholder="Describe the primary reasons for migrating..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>1. Current GCP Environment Assessment</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-gcp" class="na-checkbox" data-section-content-id="gcp-content">
+                        <label for="na-gcp">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="gcp-content">
+                    <div class="subsection">
+                        <h4>1.1 Current Platform Details</h4>
+                        <div class="form-group">
+                            <label>Current GCP Services in Use (select at least one):</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" id="dataproc" name="gcpServices" value="dataproc"><label for="dataproc">Dataproc</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="dataflow" name="gcpServices" value="dataflow"><label for="dataflow">Dataflow</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="bigquery" name="gcpServices" value="bigquery"><label for="bigquery">BigQuery</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="composer" name="gcpServices" value="composer"><label for="composer">Cloud Composer (Airflow)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="functions" name="gcpServices" value="functions"><label for="functions">Cloud Functions</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="cloudrun" name="gcpServices" value="cloudrun"><label for="cloudrun">Cloud Run</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="vertexai" name="gcpServices" value="vertexai"><label for="vertexai">Vertex AI</label></div>
+                            </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label for="otherServices">Other Services:</label>
+                                <input type="text" id="otherServices" name="otherServices" placeholder="Specify other GCP services...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>1.2 Data Processing Workloads</h4>
+                        <div class="form-group" style="max-width: 250px;">
+                            <label for="totalJobs">Total number of data processing jobs:</label>
+                            <input type="number" id="totalJobs" name="totalJobs" min="0" value="0" required data-required="true">
+                            <span class="error-message">Please enter a valid number (0 or more).</span>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>1.3 Compute Resources</h4>
+                        <div class="three-column" style="margin-bottom: 15px;">
+                            <div class="form-group">
+                                <label for="activeClusters">Number of active clusters:</label>
+                                <input type="number" id="activeClusters" name="activeClusters" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="clusterSizes">Typical cluster sizes (nodes):</label>
+                                <input type="text" id="clusterSizes" name="clusterSizes" placeholder="e.g., 5-20 nodes" required data-required="true">
+                                <span class="error-message">This field is required.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="instanceTypes">Instance types used:</label>
+                                <input type="text" id="instanceTypes" name="instanceTypes" placeholder="e.g., n1-standard-4" required data-required="true">
+                                <span class="error-message">This field is required.</span>
+                            </div>
+                        </div>
+                         <div class="three-column">
+                            <div class="form-group">
+                                <label>Auto-scaling enabled:</label>
+                                <div class="radio-group">
+                                    <div class="radio-item"><input type="radio" id="autoscaleYes" name="autoscaling" value="yes" required data-required="true"><label for="autoscaleYes">Yes</label></div>
+                                    <div class="radio-item"><input type="radio" id="autoscaleNo" name="autoscaling" value="no"><label for="autoscaleNo">No</label></div>
+                                </div>
+                                <span class="error-message">Please select an option.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="avgComputeHours">Average daily compute hours:</label>
+                                <input type="number" id="avgComputeHours" name="avgComputeHours" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="peakComputeHours">Peak compute hours:</label>
+                                <input type="number" id="peakComputeHours" name="peakComputeHours" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>2. Data Architecture & Storage</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-data" class="na-checkbox" data-section-content-id="data-content">
+                        <label for="na-data">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="data-content">
+                    <div class="subsection">
+                        <h4>2.1 Data Sources (Optional)</h4>
+                        <div class="form-group">
+                            <label for="apiSources">APIs/Streaming sources:</label>
+                            <textarea id="apiSources" name="apiSources" placeholder="List API endpoints and streaming data sources..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileSystems">File systems:</label>
+                            <textarea id="fileSystems" name="fileSystems" placeholder="On-premise file systems, network shares..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="saasApps">SaaS applications:</label>
+                            <textarea id="saasApps" name="saasApps" placeholder="Salesforce, ServiceNow, etc..."></textarea>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>2.2 Current Data Storage</h4>
+                        <div class="three-column">
+                            <div class="form-group">
+                                <label for="totalDataVolume">Total data volume (TB/PB):</label>
+                                <input type="number" step="0.1" id="totalDataVolume" name="totalDataVolume" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="bucketCount">Number of buckets:</label>
+                                <input type="number" id="bucketCount" name="bucketCount" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="dataFormats">Data formats:</label>
+                                <input type="text" id="dataFormats" name="dataFormats" placeholder="Parquet, Avro, JSON..." required data-required="true">
+                                <span class="error-message">This field is required.</span>
+                            </div>
+                        </div>
+                        <div class="inline-inputs">
+                            <div class="form-group">
+                                <label for="bqDatasets">Number of datasets:</label>
+                                <input type="number" id="bqDatasets" name="bqDatasets" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="bqDataSize">Total data size (TB/PB):</label>
+                                <input type="number" step="0.1" id="bqDataSize" name="bqDataSize" min="0" required data-required="true">
+                                <span class="error-message">Please enter a number.</span>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label for="otherStorage">Other Storage Systems:</label>
+                            <textarea id="otherStorage" name="otherStorage" placeholder="Cloud SQL instances, Firestore collections, Bigtable instances..." required data-required="true"></textarea>
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>2.3 Data Movement Patterns</h4>
+                        <div class="form-group">
+                            <label>Data Ingestion:</label>
+                            <div class="inline-inputs">
+                                <div class="form-group">
+                                    <label for="dailyIngestion">Daily ingestion volume (GB/TB):</label>
+                                    <input type="number" step="0.1" id="dailyIngestion" name="dailyIngestion" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a number.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ingestionRatio">Real-time vs batch ratio (%):</label>
+                                    <input type="text" id="ingestionRatio" name="ingestionRatio" placeholder="e.g., 30/70" required data-required="true">
+                                    <span class="error-message">This field is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Data Export/Egress:</label>
+                            <div class="inline-inputs">
+                                <div class="form-group">
+                                    <label for="dailyEgress">Daily egress volume (GB/TB):</label>
+                                    <input type="number" step="0.1" id="dailyEgress" name="dailyEgress" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a number.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="egressDestinations">Destinations for processed data:</label>
+                                    <input type="text" id="egressDestinations" name="egressDestinations" placeholder="Data warehouses, APIs, etc..." required data-required="true">
+                                    <span class="error-message">This field is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>3. Applications & Code Base</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-apps" class="na-checkbox" data-section-content-id="apps-content">
+                        <label for="na-apps">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="apps-content">
+                    <div class="subsection">
+                        <h4>3.1 Codebase Inventory</h4>
+                        <div class="form-group">
+                            <label>Programming Languages Used:</label>
+                            <div class="three-column">
+                                <div><label for="pythonCount">Python scripts/notebooks:</label><input type="number" id="pythonCount" name="pythonCount" min="0" value="0"></div>
+                                <div><label for="scalaCount">Scala applications:</label><input type="number" id="scalaCount" name="scalaCount" min="0" value="0"></div>
+                                <div><label for="sqlCount">SQL queries/procedures:</label><input type="number" id="sqlCount" name="sqlCount" min="0" value="0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>4. Orchestration & Workflow Management</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-orchestration" class="na-checkbox" data-section-content-id="orchestration-content">
+                        <label for="na-orchestration">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="orchestration-content">
+                    <div class="subsection">
+                        <h4>4.1 Current Orchestration</h4>
+                        <div class="form-group">
+                            <label>Workflow Tools:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" id="airflow" name="workflowTools" value="airflow"><label for="airflow">Apache Airflow (Cloud Composer)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="scheduler" name="workflowTools" value="scheduler"><label for="scheduler">Cloud Scheduler</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="dataflowTemplates" name="workflowTools" value="templates"><label for="dataflowTemplates">Dataflow templates</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="customScheduling" name="workflowTools" value="custom"><label for="customScheduling">Custom scheduling solutions</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>5. Security & Compliance</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-security" class="na-checkbox" data-section-content-id="security-content">
+                        <label for="na-security">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="security-content">
+                    <div class="subsection">
+                        <h4>5.1 Security Requirements</h4>
+                        <div class="form-group">
+                            <label>Authentication & Authorization:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" id="gcpIam" name="authMethodsSecurity" value="iam"><label for="gcpIam">Google Cloud IAM</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="activedirectory" name="authMethodsSecurity" value="ad"><label for="activedirectory">Active Directory integration</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="serviceAccounts" name="authMethodsSecurity" value="service"><label for="serviceAccounts">Service accounts</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>6. Performance & SLA Requirements</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-performance" class="na-checkbox" data-section-content-id="performance-content">
+                        <label for="na-performance">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="performance-content">
+                    <div class="subsection">
+                        <h4>6.1 Current Performance Metrics</h4>
+                        <div class="form-group">
+                            <label>Processing SLAs:</label>
+                            <div class="inline-inputs">
+                                <div class="form-group">
+                                    <label for="criticalJobTime">Critical job completion time (min/hrs):</label>
+                                    <input type="text" id="criticalJobTime" name="criticalJobTime" placeholder="e.g., 30 minutes" required data-required="true">
+                                    <span class="error-message">This field is required.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dataFreshness">Data freshness requirements:</label>
+                                    <input type="text" id="dataFreshness" name="dataFreshness" placeholder="e.g., 15 minutes" required data-required="true">
+                                    <span class="error-message">This field is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>6.2 Scalability Requirements</h4>
+                        <div class="form-group">
+                            <label for="dataGrowthRate">Expected data growth rate (%/year):</label>
+                            <input type="number" id="dataGrowthRate" name="dataGrowthRate" min="0" required data-required="true">
+                            <span class="error-message">Please enter a growth rate.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>7. Cost & Budget Considerations</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-cost" class="na-checkbox" data-section-content-id="cost-content">
+                        <label for="na-cost">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="cost-content">
+                    <div class="subsection">
+                        <h4>7.1 Current Costs</h4>
+                        <div class="form-group">
+                            <label for="totalSpend">Total monthly spend ($):</label>
+                            <input type="number" id="totalSpend" name="totalSpend" min="0" required data-required="true">
+                            <span class="error-message">Please enter your total spend.</span>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>7.2 Budget Expectations</h4>
+                        <div class="form-group">
+                            <label for="targetSpend">Target Databricks monthly spend ($):</label>
+                            <input type="number" id="targetSpend" name="targetSpend" min="0" required data-required="true">
+                            <span class="error-message">Please enter your target spend.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>8. Migration Priorities & Phases</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-migration" class="na-checkbox" data-section-content-id="migration-content">
+                        <label for="na-migration">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="migration-content">
+                    <div class="subsection">
+                        <h4>8.1 Workload Prioritization</h4>
+                        <div class="form-group"><label><strong>Critical Workloads (migrate first):</strong></label><textarea id="critical_workloads" name="critical_workloads" placeholder="List highest priority workloads..."></textarea></div>
+                        <div class="form-group"><label><strong>Standard Workloads (migrate second):</strong></label><textarea id="standard_workloads" name="standard_workloads" placeholder="List standard workloads..."></textarea></div>
+                        <div class="form-group"><label><strong>Non-critical Workloads (migrate last):</strong></label><textarea id="non_critical_workloads" name="non_critical_workloads" placeholder="List non-critical workloads..."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>9. Success Criteria</span>
+                    <div class="na-toggle">
+                        <input type="checkbox" id="na-success" class="na-checkbox" data-section-content-id="success-content">
+                        <label for="na-success">N/A</label>
+                    </div>
+                </div>
+                <div class="section-content" id="success-content">
+                    <div class="subsection">
+                        <h4>9.1 Migration Success Metrics</h4>
+                        <div class="form-group">
+                            <label>Business Success Criteria:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" id="costSavings" name="businessSuccess" value="cost"><label for="costSavings">Cost savings achieved</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="performanceImprovement" name="businessSuccess" value="improvement"><label for="performanceImprovement">Performance improvements</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reducedOverhead" name="businessSuccess" value="overhead"><label for="reducedOverhead">Reduced operational overhead</label></div>
+                            </div>
+                            <div class="inline-inputs" style="margin-top: 15px;">
+                                <div class="form-group">
+                                    <label for="costSavingsTarget">Cost savings target (%):</label>
+                                    <input type="number" id="costSavingsTarget" name="costSavingsTarget" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a target.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="performanceTarget">Performance improvement target (%):</label>
+                                    <input type="number" id="performanceTarget" name="performanceTarget" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a target.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>9.2 Key Performance Indicators</h4>
+                        <div class="form-group">
+                            <label>Post-migration KPIs:</label>
+                            <div class="inline-inputs">
+                                <div class="form-group">
+                                    <label for="jobCompletionImprovement">Job completion time improvement (%):</label>
+                                    <input type="number" id="jobCompletionImprovement" name="jobCompletionImprovement" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a target.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="costReductionTarget">Cost reduction target (%):</label>
+                                    <input type="number" id="costReductionTarget" name="costReductionTarget" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a target.</span>
+                                </div>
+                            </div>
+                            <div class="inline-inputs" style="margin-top: 10px;">
+                                <div class="form-group">
+                                    <label for="availabilityImprovement">Availability improvement (%):</label>
+                                    <input type="number" id="availabilityImprovement" name="availabilityImprovement" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a target.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="velocityIncrease">Developer velocity increase (%):</label>
+                                    <input type="number" id="velocityIncrease" name="velocityIncrease" min="0" required data-required="true">
+                                    <span class="error-message">Please enter a target.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">Form Completion Details</div>
+                <div class="section-content">
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="completedBy">Questionnaire Completed By:</label>
+                            <input type="text" id="completedBy" name="completedBy" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="completionDate">Date:</label>
+                            <input type="date" id="completionDate" name="completionDate" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;" class="no-print">
+                <button type="submit" class="btn btn-submit">Submit Assessment</button>
+            </div>
+        </form>
+        </div>
+
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const completionDateInput = document.getElementById('completionDate');
+            if(completionDateInput) {
+                completionDateInput.valueAsDate = new Date();
+            }
+
+            const form = document.getElementById('migrationForm');
+            const naToggles = form.querySelectorAll('.na-checkbox');
+            
+            naToggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const contentId = this.dataset.sectionContentId;
+                    const contentElement = document.getElementById(contentId);
+                    const inputs = contentElement.querySelectorAll('input, select, textarea, button');
+
+                    if (this.checked) {
+                        contentElement.classList.add('disabled');
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                            input.required = false;
+                            input.classList.remove('is-invalid');
+                            const errorSpan = input.nextElementSibling;
+                            if (errorSpan && errorSpan.classList.contains('error-message')) {
+                                errorSpan.style.display = 'none';
+                            }
+                        });
+                    } else {
+                        contentElement.classList.remove('disabled');
+                        inputs.forEach(input => {
+                            input.disabled = false;
+                            if (input.hasAttribute('data-required')) {
+                                input.required = true;
+                            }
+                        });
+                    }
+                });
+            });
+
+            const validateField = (field) => {
+                let isValid = true;
+                let errorMessage = 'This field is required.';
+                const value = field.value.trim();
+                const errorSpan = field.nextElementSibling;
+
+                if (field.disabled) return true;
+
+                if (field.type === 'email') {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (value && !emailPattern.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Please enter a valid email address.';
+                    }
+                }
+                
+                if (field.type === 'number' && field.hasAttribute('min')) {
+                    if (value !== '' && parseFloat(value) < parseFloat(field.min)) {
+                        isValid = false;
+                        errorMessage = `Value must be ${field.min} or more.`;
+                    }
+                }
+
+                if (field.required && value === '') {
+                    isValid = false;
+                }
+                
+                if (field.type === 'radio' && field.required) {
+                    const radioGroup = form.querySelectorAll(`input[name="${field.name}"]`);
+                    const isAnyChecked = Array.from(radioGroup).some(radio => radio.checked);
+                    if (!isAnyChecked) {
+                        isValid = false;
+                        const parentGroup = field.closest('.form-group');
+                        const errorElement = parentGroup ? parentGroup.querySelector('.error-message') : null;
+                        if(errorElement) errorElement.style.display = 'block';
+                    } else {
+                        const parentGroup = field.closest('.form-group');
+                        const errorElement = parentGroup ? parentGroup.querySelector('.error-message') : null;
+                        if(errorElement) errorElement.style.display = 'none';
+                    }
+                }
+
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                    if (errorSpan && errorSpan.classList.contains('error-message') && field.type !== 'radio') {
+                        errorSpan.style.display = 'none';
+                    }
+                } else {
+                    field.classList.add('is-invalid');
+                    if (errorSpan && errorSpan.classList.contains('error-message') && field.type !== 'radio') {
+                        errorSpan.textContent = errorMessage;
+                        errorSpan.style.display = 'block';
+                    }
+                }
+                return isValid;
+            };
+
+            form.querySelectorAll('[required]').forEach(field => {
+                field.addEventListener('blur', () => validateField(field));
+            });
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                let isFormValid = true;
+                
+                form.querySelectorAll('[required]').forEach(field => {
+                    if (!validateField(field)) isFormValid = false;
+                });
+
+                if (!isFormValid) {
+                    const firstInvalidField = form.querySelector('.is-invalid');
+                    if (firstInvalidField) {
+                        firstInvalidField.focus();
+                        firstInvalidField.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // --- DATA CAPTURE LOGIC ---
+                // 1. Capture ALL values for report generation
+                const formData = new FormData(form);
+                const fullState = {};
+                formData.forEach((value, key) => {
+                    if(!fullState[key]) {
+                        fullState[key] = value;
+                    } else {
+                        if(!Array.isArray(fullState[key])) fullState[key] = [fullState[key]];
+                        fullState[key].push(value);
+                    }
+                });
+                sessionStorage.setItem('lastAssessmentReport', JSON.stringify(fullState));
+
+                // 2. Extract specific counts for the Calculator
+                const jobs = parseInt(document.getElementById('totalJobs').value) || 0;
+                const bq = parseInt(document.getElementById('bqDatasets').value) || 0;
+                const buckets = parseInt(document.getElementById('bucketCount').value) || 0;
+                const py = parseInt(document.getElementById('pythonCount').value) || 0;
+                const sc = parseInt(document.getElementById('scalaCount').value) || 0;
+                const sql = parseInt(document.getElementById('sqlCount').value) || 0;
+
+                // 3. Construct Redirect to Calculator
+                const params = new URLSearchParams();
+                params.append('etl_s', Math.floor(jobs * 0.6));
+                params.append('etl_m', Math.floor(jobs * 0.3));
+                params.append('etl_v', Math.floor(jobs * 0.1));
+                params.append('table_s', bq + buckets);
+                params.append('script_s', py + sc);
+                params.append('proc_s', sql);
+                params.append('source', 'gcp');
+
+                window.location.href = `calc.html?${params.toString()}`;
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Technology Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Tailwind gray-50 */
+        }
+        /* Custom scrollbar for a more modern look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* gray-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* gray-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* gray-400 */
+        }
+        /* Style for the "Certified" badge */
+        .certified-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-800 */
+            border: 1px solid #7dd3fc; /* sky-300 */
+        }
+        /* Animation for modal */
+        .modal-enter {
+            animation: fadeIn 0.3s ease-out;
+        }
+        .modal-leave {
+            animation: fadeOut 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        /* Styles for the filter buttons */
+        .filter-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .filter-btn.active {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        /* Grid animation */
+        .grid-item {
+            animation: popIn 0.4s ease-out forwards;
+        }
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* --- OVERLAY STYLES --- */
+        .sales-highlight {
+            border: 3px solid #4ade80; /* green-400 */
+            box-shadow: 0 0 15px rgba(74, 222, 128, 0.5);
+            background-color: rgba(74, 222, 128, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .engineer-highlight {
+            border: 3px solid #c084fc; /* purple-400 */
+            box-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
+            background-color: rgba(192, 132, 252, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        #overlay-tooltip {
+            position: absolute;
+            background-color: #111827; /* gray-900 */
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            z-index: 10002;
+            max-width: 300px;
+            pointer-events: none; /* So it doesn't interfere with mouse events */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        #overlay-tooltip.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* --- MODIFICATION START --- */
+        /* Updated styles for the role buttons to make active (blue) state more distinct */
+        .role-switch-btn.active {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+            border-color: #2563eb; /* Makes border blue */
+        }
+        .role-switch-btn.active:hover {
+            background-color: #1d4ed8; /* blue-700 */
+            border-color: #1d4ed8;
+        }
+        /* --- MODIFICATION END --- */
+
+
+        /* --- NIGHT MODE STYLES --- */
+        .dark body { background-color: #0f172a; /* slate-900 */ }
+        .dark header { background-color: rgba(15, 23, 42, 0.8); border-color: #334155; /* slate-700 */ }
+        .dark footer { border-color: #334155; }
+        .dark h1, .dark h2, .dark h3, .dark h4, .dark strong { color: #f1f5f9; /* slate-100 */ }
+        .dark p, .dark span, .dark li, .dark label { color: #94a3b8; /* slate-400 */ }
+        .dark .bg-white { background-color: #1e293b; /* slate-800 */ }
+        .dark .border-gray-200 { border-color: #334155; /* slate-700 */ }
+        .dark .text-gray-900 { color: #f1f5f9; /* slate-100 */ }
+        .dark .text-gray-800 { color: #e2e8f0; /* slate-200 */ }
+        .dark .text-gray-600 { color: #94a3b8; /* slate-400 */ }
+        .dark .text-gray-500 { color: #64748b; /* slate-500 */ }
+        .dark .bg-gray-100 { background-color: #334155; /* slate-700 */ }
+        .dark .text-gray-700 { color: #e2e8f0; /* slate-200 */ }
+        .dark .border-gray-300 { border-color: #475569; /* slate-600 */ }
+        .dark .hover\:bg-gray-100:hover { background-color: #334155; /* slate-700 */ }
+        .dark .hover\:bg-gray-200:hover { background-color: #475569; /* slate-600 */ }
+        .dark .bg-gray-50 { background-color: #1e293b; /* slate-800 */ }
+        .dark .role-switch-btn:not(.active) { background-color: #334155; color: #e2e8f0; border-color: #475569; }
+        .dark .filter-btn:not(.active) { background-color: #334155; color: #e2e8f0; border-color: #475569; }
+        .dark .certified-badge { background-color: #1e3a8a; color: #bfdbfe; border-color: #60a5fa; }
+        .dark .bg-blue-100 { background-color: #3730a3; } /* indigo-800 */
+        .dark .text-blue-700 { color: #e0e7ff; } /* indigo-200 */
+        .dark .bg-yellow-50 { background-color: #422006; } /* amber-950 */
+        .dark .text-yellow-800 { color: #fef3c7; } /* amber-100 */
+        .dark .border-yellow-200 { border-color: #78350f; } /* amber-800 */
+        .dark #contact-sales-modal, .dark #blue-chat-window { background-color: #1e293b; }
+        .dark #contact-sales-modal input, .dark #contact-sales-modal textarea, .dark #blue-chat-window input { background-color: #334155; border-color: #475569; color: #e2e8f0; }
+        .dark #contact-sales-modal input::placeholder, .dark #contact-sales-modal textarea::placeholder, .dark #blue-chat-window input::placeholder { color: #64748b; }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <svg class="h-8 w-auto text-blue-600" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5zM12 14.5l-10-5L12 5l10 4.5-10 5z"/></svg>
+                    <h1 class="text-lg font-bold text-gray-900">Blueprint Technology Marketplace</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-600">
+                    <a href="https://bpcs.com" target="_blank" class="hover:text-blue-600 transition-colors">BPCS.com</a>
+                    <a href="https://github.com" target="_blank" class="hover:text-blue-600 transition-colors">GitHub</a>
+                    <a href="https://databricks.com" target="_blank" class="hover:text-blue-600 transition-colors">Databricks.com</a>
+                    <a href="#" class="hover:text-blue-600 transition-colors">Marketing Website</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100">
+                        <svg id="theme-toggle-dark-icon" class="hidden h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    </button>
+                    <button class="p-2 rounded-full hover:bg-gray-100">
+                        <svg class="h-6 w-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <section class="text-center bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Blueprint Helps you on your Modernization Journey</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600">
+                Discover, evaluate, and deploy certified tools, educational content, and blueprints to accelerate your migration to Databricks.
+            </p>
+        </section>
+        
+        <section class="mb-8 text-center">
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+                <button type="button" id="role-sales" class="role-switch-btn active px-6 py-2 text-sm font-medium bg-white text-gray-900 border border-gray-200 rounded-l-lg hover:bg-gray-100">
+                    Sales View
+                </button>
+                <button type="button" id="role-engineer" class="role-switch-btn px-6 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-r border-gray-200 rounded-r-md hover:bg-gray-100">
+                    Engineer View
+                </button>
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <div id="category-filters" class="flex flex-wrap justify-center gap-2 md:gap-3"></div>
+        </section>
+        <section>
+            <h3 id="grid-title" class="text-2xl font-bold text-gray-900 mb-6">All Resources</h3>
+            <div id="content-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+    </main>
+    
+    <div id="product-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col modal-enter">
+            <div class="flex items-start justify-between p-6 border-b border-gray-200">
+                <div>
+                    <h4 id="modal-title" class="text-2xl font-bold text-gray-900"></h4>
+                    <p id="modal-provider" class="text-sm text-gray-500"></p>
+                </div>
+                <button onclick="closeModal()" class="p-2 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-600 transition-colors">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="flex-grow overflow-y-auto">
+                <div class="flex flex-col md:flex-row">
+                    <div class="w-full md:w-1/3 p-6 border-r border-gray-200 bg-gray-50">
+                        <nav id="modal-tabs" class="flex flex-col space-y-2"></nav>
+                        <div class="mt-8">
+                             <button id="modal-action-button" class="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-transform transform hover:scale-105"></button>
+                        </div>
+                    </div>
+                    <div id="modal-tab-content" class="w-full md:w-2/3 p-6 md:p-8"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-sales-modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[51] hidden"></div>
+    <div id="contact-sales-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 z-[52] hidden modal-enter">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-900">Contact Sales</h3>
+            <button id="close-contact-modal" class="p-2 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-600 transition-colors">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+        <form class="space-y-4">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <input type="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input type="tel" id="phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <textarea id="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+            <button type="submit" class="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Submit Inquiry</button>
+        </form>
+        <div class="mt-6 text-center text-sm text-gray-500 border-t border-gray-200 pt-4">
+            <p>Or contact us directly:</p>
+            <p class="font-medium">Sales@bpcs.com | 1-800-555-1234</p>
+        </div>
+    </div>
+
+    <div id="blue-chat-fab" class="fixed bottom-5 right-5 z-50 cursor-pointer bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-110">
+        <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+    </div>
+    <div id="blue-chat-window" class="fixed bottom-20 right-5 z-50 bg-white w-80 h-96 rounded-xl shadow-2xl flex flex-col transition-all transform origin-bottom-right scale-0">
+        <div class="bg-blue-600 text-white p-3 rounded-t-xl flex justify-between items-center">
+            <h5 class="font-semibold">Blue Assistant</h5>
+            <button id="blue-close-chat-btn" class="text-white opacity-70 hover:opacity-100 text-2xl">&times;</button>
+        </div>
+        <div id="blue-chat-messages" class="flex-grow p-3 overflow-y-auto space-y-3">
+            <div class="p-2 bg-gray-100 rounded-lg text-sm self-start max-w-xs">Hi! I'm Blue. How can I help you navigate the Blueprint Marketplace today?</div>
+        </div>
+        <div class="p-3 border-t border-gray-200">
+            <input id="blue-chat-input" type="text" placeholder="Ask a question..." class="w-full px-3 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+    </div>
+
+    <div id="overlay-tooltip" class="hidden"></div>
+
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-500">&copy; 2024 Blueprint Technology. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-500">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- DATA (Marketplace) ---
+        const allContent = [
+            { id: 1, assetType: 'tool', title: 'Teradata to Databricks Migration Accelerator', provider: 'Fivetran', description: 'Automate the complex process of migrating schemas, data, and business logic from Teradata to the Databricks Lakehouse Platform.', tags: ['Teradata', 'Migration', 'ETL'], categories: ['migration-tools', 'accelerators', 'demos'], certified: true, rating: 4.8, reviewsCount: 124, pricing: { subscription: { monthly: 2500, annual: 25000 }, payg: 'Contact for PAYG', byol: true }, prerequisites: 'Requires Databricks Premium workspace with Unity Catalog. Source Teradata version 16.20+.' },
+            { id: 2, assetType: 'tool', title: 'Snowflake to Databricks Replicator', provider: 'Matillion', description: 'Seamlessly replicate tables and views from Snowflake to Delta Lake, with built-in data validation and reconciliation.', tags: ['Snowflake', 'Replication', 'Validation'], categories: ['migration-tools', 'demos'], certified: true, rating: 4.9, reviewsCount: 98, pricing: { subscription: { monthly: 3000, annual: 32000 }, payg: '$0.75 per GB processed', byol: false }, prerequisites: 'Requires access to Snowflake Information Schema. Network connectivity between Snowflake and Databricks VPC.' },
+            { id: 4, assetType: 'accelerator', title: 'Generative AI & RAG Application Blueprint', provider: 'Databricks Labs', description: 'A complete blueprint for building a production-ready Retrieval-Augmented Generation (RAG) application on your own data.', tags: ['Generative AI', 'RAG', 'LLM'], categories: ['accelerators', 'demos', 'uc-learnings'], certified: true, rating: 5.0, reviewsCount: 210, pricing: { subscription: { monthly: 0, annual: 0 }, payg: 'Free (consumes DBUs)', byol: true }, prerequisites: 'Databricks workspace with access to Foundation Model APIs. Vector Search enabled.' },
+            { id: 5, assetType: 'accelerator', title: 'Real-time Financial Fraud Detection', provider: 'KPMG', description: 'An end-to-end solution for detecting fraudulent transactions in real-time using Delta Live Tables and Databricks ML.', tags: ['Finance', 'Fraud Detection', 'ML'], categories: ['accelerators', 'demos', 'videos'], certified: true, rating: 4.7, reviewsCount: 76, pricing: { subscription: { monthly: 7500, annual: 80000 }, payg: 'Contact for PAYG', byol: true }, prerequisites: 'Streaming data source (e.g., Kafka). Model training requires GPU-enabled clusters.' },
+            { id: 6, assetType: 'tool', title: 'MSSQL to Databricks Migration Toolkit', provider: 'Microsoft', description: 'A comprehensive toolkit for migrating databases from Microsoft SQL Server to Databricks, including schema and stored procedure conversion.', tags: ['MSSQL', 'Migration', 'SQL'], categories: ['migration-tools', 'accelerators'], certified: true, rating: 4.6, reviewsCount: 88, pricing: { subscription: { monthly: 1500, annual: 15000 }, payg: 'Contact for PAYG', byol: true }, prerequisites: 'SQL Server 2016+. Databricks workspace with appropriate permissions.' },
+            { id: 7, assetType: 'content', title: 'Whitepaper: Best Practices for Unity Catalog Governance', provider: 'Databricks', description: 'A deep-dive into securing your Lakehouse with Unity Catalog, covering access control, data lineage, and auditing.', tags: ['Unity Catalog', 'Governance', 'Security'], categories: ['whitepapers', 'uc-learnings'], },
+            { id: 8, assetType: 'content', title: 'Video: Optimizing Delta Live Tables Pipelines', provider: 'Databricks Community', description: 'Watch this 20-minute technical deep-dive on performance tuning for your DLT pipelines, covering cluster optimization and query analysis.', tags: ['DLT', 'Performance', 'Optimization'], categories: ['videos', 'uc-learnings'], },
+            { id: 9, assetType: 'accelerator', title: 'Retail Demand Forecasting Engine', provider: 'Capgemini', description: 'Leverage historical sales data and external factors to generate accurate demand forecasts for retail products using Databricks ML.', tags: ['Retail', 'Forecasting', 'ML'], categories: ['accelerators', 'demos'], certified: true, rating: 4.8, reviewsCount: 65, pricing: { subscription: { monthly: 6000, annual: 65000 }, payg: 'Contact for PAYG', byol: true }, prerequisites: 'Historical sales data in Delta Lake format. Access to weather and holiday datasets.' },
+            { id: 10, assetType: 'tool', title: 'Synapse Pipeline to Databricks Workflows Converter', provider: 'Microsoft', description: 'Automate the conversion of Azure Synapse pipelines to Databricks Workflows, preserving activities and dependencies.', tags: ['Synapse', 'Azure', 'Migration'], categories: ['migration-tools'], certified: false, rating: 4.2, reviewsCount: 34, pricing: { subscription: { monthly: 500, annual: 5000 }, payg: 'Free', byol: true }, prerequisites: 'Access to Azure Synapse workspace and Databricks workspace via service principal.' },
+            { id: 11, assetType: 'content', title: 'Whitepaper: Lakehouse for Dummies', provider: 'Databricks', description: 'A beginner-friendly guide to understanding the Lakehouse architecture and its benefits over traditional data warehouses and data lakes.', tags: ['Lakehouse', 'Architecture', 'Beginner'], categories: ['whitepapers', 'uc-learnings'], },
+            { id: 12, assetType: 'tool', title: 'Mainframe JCL to Databricks Jobs Translator', provider: 'Kyndryl', description: 'Translate legacy Mainframe JCL scripts into modern Databricks Jobs, simplifying the migration of batch processing workloads.', tags: ['Mainframe', 'JCL', 'Migration'], categories: ['migration-tools'], certified: true, rating: 4.5, reviewsCount: 41, pricing: { subscription: { monthly: 10000, annual: 110000 }, payg: 'Per-line translation fee', byol: false }, prerequisites: 'COBOL copybooks for data layout definitions. EBCDIC to ASCII conversion utility.' },
+            { id: 13, assetType: 'content', title: 'Video: Building your First GenAI App on Databricks', provider: 'Databricks', description: 'A hands-on tutorial walking through the process of building and deploying a RAG-based chatbot using Foundation Model APIs.', tags: ['GenAI', 'RAG', 'Tutorial'], categories: ['videos', 'demos'], },
+            { id: 14, assetType: 'accelerator', title: 'Healthcare Claims Analytics', provider: 'Deloitte', description: 'A solution to ingest, process, and analyze healthcare claims data to identify trends, fraud, and areas for cost optimization.', tags: ['Healthcare', 'Analytics', 'Claims'], categories: ['accelerators'], certified: true, rating: 4.9, reviewsCount: 52, pricing: { subscription: { monthly: 8000, annual: 90000 }, payg: 'Contact for PAYG', byol: true }, prerequisites: 'HIPAA-compliant Databricks environment. Claims data in FHIR or similar format.' },
+        ];
+        const categories = [ { id: 'all', name: 'All Resources' }, { id: 'demos', name: 'Demos' }, { id: 'accelerators', name: 'Accelerators' }, { id: 'migration-tools', name: 'Migration Tools' }, { id: 'uc-learnings', name: 'UC Learnings' }, { id: 'videos', name: 'Videos' }, { id: 'whitepapers', name: 'Whitepapers' }, ];
+
+        // --- DOM ELEMENTS (Marketplace) ---
+        const categoryFilters = document.getElementById('category-filters');
+        const gridTitle = document.getElementById('grid-title');
+        const contentGrid = document.getElementById('content-grid');
+        const modal = document.getElementById('product-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalProvider = document.getElementById('modal-provider');
+        const modalTabs = document.getElementById('modal-tabs');
+        const modalTabContent = document.getElementById('modal-tab-content');
+        const modalActionButton = document.getElementById('modal-action-button');
+        
+        // --- NEW DOM ELEMENTS ---
+        const contactModal = document.getElementById('contact-sales-modal');
+        const contactModalBackdrop = document.getElementById('contact-sales-modal-backdrop');
+        const closeContactModalBtn = document.getElementById('close-contact-modal');
+        const blueChatFab = document.getElementById('blue-chat-fab');
+        const blueChatWindow = document.getElementById('blue-chat-window');
+        const blueCloseChatBtn = document.getElementById('blue-close-chat-btn');
+        const blueChatMessages = document.getElementById('blue-chat-messages');
+        const blueChatInput = document.getElementById('blue-chat-input');
+
+        // --- OVERLAY & THEME ELEMENTS ---
+        const overlayTooltip = document.getElementById('overlay-tooltip');
+        const salesRoleBtn = document.getElementById('role-sales');
+        const engineerRoleBtn = document.getElementById('role-engineer');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        let currentRole = 'sales'; // 'sales' or 'engineer'
+        // State variable to track if overlays are globally enabled.
+        let isOverlayEnabled = true; 
+
+        // --- OVERLAY TOOLTIP CONTENT ---
+        const salesTooltipContent = {
+            overview: "<strong>Why it's critical:</strong> This is your elevator pitch. It's the first thing a potential customer will read to understand what the product does and what problems it solves.",
+            pricing: "<strong>Why it's critical:</strong> Pricing is a primary decision-making factor. Clear and transparent pricing builds trust and justifies the value of the product.",
+            reviews: "<strong>Why it's critical:</strong> Social proof is powerful. Positive reviews from other customers build credibility and reduce perceived risk."
+        };
+        const engineerTooltipContent = {
+            github: "<strong>Why it's critical:</strong> Direct access to the source code allows for deep technical evaluation, understanding the implementation, and assessing integration possibilities.",
+            demo: "<strong>Why it's critical:</strong> An interactive demo provides a hands-on feel for the tool's capabilities and workflow without any setup, enabling a quick and effective technical assessment.",
+            tutorial: "<strong>Why it's critical:</strong> A technical tutorial provides the step-by-step guidance needed to replicate, understand, and extend the solution in your own environment.",
+            prerequisites: "<strong>Why it's critical:</strong> Clearly defined prerequisites prevent wasted time and ensure the environment is correctly configured for a successful proof-of-concept."
+        };
+
+        // --- FUNCTIONS (Marketplace) ---
+        function createCard(item) {
+            const isTool = item.assetType === 'tool' || item.assetType === 'accelerator';
+            const certifiedBadge = item.certified ? `<div class="certified-badge"><svg class="h-3.5 w-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" /></svg>Certified</div>` : '';
+            const ratingStars = isTool ? Array(5).fill(0).map((_, i) => `<svg class="h-4 w-4 ${i < Math.round(item.rating) ? 'text-yellow-400' : 'text-gray-300'}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>`).join('') : '';
+            const cardFooter = isTool ? `<div class="flex justify-between items-center"><div class="flex items-center space-x-1">${ratingStars}<span class="text-xs text-gray-500 ml-1">(${item.reviewsCount} reviews)</span></div><div class="flex space-x-1">${item.tags.slice(0, 2).map(tag => `<span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full">${tag}</span>`).join('')}</div></div>` : `<div class="flex justify-between items-center text-sm"><span class="font-medium text-blue-600">${item.categories.includes('videos') ? 'Watch Video' : 'Read Paper'}</span><div class="flex space-x-1">${item.tags.slice(0, 2).map(tag => `<span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-full">${tag}</span>`).join('')}</div></div>`;
+            return `<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer grid-item" onclick="openModal(${item.id})"><div class="flex-grow"><div class="flex justify-between items-start"><p class="text-sm font-medium text-gray-600">${item.provider}</p>${certifiedBadge}</div><h4 class="text-lg font-bold text-gray-900 mt-2">${item.title}</h4><p class="text-sm text-gray-600 mt-2 line-clamp-2">${item.description}</p></div><div class="mt-4 pt-4 border-t border-gray-100">${cardFooter}</div></div>`;
+        }
+        
+        function openModal(itemId) {
+            const item = allContent.find(p => p.id === itemId);
+            if (!item) return;
+            const isTool = item.assetType === 'tool' || item.assetType === 'accelerator';
+            modalTitle.textContent = item.title;
+            modalProvider.textContent = `By ${item.provider}`;
+            const tabs = isTool ? ['Overview', 'Interactive Demo', 'Pricing', 'Reviews', 'Prerequisites'] : ['Overview'];
+            modalTabs.innerHTML = tabs.map((tab, index) => `<button onclick="changeTab(this, '${tab.toLowerCase().replace(' ', '-')}')" class="tab-button w-full text-left px-4 py-2 rounded-lg font-medium text-sm transition-colors ${index === 0 ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-200'}">${tab}</button>`).join('');
+            
+            modalActionButton.onclick = null; // Clear previous listener
+            if (isTool) { 
+                modalActionButton.textContent = 'Contact Sales';
+                modalActionButton.onclick = openContactModal;
+            } else if (item.categories.includes('videos')) { 
+                modalActionButton.textContent = 'Watch Video Now';
+            } else { 
+                modalActionButton.textContent = 'Download Whitepaper';
+            }
+
+            const overviewContentForTool = `<h5 class="font-bold text-lg mb-2">Solution Overview</h5><p class="text-gray-600 mb-6">${item.description}</p><div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-6 flex items-center justify-center" data-target="demo-video"><p class="text-gray-500">2-Min Overview Video</p></div><div class="space-y-3"><a href="#" class="flex items-center justify-between p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors" data-target="github-link"><div><strong class="text-gray-800">Go to GitHub</strong><p class="text-gray-600 text-sm">View source code and documentation.</p></div><svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a><a href="#" class="flex items-center justify-between p-4 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors" data-target="tutorial-link"><div><strong class="text-gray-800">Technical Tutorial</strong><p class="text-gray-600 text-sm">Deep-dive into implementation.</p></div><svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></a></div>`;
+            const overviewContentForContent = `<h5 class="font-bold text-lg mb-2">Overview</h5><p class="text-gray-600 mb-6">${item.description}</p>${item.categories.includes('videos') ? `<div class="aspect-w-16 aspect-h-9 bg-gray-800 rounded-lg flex items-center justify-center text-white"><p>Video Player</p></div>` : ''}${item.categories.includes('whitepapers') ? `<div class="p-6 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600"><p>Whitepaper Preview</p></div>` : ''}`;
+            modalTabContent.innerHTML = isTool ? `<div id="tab-overview" class="tab-content p-2">${overviewContentForTool}</div><div id="tab-interactive-demo" class="tab-content hidden p-2"><h5 class="font-bold text-lg mb-2">Live Interactive Demo</h5><p class="text-gray-600 mb-4">Click through the core workflow of this solution. No setup required.</p><div class="relative border-2 border-gray-300 rounded-lg p-2 bg-gray-100"><img src="https://placehold.co/600x350/e2e8f0/475569?text=Interactive+Demo+Placeholder" class="rounded-md" alt="Interactive Demo Placeholder"></div></div><div id="tab-pricing" class="tab-content hidden p-2"><h5 class="font-bold text-lg mb-4">Pricing Models</h5><div class="space-y-4"><div class="p-4 border border-gray-200 rounded-lg"><h6 class="font-semibold">Subscription</h6><p class="text-gray-600 text-sm">Monthly: $${item.pricing.subscription.monthly.toLocaleString()} | Annual: $${item.pricing.subscription.annual.toLocaleString()}</p></div><div class="p-4 border border-gray-200 rounded-lg"><h6 class="font-semibold">Pay-As-You-Go (PAYG)</h6><p class="text-gray-600 text-sm">${item.pricing.payg}</p></div><div class="p-4 border border-gray-200 rounded-lg"><h6 class="font-semibold">Bring Your Own License (BYOL)</h6><p class="text-gray-600 text-sm">${item.pricing.byol ? 'Supported' : 'Not Supported'}</p></div></div><div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-center"><h6 class="font-bold text-blue-800">💸 Databricks Commitment Program</h6><p class="text-sm text-blue-700 mt-1">Eligible for purchase using your existing Databricks consumption commitments.</p></div></div><div id="tab-reviews" class="tab-content hidden p-2"><h5 class="font-bold text-lg mb-4">Customer Reviews (${item.reviewsCount})</h5><div class="space-y-4"><div class="p-3 border-b border-gray-200"><div class="flex items-center mb-1"><strong class="mr-2">★★★★★</strong> <span class="text-sm text-gray-700">Exceptional Tool!</span></div><p class="text-sm text-gray-600">"This accelerator saved us months of development time. The interactive demo was key to getting buy-in from my team."</p><p class="text-xs text-gray-500 mt-1">- Data Engineering Lead, Acme Corp</p></div></div></div><div id="tab-prerequisites" class="tab-content hidden p-2"><h5 class="font-bold text-lg mb-2">Prerequisites & Assumptions</h5><p class="text-sm text-gray-600 mb-4">Please ensure your environment meets these requirements for a successful implementation.</p><div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg"><ul class="list-disc list-inside text-sm text-yellow-800 space-y-1">${item.prerequisites.split('. ').filter(Boolean).map(p => `<li>${p}</li>`).join('')}</ul></div></div>` : `<div id="tab-overview" class="tab-content p-2">${overviewContentForContent}</div>`;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // --- TRIGGER OVERLAY ---
+            setTimeout(activateOverlay, 100);
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('modal-enter');
+            modalContent.classList.add('modal-leave');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalContent.classList.remove('modal-leave');
+                modalContent.classList.add('modal-enter');
+                document.body.style.overflow = 'auto';
+                // --- HIDE OVERLAY ---
+                hideAllOverlays();
+            }, 300);
+        }
+
+        function changeTab(button, tabId) {
+            document.querySelectorAll('.tab-button').forEach(btn => { btn.classList.remove('bg-blue-100', 'text-blue-700'); btn.classList.add('text-gray-600', 'hover:bg-gray-200'); });
+            button.classList.add('bg-blue-100', 'text-blue-700');
+            button.classList.remove('text-gray-600', 'hover:bg-gray-200');
+            document.querySelectorAll('.tab-content').forEach(content => { content.classList.add('hidden'); });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        }
+        
+        function filterContent(category, buttonEl) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            buttonEl.classList.add('active');
+            const filtered = category.id === 'all' ? allContent : allContent.filter(item => item.categories.includes(category.id));
+            gridTitle.textContent = category.name;
+            contentGrid.innerHTML = '';
+            filtered.forEach(item => { contentGrid.innerHTML += createCard(item); });
+        }
+
+        // --- NEW MODAL & CHAT FUNCTIONS ---
+        function openContactModal() {
+            contactModal.classList.remove('hidden');
+            contactModalBackdrop.classList.remove('hidden');
+        }
+
+        function closeContactModal() {
+            contactModal.classList.add('hidden');
+            contactModalBackdrop.classList.add('hidden');
+        }
+
+        function toggleBlueChat() {
+            blueChatWindow.classList.toggle('scale-0');
+        }
+
+        function handleBlueChatInput(e) {
+            if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                const userMessage = e.target.value.trim();
+                appendBlueMessage(userMessage, 'user');
+                e.target.value = '';
+                setTimeout(() => {
+                    let aiResponse = "I can help with general questions about the marketplace. For product specifics, please refer to the details on the product page.";
+                    if (userMessage.toLowerCase().includes('certified')) {
+                        aiResponse = "A 'Certified' solution means it has been technically vetted by our team to ensure it follows best practices and integrates seamlessly with our platform.";
+                    } else if (userMessage.toLowerCase().includes('pricing')) {
+                        aiResponse = "Pricing models vary by provider. You can find detailed pricing information under the 'Pricing' tab for each tool.";
+                    }
+                    appendBlueMessage(aiResponse, 'ai');
+                }, 1000);
+            }
+        }
+
+        function appendBlueMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = text;
+            messageDiv.className = `p-2 rounded-lg text-sm max-w-xs ${sender === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-100 self-start'}`;
+            blueChatMessages.appendChild(messageDiv);
+            blueChatMessages.scrollTop = blueChatMessages.scrollHeight;
+        }
+
+        // --- OVERLAY FUNCTIONS ---
+        function activateOverlay() {
+            hideAllOverlays(); // Clear previous highlights first
+            
+            // If overlays are disabled, exit the function.
+            if (!isOverlayEnabled) {
+                return; 
+            }
+            
+            const sections = currentRole === 'sales' ? 
+                [
+                    { id: 'tab-overview', content: salesTooltipContent.overview, highlightClass: 'sales-highlight' },
+                    { id: 'tab-pricing', content: salesTooltipContent.pricing, highlightClass: 'sales-highlight' },
+                    { id: 'tab-reviews', content: salesTooltipContent.reviews, highlightClass: 'sales-highlight' }
+                ] :
+                [
+                    { selector: '[data-target="github-link"]', content: engineerTooltipContent.github, highlightClass: 'engineer-highlight' },
+                    { selector: '[data-target="demo-video"]', content: engineerTooltipContent.demo, highlightClass: 'engineer-highlight' },
+                    { selector: '[data-target="tutorial-link"]', content: engineerTooltipContent.tutorial, highlightClass: 'engineer-highlight' },
+                    { id: 'tab-prerequisites', content: engineerTooltipContent.prerequisites, highlightClass: 'engineer-highlight' }
+                ];
+
+            sections.forEach(sectionInfo => {
+                const element = sectionInfo.id ? document.getElementById(sectionInfo.id) : document.querySelector(sectionInfo.selector);
+                if (element) {
+                    element.classList.add(sectionInfo.highlightClass);
+                    element.addEventListener('mouseenter', (event) => showTooltip(event, sectionInfo.content));
+                    element.addEventListener('mousemove', (event) => {
+                        overlayTooltip.style.left = `${event.pageX + 15}px`;
+                        overlayTooltip.style.top = `${event.pageY + 15}px`;
+                    });
+                    element.addEventListener('mouseleave', hideTooltip);
+                }
+            });
+        }
+
+        function hideAllOverlays() {
+            const highlightedElements = document.querySelectorAll('.sales-highlight, .engineer-highlight');
+            highlightedElements.forEach(el => {
+                const newEl = el.cloneNode(true);
+                el.parentNode.replaceChild(newEl, el);
+                newEl.classList.remove('sales-highlight', 'engineer-highlight');
+            });
+            hideTooltip();
+        }
+
+        function showTooltip(event, content) {
+            overlayTooltip.innerHTML = content;
+            overlayTooltip.classList.remove('hidden');
+            setTimeout(() => {
+                overlayTooltip.classList.add('visible');
+            }, 10);
+            overlayTooltip.style.left = `${event.pageX + 15}px`;
+            overlayTooltip.style.top = `${event.pageY + 15}px`;
+        }
+
+        function hideTooltip() {
+            overlayTooltip.classList.remove('visible');
+            overlayTooltip.classList.add('hidden');
+        }
+
+        // This function handles toggling the overlay on/off and switching roles.
+        function switchRole(newRole) {
+            // If the user clicks the currently active role, toggle the overlay off.
+            if (isOverlayEnabled && currentRole === newRole) {
+                isOverlayEnabled = false;
+            } else {
+            // Otherwise, enable the overlay and set the new role.
+                isOverlayEnabled = true;
+                currentRole = newRole;
+            }
+
+            // Update button styles by toggling the 'active' class
+            if (isOverlayEnabled) {
+                if (currentRole === 'sales') {
+                    salesRoleBtn.classList.add('active');
+                    engineerRoleBtn.classList.remove('active');
+                } else {
+                    engineerRoleBtn.classList.add('active');
+                    salesRoleBtn.classList.remove('active');
+                }
+            } else { // Overlays are disabled, so make both inactive
+                salesRoleBtn.classList.remove('active');
+                engineerRoleBtn.classList.remove('active');
+            }
+
+            // If a modal is currently open, re-apply or hide the highlights.
+            if (!modal.classList.contains('hidden')) {
+                activateOverlay();
+            }
+        }
+
+
+        // --- INITIALIZATION ---
+        window.onload = () => {
+            categoryFilters.innerHTML = categories.map((cat, index) => `<button onclick="filterContent(categories[${index}], this)" class="filter-btn px-4 py-2 text-sm font-semibold rounded-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 ${cat.id === 'all' ? 'active' : ''}">${cat.name}</button>`).join('');
+            filterContent(categories[0], categoryFilters.children[0]);
+
+            // Add event listeners for new modals and chats
+            closeContactModalBtn.addEventListener('click', closeContactModal);
+            contactModalBackdrop.addEventListener('click', closeContactModal);
+            blueChatFab.addEventListener('click', toggleBlueChat);
+            blueCloseChatBtn.addEventListener('click', toggleBlueChat);
+            blueChatInput.addEventListener('keydown', handleBlueChatInput);
+
+            // Add event listeners for role switcher
+            salesRoleBtn.addEventListener('click', () => switchRole('sales'));
+            engineerRoleBtn.addEventListener('click', () => switchRole('engineer'));
+
+            // Theme toggle logic
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                themeToggleDarkIcon.classList.remove('hidden');
+            } else {
+                themeToggleLightIcon.classList.remove('hidden');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                themeToggleDarkIcon.classList.toggle('hidden');
+                themeToggleLightIcon.classList.toggle('hidden');
+                if (localStorage.getItem('theme')) {
+                    if (localStorage.getItem('theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                }
+            });
+        };
+
+    </script>
+</body>
+</html>

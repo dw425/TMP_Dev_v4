@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Technology Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <section class="mb-10 border-b border-gray-300 pb-2">
+            <div id="category-filters" class="flex flex-wrap gap-6"></div>
+        </section>
+
+        <section>
+            <div class="flex items-center justify-between mb-8">
+                <h3 id="grid-title" class="text-3xl font-light text-gray-900 tracking-tight">All Industries</h3>
+                <span class="h-1 w-20 bg-blueprint-blue block"></span>
+            </div>
+            
+            <div id="content-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </section>
+    </main>
+    
+    <div id="product-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4">
+        <div id="modal-content" class="bg-white w-full max-w-[53rem] h-[480px] overflow-hidden flex flex-col modal-enter shadow-2xl rounded-none">
+            <div class="flex items-start justify-between p-6 border-b border-gray-100 shrink-0">
+                <div>
+                    <h4 id="modal-title" class="text-2xl font-bold text-gray-900 font-dm-sans"></h4>
+                </div>
+                <button onclick="closeModal()" class="p-1 hover:bg-gray-100 transition-colors">
+                    <svg class="h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="flex-grow overflow-hidden">
+                <div class="flex flex-col md:flex-row h-full">
+                    <div class="w-full md:w-1/4 bg-gray-50 border-r border-gray-100 p-6 flex flex-col shrink-0">
+                        <nav id="modal-tabs" class="flex flex-col space-y-1 mb-4"></nav>
+                        <div>
+                             <button id="modal-action-button" class="w-full px-4 py-3 bg-blueprint-blue text-white text-sm font-bold uppercase tracking-wider hover:bg-blue-800 transition-colors rounded-none shadow-sm"></button>
+                        </div>
+                    </div>
+                    <div id="modal-tab-content" class="w-full md:w-3/4 p-4 bg-white overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-sales-modal-backdrop" class="fixed inset-0 bg-gray-900/50 z-[51] hidden"></div>
+    <div id="contact-sales-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-2xl w-full max-w-lg p-10 z-[52] hidden modal-enter rounded-none border-t-4 border-blueprint-blue">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-2xl font-bold text-gray-900">Contact Sales</h3>
+            <button id="close-contact-modal" class="text-gray-400 hover:text-gray-900 transition-colors">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+        <form class="space-y-6">
+            <div>
+                <label for="email" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Email Address</label>
+                <input type="email" id="email" class="w-full p-3 border border-gray-300 focus:border-blueprint-blue focus:ring-1 focus:ring-blueprint-blue transition-all">
+            </div>
+            <div>
+                <label for="phone" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Phone Number</label>
+                <input type="tel" id="phone" class="w-full p-3 border border-gray-300 focus:border-blueprint-blue focus:ring-1 focus:ring-blueprint-blue transition-all">
+            </div>
+            <div>
+                <label for="message" class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Message</label>
+                <textarea id="message" rows="4" class="w-full p-3 border border-gray-300 focus:border-blueprint-blue focus:ring-1 focus:ring-blueprint-blue transition-all"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 bg-black text-white font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors rounded-none">Submit Inquiry</button>
+        </form>
+    </div>
+
+    <div id="blue-chat-fab" class="fixed bottom-6 right-6 z-50 cursor-pointer bg-blueprint-blue text-white p-4 shadow-lg hover:bg-blue-800 transition-transform transform hover:scale-105 rounded-none">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+    </div>
+    <div id="blue-chat-window" class="fixed bottom-24 right-6 z-50 bg-white w-80 h-96 shadow-2xl flex flex-col transition-all transform origin-bottom-right scale-0 border border-gray-200 rounded-none">
+        <div class="bg-black text-white p-4 flex justify-between items-center rounded-none">
+            <h5 class="font-bold text-sm uppercase tracking-wide">Blue Assistant</h5>
+            <button id="blue-close-chat-btn" class="text-white opacity-70 hover:opacity-100">&times;</button>
+        </div>
+        <div id="blue-chat-messages" class="flex-grow p-4 overflow-y-auto space-y-3 bg-gray-50">
+            <div class="p-3 bg-white border border-gray-200 text-sm self-start max-w-xs shadow-sm text-gray-800">Hi! I'm Blue. How can I help you navigate the Blueprint Marketplace?</div>
+        </div>
+        <div class="p-3 border-t border-gray-200 bg-white">
+            <input id="blue-chat-input" type="text" placeholder="Type your question..." class="w-full px-3 py-2 border border-gray-300 text-sm focus:outline-none focus:border-blueprint-blue">
+        </div>
+    </div>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+
+    <script>
+        // --- DATA ---
+        const allContent = [
+            { 
+                id: 7, 
+                assetType: 'content', 
+                title: 'Top Trending Insight', 
+                description: 'Stop Guessing: Winning in today’s market requires a shift from hindsight to foresight. Discover how the "AI Factory" model predicts outcomes with precision using CampaignIQ.', 
+                tags: ['AI Strategy', 'Marketing', 'Forecasting'], 
+                categories: ['whitepapers', 'uc-learnings'], 
+            },
+            { 
+                id: 15, 
+                assetType: 'tool', 
+                title: 'CampaignIQ', 
+                description: 'What is CampaignIQ? AI-powered media planning. Campaign IQ’s ROAS Maximizer is a cutting-edge analytics platform designed to provide unparalleled insight into your advertising spend. By leveraging advanced machine learning algorithms, it connects campaign data from disparate sources, providing a single source of truth for your marketing performance.', 
+                tags: ['AI', 'Marketing', 'ROAS'], 
+                categories: ['accelerators', 'demos'], 
+                pricing: { 
+                    subscription: { monthly: 1000, annual: 10000 }, 
+                    payg: 'Contact Sales for Team/Enterprise', 
+                    byol: false 
+                }, 
+                prerequisites: 'Requires Databricks Account. Workspace setup to accept notebook. Marketing data setup inside workspace. Unity Catalog recommended.',
+                videoUrl: 'https://www.youtube.com/embed/smNEBimkSGI'
+            },
+            { 
+                id: 13, 
+                assetType: 'accelerator', 
+                title: "Blueprint's AI Factory", 
+                description: 'Why the AI Factory? The assembly line for business-ready AI. AI factories are essential because they shift enterprises from experimentation to industrialized delivery — reducing risk, aligning teams, and accelerating value. Our five-phase factory model moves from ideation to implementation with the repeatability, scalability, and governance that enterprise-grade AI demands.', 
+                tags: ['GenAI', 'RAG', 'Tutorial'], 
+                categories: ['accelerators', 'videos', 'demos'], 
+                videoUrl: 'https://www.youtube.com/embed/48gEgOcCaKo'
+            },
+            { 
+                id: 16, 
+                assetType: 'accelerator', 
+                title: 'SAP Working Capital', 
+                description: 'Real-Time Working Capital Intelligence Powered by SAP and Databricks. Unify disparate SAP sources (receivables, payables, inventory) to automate the entire pipeline. Includes AI-powered forecasting and interactive scenario simulations.', 
+                tags: ['Finance', 'SAP', 'Manufacturing'], 
+                categories: ['accelerators'], 
+                videoUrl: '' 
+            },
+            { 
+                id: 17, 
+                assetType: 'accelerator', 
+                title: 'PromotionIQ', 
+                description: 'Analyze, Optimize, and Recommend Promotions with AI. Designed for aggressive marketing budgets, this tool forecasts promotion effectiveness beyond redemptions. Track spend accountability, explain campaign variance, and equip marketing teams to test and iterate offer structures.', 
+                tags: ['Marketing', 'Promotion', 'Sportsbook'], 
+                categories: ['accelerators'], 
+                videoUrl: ''
+            },
+            { 
+                id: 18, 
+                assetType: 'accelerator', 
+                title: 'ChurnIQ', 
+                description: 'Predict, Segment, and Retain Customers with Databricks. Proactively identify at-risk users using behavioral patterns and generate tailored next-best actions. Track the impact of retention strategies on churn, revenue, and engagement KPIs.', 
+                tags: ['Customer Success', 'Churn', 'Gaming'], 
+                categories: ['accelerators'], 
+                videoUrl: ''
+            },
+            { 
+                id: 19, 
+                assetType: 'accelerator', 
+                title: 'CustomerSupport IQ', 
+                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Analyze support transcripts in real-time to surface coaching opportunities, churn signals, and escalation risks. Includes dashboards for call volume trends and sentiment analysis.', 
+                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
+                categories: ['accelerators'], 
+                videoUrl: ''
+            },
+            { 
+                id: 20, 
+                assetType: 'tool', 
+                title: 'AI Powered Data Migration', 
+                description: 'Modernize legacy Teradata and Informatica platforms into governed Databricks architectures. Features automated portfolio assessment to score complexity, AI-assisted translation of SQL/ETL patterns, and a synthetic workbench for safe validation.', 
+                tags: ['Migration', 'Modernization', 'Legacy'], 
+                categories: ['migration-tools'], 
+                videoUrl: ''
+            },
+            { 
+                id: 21, 
+                assetType: 'accelerator', 
+                title: 'Telco Churn and NBA', 
+                description: 'Predict churn, explain drivers, and generate financially grounded next best actions. Connects churn risk to local drivers like network quality and service issues. Generates targeted retention actions prioritised by financial impact to protect revenue and growth.', 
+                tags: ['Telco', 'Churn', 'Next Best Action'], 
+                categories: ['accelerators'], 
+                videoUrl: ''
+            },
+            { 
+                id: 1, 
+                assetType: 'tool', 
+                title: 'Lakehouse Optimizer', 
+                description: 'A cutting-edge tool that observes & monitors Databricks environments, identifies issues in data pipelines, and provides intelligent recommendations to improve performance and reduce cloud costs.', 
+                tags: ['FinOps', 'Optimization', 'Databricks'], 
+                categories: ['accelerators', 'demos', 'migration-tools'], 
+                pricing: { 
+                    subscription: { monthly: 0, annual: 0 }, 
+                    payg: 'Contact Us Today', 
+                    byol: true 
+                }, 
+                prerequisites: 'Deploys directly into your Databricks environment (Azure, AWS, or GCP). Contact us for setup assistance.' 
+            },
+            { 
+                id: 11, 
+                assetType: 'content', 
+                title: 'Whitepaper: Lakehouse for Dummies', 
+                description: 'A beginner-friendly guide to understanding the Lakehouse architecture and its benefits over traditional data warehouses and data lakes.', 
+                tags: ['Lakehouse', 'Architecture', 'Beginner'], 
+                categories: ['whitepapers', 'uc-learnings'], 
+            },
+        ];
+        
+        // --- CATEGORIES ---
+        const categories = [ 
+            { id: 'all', name: 'All Industries' }, 
+            { id: 'financial-services', name: 'Financial Services' }, 
+            { id: 'healthcare', name: 'Healthcare' }, 
+            { id: 'gaming', name: 'Gaming' }, 
+            { id: 'media', name: 'Media' }, 
+            { id: 'oil-gas', name: 'Oil & Gas' }, 
+            { id: 'defense', name: 'Defense' } 
+        ];
+
+        // --- DOM ELEMENTS ---
+        const categoryFilters = document.getElementById('category-filters');
+        const gridTitle = document.getElementById('grid-title');
+        const contentGrid = document.getElementById('content-grid');
+        const modal = document.getElementById('product-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalTabs = document.getElementById('modal-tabs');
+        const modalTabContent = document.getElementById('modal-tab-content');
+        const modalActionButton = document.getElementById('modal-action-button');
+        
+        const contactModal = document.getElementById('contact-sales-modal');
+        const contactModalBackdrop = document.getElementById('contact-sales-modal-backdrop');
+        const closeContactModalBtn = document.getElementById('close-contact-modal');
+        const blueChatFab = document.getElementById('blue-chat-fab');
+        const blueChatWindow = document.getElementById('blue-chat-window');
+        const blueCloseChatBtn = document.getElementById('blue-close-chat-btn');
+        const blueChatMessages = document.getElementById('blue-chat-messages');
+        const blueChatInput = document.getElementById('blue-chat-input');
+
+        // --- FUNCTIONS ---
+        function createCard(item) {
+            const isTool = item.assetType === 'tool' || item.assetType === 'accelerator';
+            
+            // Highlight Trending Item
+            const isTrending = item.id === 7;
+            const borderClass = isTrending 
+                ? 'border-green-400 border-2 bg-green-50' 
+                : 'sharp-card'; // USES NEW MASTER CSS CLASS
+
+            const titleIcon = isTrending 
+                ? `<svg class="w-5 h-5 text-yellow-400 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>` 
+                : '';
+
+            const cardFooter = isTool 
+                ? `<div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold uppercase tracking-wide text-gray-400">
+                      <span>Tool</span>
+                      <div class="flex space-x-1 text-gray-500">${item.tags.slice(0, 2).map(tag => `<span>${tag}</span>`).join('<span class="text-gray-300">|</span>')}</div>
+                    </div>` 
+                : `<div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold uppercase tracking-wide">
+                      <span class="text-blueprint-blue group-hover:underline">${item.categories.includes('videos') ? 'Watch Video' : 'Read Paper'} &rarr;</span>
+                      <div class="flex space-x-1 text-gray-400">${item.tags.slice(0, 2).map(tag => `<span>${tag}</span>`).join('<span class="text-gray-300">|</span>')}</div>
+                    </div>`;
+            
+            // Cleaned up classes to use 'sharp-card'
+            return `
+            <div class="group ${borderClass} p-6 flex flex-col hover:shadow-lg transition-all duration-300 cursor-pointer grid-item h-full relative overflow-hidden" onclick="openModal(${item.id})">
+                <div class="flex-grow">
+                    <h4 class="text-lg font-bold text-blueprint-blue transition-colors mb-2 tracking-tight leading-snug">${titleIcon}${item.title}</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-0 line-clamp-3">${item.description}</p>
+                </div>
+                ${cardFooter}
+            </div>`;
+        }
+        
+        function openModal(itemId) {
+            const item = allContent.find(p => p.id === itemId);
+            if (!item) return;
+
+            const isTool = item.assetType === 'tool' || item.assetType === 'accelerator';
+            
+            modalTitle.textContent = item.title;
+            
+            const tabs = isTool ? ['Overview', 'Video Demo', 'Pricing', 'Prerequisites'] : ['Overview'];
+            
+            modalTabs.innerHTML = tabs.map((tab, index) => `<button onclick="changeTab(this, '${tab.toLowerCase().replace(' ', '-')}')" class="tab-button w-full text-left px-4 py-3 font-bold text-sm transition-colors border-l-4 ${index === 0 ? 'bg-white border-blueprint-blue text-blueprint-blue shadow-sm' : 'border-transparent text-gray-500 hover:bg-white hover:text-gray-800'}">${tab}</button>`).join('');
+            
+            modalActionButton.onclick = null;
+            if (isTool) { 
+                modalActionButton.textContent = 'Contact Sales';
+                if (item.id === 15) { 
+                    modalActionButton.textContent = 'Get Started';
+                    modalActionButton.onclick = () => window.location.href = 'ciq_pp.html';
+                } else if (item.id === 13) {
+                     modalActionButton.textContent = 'Get Started';
+                     modalActionButton.onclick = () => window.location.href = 'wp_trending.html';
+                } else {
+                    modalActionButton.textContent = 'Contact Us Today';
+                    modalActionButton.onclick = openContactModal;
+                }
+            } else if (item.id === 7) {
+                 modalActionButton.textContent = 'Go to Insight';
+                 modalActionButton.onclick = () => window.location.href = 'wp_trending.html'; 
+                 modalTitle.textContent = 'Stop guessing: Why AI forecasting is your new marketing strategy'; 
+            } else if (item.categories.includes('videos')) { 
+                modalActionButton.textContent = 'Watch Video Now';
+            } else { 
+                modalActionButton.textContent = 'Download Whitepaper';
+            }
+
+            const overviewVideo = item.videoUrl 
+                ? `<div class="w-full h-full bg-black shadow-lg"><iframe src="${item.videoUrl}" frameborder="0" allowfullscreen class="w-full h-full"></iframe></div>`
+                : `<div class="w-full h-full bg-gray-100 flex items-center justify-center border border-gray-200 shadow-inner"><p class="text-gray-500 font-medium">Video Preview Unavailable</p></div>`;
+
+            let overviewContentForTool;
+            if (item.id === 15 || item.id === 13) {
+                 overviewContentForTool = `
+                 <h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Solution Overview</h5>
+                 <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
+                    ${item.description.split('\n').map(para => `<p class="mb-3">${para}</p>`).join('')}
+                 </div>`;
+            } else {
+                 overviewContentForTool = `
+                 <h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Solution Overview</h5>
+                 <p class="text-gray-600 mb-8 leading-relaxed">${item.description}</p>`;
+            }
+            
+            let overviewContentForContent = `<h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Overview</h5><p class="text-gray-600 mb-8 leading-relaxed">${item.description}</p>${item.categories.includes('videos') ? overviewVideo : ''}`;
+
+            if (item.id === 7) {
+                overviewContentForContent = `
+                <div class="prose prose-sm max-w-none text-gray-600">
+                    <h5 class="font-bold text-gray-900 text-lg mb-2">The Challenge</h5>
+                    <p class="mb-4">The pressure on marketing leaders to prove ROI has never been greater. Yet, disconnected data sources and manual spreadsheets force critical budget decisions based on incomplete information. This reactive approach leads to wasted spend and missed opportunities.</p>
+                    <h5 class="font-bold text-gray-900 text-lg mb-2">The Solution: A Factory for Intelligence</h5>
+                    <p class="mb-4">Winning demands a shift from hindsight to foresight. The "AI Factory" model unifies your data using Unity Catalog and predicts outcomes with precision. By embedding AI-driven forecasting into your planning, marketing transforms from a cost center into a predictable revenue engine.</p>
+                    <h5 class="font-bold text-gray-900 text-lg mb-2">Key Takeaways</h5>
+                    <ul class="list-disc pl-5 space-y-1 mb-6">
+                        <li><strong>Unify Data:</strong> Connect siloed campaign data for a single source of truth.</li>
+                        <li><strong>Predict ROAS:</strong> Use AI agents to generate 7- and 14-day revenue projections.</li>
+                        <li><strong>Simulate Strategy:</strong> Answer "what-if" questions to optimize budget before spending.</li>
+                    </ul>
+                </div>`;
+            }
+
+            let pricingContent = `<div id="tab-pricing" class="tab-content hidden animate-fadeIn">
+                <div class="p-6 border border-gray-200 rounded-lg text-center bg-gray-50">
+                    <h6 class="font-bold text-gray-900 mb-2">Enterprise Pricing</h6>
+                    <p class="text-gray-600 text-sm mb-4">Contact us for a custom quote based on your environment and requirements.</p>
+                    <button onclick="openContactModal()" class="px-4 py-2 bg-blueprint-blue text-white text-sm font-bold rounded-sm hover:bg-blue-800">Contact Sales</button>
+                </div>
+            </div>`;
+
+            if (item.id === 15) {
+                 pricingContent = `<div id="tab-pricing" class="tab-content hidden animate-fadeIn">
+                        <h5 class="font-bold text-sm uppercase tracking-wide mb-6">Pricing Models</h5>
+                        <div class="grid gap-4">
+                            <div class="p-6 border border-gray-200 bg-gray-50">
+                                <h6 class="font-bold text-gray-900">Single User</h6>
+                                <p class="text-gray-600 text-sm mt-1">$${item.pricing.subscription.monthly.toLocaleString()}/mo</p>
+                            </div>
+                            <div class="p-6 border border-gray-200 bg-gray-50">
+                                <h6 class="font-bold text-gray-900">Team Account</h6>
+                                <p class="text-gray-600 text-sm mt-1">Starting at $5,000.00/mo</p>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            modalTabContent.innerHTML = isTool 
+                ? `<div id="tab-overview" class="tab-content h-full animate-fadeIn overflow-y-auto">${overviewContentForTool}</div>
+                   <div id="tab-video-demo" class="tab-content hidden h-full animate-fadeIn">
+                       <div class="h-full w-full">${overviewVideo}</div>
+                   </div>
+                   ${pricingContent}
+                   <div id="tab-prerequisites" class="tab-content hidden animate-fadeIn">
+                       <h5 class="font-bold text-sm uppercase tracking-wide mb-4">System Requirements</h5>
+                       <ul class="list-disc list-inside text-sm text-gray-600 space-y-2 border-l-2 border-yellow-400 pl-4 bg-yellow-50 p-4">
+                           ${item.prerequisites ? item.prerequisites.split('. ').filter(Boolean).map(p => `<li>${p}</li>`).join('') : '<li>Databricks Workspace</li><li>Unity Catalog</li>'}
+                       </ul>
+                   </div>` 
+                : `<div id="tab-overview" class="tab-content h-full animate-fadeIn">${overviewContentForContent}</div>`;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('modal-enter');
+            modalContent.classList.add('modal-leave');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalContent.classList.remove('modal-leave');
+                modalContent.classList.add('modal-enter');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function changeTab(button, tabId) {
+            document.querySelectorAll('.tab-button').forEach(btn => { 
+                btn.classList.remove('bg-white', 'border-blueprint-blue', 'text-blueprint-blue', 'shadow-sm'); 
+                btn.classList.add('border-transparent', 'text-gray-500', 'hover:bg-white', 'hover:text-gray-800'); 
+            });
+            button.classList.remove('border-transparent', 'text-gray-500', 'hover:bg-white', 'hover:text-gray-800');
+            button.classList.add('bg-white', 'border-blueprint-blue', 'text-blueprint-blue', 'shadow-sm');
+            
+            document.querySelectorAll('.tab-content').forEach(content => { content.classList.add('hidden'); });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        }
+        
+        function filterContent(category, buttonEl) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            buttonEl.classList.add('active');
+            const filtered = category.id === 'all' ? allContent : allContent.filter(item => item.categories.includes(category.id));
+            gridTitle.textContent = category.name;
+            contentGrid.innerHTML = '';
+            filtered.forEach(item => { contentGrid.innerHTML += createCard(item); });
+        }
+
+        function openContactModal() {
+            contactModal.classList.remove('hidden');
+            contactModalBackdrop.classList.remove('hidden');
+        }
+
+        function closeContactModal() {
+            contactModal.classList.add('hidden');
+            contactModalBackdrop.classList.add('hidden');
+        }
+
+        function toggleBlueChat() {
+            blueChatWindow.classList.toggle('scale-0');
+        }
+
+        function handleBlueChatInput(e) {
+            if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                const userMessage = e.target.value.trim();
+                appendBlueMessage(userMessage, 'user');
+                e.target.value = '';
+                setTimeout(() => {
+                    let aiResponse = "Please contact sales for more specific product inquiries.";
+                    if (userMessage.toLowerCase().includes('pricing')) aiResponse = "Pricing details are available in the 'Pricing' tab of each product.";
+                    appendBlueMessage(aiResponse, 'ai');
+                }, 1000);
+            }
+        }
+
+        function appendBlueMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = text;
+            messageDiv.className = `p-3 text-sm max-w-[85%] border ${sender === 'user' ? 'bg-blueprint-blue text-white self-end border-blueprint-blue' : 'bg-white text-gray-800 self-start border-gray-200'}`;
+            blueChatMessages.appendChild(messageDiv);
+            blueChatMessages.scrollTop = blueChatMessages.scrollHeight;
+        }
+
+        // --- INITIALIZATION ---
+        window.onload = () => {
+            categoryFilters.innerHTML = categories.map((cat, index) => `<button onclick="filterContent(categories[${index}], this)" class="filter-btn px-4 py-3 uppercase tracking-wider text-xs ${cat.id === 'all' ? 'active' : ''}">${cat.name}</button>`).join('');
+            filterContent(categories[0], categoryFilters.children[0]);
+
+            closeContactModalBtn.addEventListener('click', closeContactModal);
+            contactModalBackdrop.addEventListener('click', closeContactModal);
+            blueChatFab.addEventListener('click', toggleBlueChat);
+            blueCloseChatBtn.addEventListener('click', toggleBlueChat);
+            blueChatInput.addEventListener('keydown', handleBlueChatInput);
+        };
+
+    </script>
+</body>
+</html>

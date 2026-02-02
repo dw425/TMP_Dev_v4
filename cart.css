@@ -1,0 +1,238 @@
+/* =========================================
+   1. FLOATING ACTION BUTTON (FAB)
+   ========================================= */
+#floating-cart-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #000000;
+    color: #ffffff;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 80; /* Behind modal (z-50) but above content */
+    transition: all 0.2s ease-in-out;
+    border-radius: 0px; /* Sharp edges per design system */
+}
+
+#floating-cart-btn:hover {
+    transform: scale(1.05);
+    background-color: #1d4ed8; /* Blueprint Blue on hover */
+}
+
+/* Red Badge for Floating Button & Header Icon */
+#cart-count-badge, 
+#header-cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc2626; /* Bright Red */
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Always round */
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* =========================================
+   2. SLIDE-OUT DRAWER
+   ========================================= */
+#cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 450px;
+    max-width: 90vw;
+    background-color: #ffffff;
+    z-index: 100; /* Above everything */
+    transform: translateX(100%); /* Hidden by default */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* Smooth ease-out */
+    border-left: 4px solid #1d4ed8; /* Blueprint Blue strip */
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
+}
+
+#cart-drawer.open {
+    transform: translateX(0); /* Slide in */
+}
+
+/* Backdrop Overlay */
+#cart-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#cart-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* =========================================
+   3. DRAWER CONTENT
+   ========================================= */
+
+/* Header */
+.cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8fafc;
+}
+
+.cart-header h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+/* Scrollable Items Area */
+#cart-items-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #ffffff;
+}
+
+/* Empty State */
+.cart-empty-state {
+    text-align: center;
+    margin-top: 4rem;
+    color: #94a3b8;
+}
+
+/* Individual Cart Item */
+.cart-item {
+    border: 1px solid #e2e8f0;
+    padding: 1rem;
+    position: relative;
+    background: #fff;
+    transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item:hover {
+    border-color: #1d4ed8;
+}
+
+.cart-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.cart-item-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #1e293b;
+    padding-right: 24px; /* Space for remove button */
+    line-height: 1.4;
+}
+
+.cart-item-price {
+    font-size: 0.85rem;
+    color: #1d4ed8;
+    font-weight: 700;
+    font-family: monospace; /* Aligns numbers nicely */
+}
+
+.cart-item-meta {
+    font-size: 0.75rem;
+    color: #64748b;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.remove-btn {
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 0.5;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.remove-btn:hover {
+    color: #ef4444; /* Red on hover */
+}
+
+/* Footer (Totals & Checkout) */
+.cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: #f8fafc;
+    flex-shrink: 0;
+}
+
+.cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.cart-final-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #0f172a;
+    border-top: 2px solid #e2e8f0;
+    padding-top: 1rem;
+}
+
+.checkout-btn {
+    width: 100%;
+    background-color: #1d4ed8;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1.25rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+    border-radius: 0px; /* Sharp */
+}
+
+.checkout-btn:hover {
+    background-color: #1e40af;
+}

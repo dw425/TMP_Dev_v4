@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talend Migration Assessment | Blueprint Migration</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+
+    <style>
+        /* --- PRESERVED FORM STYLES --- */
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* Removed conflicting .container rule */
+
+        .section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+        .section-header {
+            background: #1d4ed8; /* Updated to Blueprint Blue */
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 14pt;
+            margin: 0;
+            border-radius: 0px; /* Sharp edges */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .na-toggle {
+            display: flex;
+            align-items: center;
+            font-size: 10pt;
+            font-weight: normal;
+        }
+        .na-toggle input {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+        }
+        .section-content {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0px; /* Sharp edges */
+            transition: opacity 0.3s;
+        }
+        .section-content.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f9fafb;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #374151;
+            font-size: 10pt;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 0px; /* Sharp edges */
+            font-size: 10pt;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+        }
+        .is-invalid {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+        }
+        .error-message {
+            color: #ef4444;
+            font-size: 9pt;
+            display: none;
+            margin-top: 4px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .inline-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .subsection {
+            margin-bottom: 25px;
+        }
+        .subsection h4 {
+            color: #1d4ed8;
+            margin-bottom: 12px;
+            font-size: 12pt;
+            font-weight: 700;
+            border-bottom: 2px solid #1d4ed8;
+            padding-bottom: 4px;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 0px;
+        }
+        .checkbox-item label {
+            font-weight: normal;
+            margin-bottom: 0;
+            font-size: 10pt;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 0px;
+            font-weight: bold;
+            font-size: 11pt;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .btn-submit {
+            background-color: #1d4ed8;
+        }
+        .btn-submit:hover {
+            background-color: #1e40af;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 0px; /* Sharp edges */
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        @media (max-width: 768px) {
+            .inline-inputs,
+            .three-column {
+                grid-template-columns: 1fr;
+            }
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="mb-10 border-b border-gray-200 pb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Talend Migration Assessment</h1>
+            <p class="text-lg text-gray-500">Complete the assessment below to generate your migration roadmap.</p>
+        </div>
+
+        <div class="sharp-card p-8 md:p-12 bg-white">
+            <form id="migrationForm" action="https://formspree.io/f/xbldqkje" method="POST" novalidate>
+            
+            <div class="section">
+                <div class="section-header"><span>Executive Summary</span></div>
+                <div class="section-content">
+                    <div class="inline-inputs">
+                        <div class="form-group"><label for="projectName">Project Name:</label><input type="text" id="projectName" name="projectName" required data-required="true"><span class="error-message">This field is required.</span></div>
+                        <div class="form-group"><label for="stakeholder">Primary Stakeholder:</label><input type="text" id="stakeholder" name="stakeholder" required data-required="true"><span class="error-message">This field is required.</span></div>
+                    </div>
+                    <div class="inline-inputs">
+                        <div class="form-group"><label for="timeline">Timeline Expectations:</label><input type="text" id="timeline" name="timeline"></div>
+                        <div class="form-group"><label for="contactEmail">Contact Email:</label><input type="email" id="contactEmail" name="contactEmail" required data-required="true"><span class="error-message">Please enter a valid email address.</span></div>
+                    </div>
+                    <div class="form-group"><label for="businessDriver">Business Driver for Migration:</label><textarea id="businessDriver" name="businessDriver" placeholder="e.g., Licensing costs, end of support, modernization to Spark/Databricks..."></textarea></div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header"><span>1. Current Talend Environment</span><div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div></div>
+                <div class="section-content" id="s1-content">
+                    <div class="subsection">
+                        <h4>1.1 System Details</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label for="talendProduct">Talend Product:</label><input type="text" id="talendProduct" name="talendProduct" placeholder="e.g., Data Integration (DI), Big Data, Data Quality, ESB..." required data-required="true"><span class="error-message">Required.</span></div>
+                            <div class="form-group"><label for="talendVersion">Version:</label><input type="text" id="talendVersion" name="talendVersion" placeholder="e.g., 7.3.1, 8.0..." required data-required="true"><span class="error-message">Required.</span></div>
+                        </div>
+                        <div class="form-group"><label for="deploymentType">Deployment Type:</label><select id="deploymentType" name="deploymentType"><option value="on_prem">On-Premises (TAC)</option><option value="cloud">Talend Cloud (TMC)</option><option value="hybrid">Hybrid</option></select></div>
+                    </div>
+                    <div class="subsection">
+                        <h4>1.2 Job Inventory</h4>
+                        <div class="three-column">
+                            <div class="form-group"><label for="totalJobs">Total Jobs:</label><input type="number" id="totalJobs" name="totalJobs" min="0" value="0" required data-required="true"><span class="error-message">Required.</span></div>
+                            <div class="form-group"><label for="activeJobs">Active/Scheduled Jobs:</label><input type="number" id="activeJobs" name="activeJobs" min="0" value="0" required data-required="true"><span class="error-message">Required.</span></div>
+                            <div class="form-group"><label for="joblets">Joblets (Reusable Code):</label><input type="number" id="joblets" name="joblets" min="0" value="0"></div>
+                        </div>
+                         <div class="three-column">
+                            <div class="form-group"><label for="routes">Routes (ESB):</label><input type="number" id="routes" name="routes" min="0" value="0"></div>
+                            <div class="form-group"><label for="projects">Number of Projects:</label><input type="number" id="projects" name="projects" min="0" value="0"></div>
+                        </div>
+                    </div>
+                     <div class="subsection">
+                        <h4>1.3 Connectors & Complexity</h4>
+                        <div class="form-group">
+                            <label>Key Connectors Used:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="salesforce"><label>Salesforce</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="sap"><label>SAP</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="oracle"><label>Oracle</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="sqlserver"><label>SQL Server</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="snowflake"><label>Snowflake</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="s3_adls"><label>S3 / ADLS</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="connectors" value="kafka"><label>Kafka</label></div>
+                            </div>
+                        </div>
+                         <div class="form-group"><label for="customComponents">Custom Components (tJava, tJavaRow):</label><textarea id="customComponents" name="customComponents" placeholder="Describe usage of custom Java code components. Is there heavy reliance on custom Java logic?"></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header"><span>2. Workloads & Architecture</span><div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div></div>
+                <div class="section-content" id="s2-content">
+                    <div class="subsection">
+                        <h4>2.1 Execution Engine</h4>
+                        <div class="form-group"><label>Runtime Environment:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="runtime" value="java_etl"><label>Standard Java ETL</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="runtime" value="spark"><label>Big Data (Spark)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="runtime" value="spark_streaming"><label>Spark Streaming</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="runtime" value="remote_engine"><label>Remote Engines (Cloud)</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>2.2 Data Volumes & Frequency</h4>
+                         <div class="inline-inputs">
+                            <div class="form-group"><label for="dailyVolume">Daily Data Volume (GB):</label><input type="number" id="dailyVolume" name="dailyVolume" min="0" step="0.1"></div>
+                            <div class="form-group"><label for="batchWindow">Batch Window (Hours):</label><input type="number" id="batchWindow" name="batchWindow" min="0"></div>
+                        </div>
+                        <div class="form-group"><label for="streamingReq">Streaming Requirements:</label><textarea id="streamingReq" name="streamingReq" placeholder="Describe any real-time / micro-batch requirements."></textarea></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section page-break">
+                <div class="section-header"><span>3. Orchestration & Scheduling</span><div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div></div>
+                <div class="section-content" id="s3-content">
+                    <div class="subsection">
+                        <div class="form-group">
+                            <label>Scheduler Used:</label>
+                             <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="scheduler" value="tac"><label>Talend Admin Center (TAC)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="scheduler" value="tmc"><label>Talend Management Console (TMC)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="scheduler" value="airflow"><label>Airflow</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="scheduler" value="controlm"><label>Control-M / Autosys</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="scheduler" value="jenkins"><label>Jenkins / CI/CD</label></div>
+                            </div>
+                        </div>
+                         <div class="form-group"><label for="dependencies">Job Dependencies:</label><textarea id="dependencies" name="dependencies" placeholder="Describe complex dependencies between jobs or external triggers (file arrival, API calls)."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header"><span>4. Code Management & CI/CD</span><div class="na-toggle"><input type="checkbox" id="na-s4" class="na-checkbox" data-section-content-id="s4-content"><label for="na-s4">N/A</label></div></div>
+                <div class="section-content" id="s4-content">
+                    <div class="subsection">
+                         <div class="form-group"><label for="versionControl">Version Control System:</label><input type="text" id="versionControl" name="versionControl" placeholder="e.g., Git, SVN..."></div>
+                         <div class="form-group"><label for="cicdPipeline">CI/CD Pipeline:</label><textarea id="cicdPipeline" name="cicdPipeline" placeholder="Describe the deployment process. Is it automated? Are you using Talend CI Builder?"></textarea></div>
+                         <div class="form-group"><label for="contextVars">Context Variables:</label><textarea id="contextVars" name="contextVars" placeholder="How are environment variables (Dev/Test/Prod) managed?"></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header"><span>5. Migration Scope & Targets</span><div class="na-toggle"><input type="checkbox" id="na-s5" class="na-checkbox" data-section-content-id="s5-content"><label for="na-s5">N/A</label></div></div>
+                <div class="section-content" id="s5-content">
+                    <div class="subsection">
+                        <h4>5.1 Target Architecture</h4>
+                        <div class="form-group"><label for="targetPlatform">Target Platform:</label><select id="targetPlatform" name="targetPlatform" required data-required="true"><option value="">Select...</option><option value="databricks">Databricks (Workflows/DLT)</option><option value="spark">Native Spark</option><option value="other">Other</option></select><span class="error-message">Required.</span></div>
+                        <div class="form-group"><label for="migrationStrategy">Migration Strategy:</label><select id="migrationStrategy" name="migrationStrategy"><option value="">Select...</option><option value="rewrite">Complete Rewrite (Python/SQL)</option><option value="convert">Automated Conversion (if applicable)</option><option value="hybrid">Hybrid Approach</option></select></div>
+                    </div>
+                    <div class="subsection">
+                        <h4>5.2 Priorities</h4>
+                        <div class="form-group"><label for="criticalJobs">Critical Jobs to Migrate First:</label><textarea id="criticalJobs" name="criticalJobs" placeholder="List high-priority pipelines..."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header"><span>Form Completion Details</span></div>
+                <div class="section-content">
+                    <div class="inline-inputs">
+                        <div class="form-group"><label for="completedBy">Questionnaire Completed By:</label><input type="text" id="completedBy" name="completedBy" required data-required="true"><span class="error-message">This field is required.</span></div>
+                        <div class="form-group"><label for="completionDate">Date:</label><input type="date" id="completionDate" name="completionDate" required data-required="true"><span class="error-message">This field is required.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;" class="no-print">
+                 <button type="submit" class="btn btn-submit">Submit Assessment</button>
+            </div>
+        </form>
+        </div>
+
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="color: #10b981; font-size: 3rem; margin-bottom: 1rem;">&#10003;</div>
+            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: #111827;">Submission Successful!</h2>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">Thank you for completing the Talend Migration Assessment. Our team will review your details and reach out shortly.</p>
+            <button id="closeModalBtn" class="btn btn-submit">Close</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('migrationForm');
+            const successModal = document.getElementById('successModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const naToggles = form.querySelectorAll('.na-checkbox');
+
+            if(document.getElementById('completionDate')) {
+                document.getElementById('completionDate').valueAsDate = new Date();
+            }
+            
+            naToggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const contentId = this.dataset.sectionContentId;
+                    const contentElement = document.getElementById(contentId);
+                    if (!contentElement) return;
+                    const inputs = contentElement.querySelectorAll('input, select, textarea');
+
+                    contentElement.classList.toggle('disabled', this.checked);
+                    inputs.forEach(input => {
+                        input.disabled = this.checked;
+                        if (this.checked) {
+                            input.required = false;
+                            input.classList.remove('is-invalid');
+                            let errorSpan = input.nextElementSibling;
+                            while(errorSpan && !errorSpan.classList.contains('error-message')) {
+                                errorSpan = errorSpan.nextElementSibling;
+                            }
+                            if (errorSpan) {
+                                errorSpan.style.display = 'none';
+                            }
+                        } else {
+                             if (input.hasAttribute('data-required')) {
+                                input.required = true;
+                            }
+                        }
+                    });
+                });
+            });
+
+            const validateField = (field) => {
+                if (field.disabled) return true;
+                let isValid = true;
+                const value = field.value.trim();
+                let errorSpan = field.nextElementSibling;
+                while(errorSpan && !errorSpan.classList.contains('error-message')) {
+                    errorSpan = errorSpan.nextElementSibling;
+                }
+
+                if (field.required && value === '') isValid = false;
+                if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) isValid = false;
+                
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                    if (errorSpan) errorSpan.style.display = 'none';
+                } else {
+                    field.classList.add('is-invalid');
+                    if (errorSpan) errorSpan.style.display = 'block';
+                }
+                return isValid;
+            };
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                let isFormValid = true;
+                form.querySelectorAll('[data-required="true"]').forEach(field => {
+                    if (!validateField(field)) isFormValid = false;
+                });
+
+                if (isFormValid) {
+                     const formData = new FormData(form);
+                     const submitButton = form.querySelector('button[type="submit"]');
+                     const originalButtonText = submitButton.textContent;
+                     submitButton.textContent = 'Submitting...';
+                     submitButton.disabled = true;
+
+                     fetch(form.action, {
+                         method: 'POST',
+                         body: formData,
+                         headers: { 'Accept': 'application/json' }
+                     }).then(response => {
+                        if (response.ok) {
+                             successModal.classList.add('visible');
+                             form.reset();
+                             naToggles.forEach(t => { if(t.checked){ t.checked = false; t.dispatchEvent(new Event('change')); }});
+                             if(document.getElementById('completionDate')) document.getElementById('completionDate').valueAsDate = new Date();
+                        } else {
+                            response.json().then(data => {
+                                if (Object.hasOwn(data, 'errors')) {
+                                    alert(data["errors"].map(error => error["message"]).join(", "));
+                                } else {
+                                    alert('Oops! There was a problem submitting your form');
+                                }
+                            });
+                        }
+                    }).catch(error => {
+                        alert('Oops! There was a problem submitting your form. Please check your internet connection.');
+                    }).finally(() => {
+                        submitButton.textContent = originalButtonText;
+                        submitButton.disabled = false;
+                    });
+                } else {
+                    const firstInvalidField = form.querySelector('.is-invalid');
+                    if (firstInvalidField) {
+                        firstInvalidField.focus();
+                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+
+            form.querySelectorAll('[data-required="true"]').forEach(field => {
+                field.addEventListener('blur', () => validateField(field));
+            });
+
+            closeModalBtn.addEventListener('click', () => successModal.classList.remove('visible'));
+            successModal.addEventListener('click', (e) => {
+                if (e.target === successModal) successModal.classList.remove('visible');
+            });
+        });
+    
+    </script>
+
+</body>
+</html>

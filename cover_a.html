@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migration Assessments | Blueprint</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+
+    <style>
+        /* --- PAGE SPECIFIC GRID CSS --- */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+            gap: 24px;
+        }
+
+        .tile-card {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            padding: 24px;
+            text-decoration: none;
+            color: #1f2937;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px; 
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0px !important; 
+        }
+
+        /* Accent Strips */
+        .tile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #d1d5db;
+            transition: height 0.2s;
+        }
+
+        /* Brand Colors Preserved */
+        .tile-card[data-brand="gcp"]::before { background-color: #4285F4; }
+        .tile-card[data-brand="aws"]::before { background-color: #232F3E; }
+        .tile-card[data-brand="informatica"]::before { background-color: #FF4D00; }
+        .tile-card[data-brand="snowflake"]::before { background-color: #29B5E8; }
+        .tile-card[data-brand="teradata"]::before { background-color: #F37421; }
+        .tile-card[data-brand="databricks"]::before { background-color: #FF3621; }
+        .tile-card[data-brand="sap"]::before { background-color: #008FD3; }
+        .tile-card[data-brand="azure"]::before { background-color: #0078D4; }
+        .tile-card[data-brand="microsoft"]::before { background-color: #737373; }
+        .tile-card[data-brand="oracle"]::before { background-color: #C74634; }
+        .tile-card[data-brand="talend"]::before { background-color: #FF6D70; }
+
+        .tile-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #9ca3af;
+        }
+        .tile-card:hover::before { height: 8px; }
+
+        /* Logo Containers */
+        .logo-container {
+            height: 50px;
+            width: 100%;
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .logo-container img, 
+        .logo-container svg {
+            max-height: 100%; 
+            width: auto;      
+            max-width: 140px; 
+            object-fit: contain; 
+            object-position: left;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            color: #111827;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+        }
+
+        .tile-card.placeholder {
+            border: 2px dashed #d1d5db;
+            background-color: transparent;
+            cursor: default;
+            align-items: center;
+            justify-content: center;
+        }
+        .tile-card.placeholder::before { display: none; }
+        .tile-card.placeholder:hover { transform: none; box-shadow: none; border-color: #d1d5db; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="mb-12 border-b border-gray-200 pb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">Migration Assessments</h1>
+            <p class="text-lg text-gray-600 max-w-3xl">Select your current platform to access specific migration assessments, questionnaires, and accelerator tools designed to speed up your move to the Lakehouse.</p>
+        </div>
+        
+        <div class="button-grid">
+            
+            <a href="gcp.html" class="tile-card" data-brand="gcp">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud">
+                </div>
+                <div>
+                    <h3 class="card-title">Google Cloud</h3>
+                    <div class="card-tag">Cloud Platform</div>
+                </div>
+            </a>
+
+            <a href="red.html" class="tile-card" data-brand="aws">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS">
+                </div>
+                <div>
+                    <h3 class="card-title">AWS Redshift</h3>
+                    <div class="card-tag">Data Warehouse</div>
+                </div>
+            </a>
+
+            <a href="infor.html" class="tile-card" data-brand="informatica">
+                <div class="logo-container">
+                   <img src="infromatica.png" alt="Informatica Logo">
+                </div>
+                <div>
+                    <h3 class="card-title">Informatica</h3>
+                    <div class="card-tag">ETL & Integration</div>
+                </div>
+            </a>
+
+            <a href="snow.html" class="tile-card" data-brand="snowflake">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg" alt="Snowflake">
+                </div>
+                <div>
+                    <h3 class="card-title">Snowflake</h3>
+                    <div class="card-tag">Data Cloud</div>
+                </div>
+            </a>
+
+            <a href="td.html" class="tile-card" data-brand="teradata">
+                <div class="logo-container">
+                    <img src="teradata.png" alt="Teradata Logo">
+                </div>
+                <div>
+                    <h3 class="card-title">Teradata</h3>
+                    <div class="card-tag">Enterprise Data Warehouse</div>
+                </div>
+            </a>
+
+            <a href="ucm.html" class="tile-card" data-brand="databricks">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png" alt="Databricks">
+                </div>
+                <div>
+                    <h3 class="card-title">Unity Catalog</h3>
+                    <div class="card-tag">Metastore Upgrade</div>
+                </div>
+            </a>
+
+            <a href="sap.html" class="tile-card" data-brand="sap">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" alt="SAP">
+                </div>
+                <div>
+                    <h3 class="card-title">SAP</h3>
+                    <div class="card-tag">ERP / BW</div>
+                </div>
+            </a>
+
+            <a href="synapse.html" class="tile-card" data-brand="azure">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" alt="Azure">
+                </div>
+                <div>
+                    <h3 class="card-title">Azure Synapse</h3>
+                    <div class="card-tag">Analytics</div>
+                </div>
+            </a>
+
+            <a href="sql.html" class="tile-card" data-brand="microsoft">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+                </div>
+                <div>
+                    <h3 class="card-title">SQL</h3>
+                    <div class="card-tag">Microsoft SQL Server</div>
+                </div>
+            </a>
+
+            <a href="oracle.html" class="tile-card" data-brand="oracle">
+                <div class="logo-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle">
+                </div>
+                <div>
+                    <h3 class="card-title">Oracle</h3>
+                    <div class="card-tag">Database</div>
+                </div>
+            </a>
+
+            <a href="talend.html" class="tile-card" data-brand="talend">
+                <div class="logo-container">
+                    <svg viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                         <text x="0" y="24" font-family="Arial, sans-serif" font-weight="800" font-size="28" fill="#FF6D70">talend</text>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="card-title">Talend</h3>
+                    <div class="card-tag">Data Integration</div>
+                </div>
+            </a>
+
+            <div class="tile-card placeholder">
+                <h3 class="card-title" style="color: #9ca3af; font-weight: 500;">(Coming Soon)</h3>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+
+</body>
+</html>

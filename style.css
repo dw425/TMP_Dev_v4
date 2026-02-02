@@ -1,0 +1,187 @@
+
+/* =========================================
+   1. GLOBAL RESET & LAYOUT
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #eef2f6; /* Light Grey background */
+    color: #111827;
+    
+    /* STICKY FOOTER FIX */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Forces content to fill space, pushing footer down */
+main {
+    flex-grow: 1;
+}
+
+/* =========================================
+   2. SHARP DESIGN SYSTEM (The "Blueprint" Look)
+   ========================================= */
+/* Forces sharp corners on all interactive elements */
+button, input, select, textarea, .sharp-card, .modal-content, .btn {
+    border-radius: 0px !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+}
+
+/* =========================================
+   3. BRANDING COLORS & UTILITIES
+   ========================================= */
+.text-blueprint-blue { color: #1d4ed8; }
+.bg-blueprint-blue { background-color: #1d4ed8; }
+.border-blueprint-blue { border-color: #1d4ed8; }
+
+/* Logo Filter: Turns white/black logos into Blueprint Blue */
+.blue-logo-filter {
+    filter: brightness(0) saturate(100%) invert(21%) sepia(99%) saturate(1915%) hue-rotate(206deg) brightness(97%) contrast(96%);
+}
+
+/* =========================================
+   4. COMPONENT STYLES
+   ========================================= */
+
+/* Cards */
+.sharp-card {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-top: 4px solid #1d4ed8;
+}
+
+/* Form Inputs */
+input, textarea, select {
+    border: 1px solid #d1d5db !important;
+    background-color: #ffffff !important;
+    color: #111827 !important;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: #1d4ed8 !important;
+    ring: 0 !important;
+    outline: none !important;
+}
+
+/* Validation Error Text */
+.form-error {
+    color: #dc2626;
+    font-size: 0.75rem;
+    height: 1rem;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* Homepage Filter Buttons */
+.filter-btn {
+    transition: all 0.2s ease-in-out;
+    background-color: transparent;
+    color: #64748b;
+    border-bottom: 2px solid transparent;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: -0.01em;
+}
+.filter-btn:hover:not(.active) {
+    color: #1d4ed8;
+    border-bottom-color: #cbd5e1;
+}
+.filter-btn.active {
+    background-color: transparent;
+    color: #1d4ed8;
+    border-bottom: 2px solid #1d4ed8;
+    box-shadow: none;
+}
+
+/* Tables (Used on Cart Page) */
+th {
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+}
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* =========================================
+   5. LONG-FORM CONTENT (Articles/Whitepapers)
+   ========================================= */
+.article-body h2 { 
+    font-size: 1.75rem; 
+    font-weight: 700; 
+    color: #1d4ed8; 
+    margin-top: 2rem; 
+    margin-bottom: 1rem; 
+    letter-spacing: -0.02em;
+}
+.article-body h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1d4ed8; 
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+.article-body p { 
+    margin-bottom: 1.5rem; 
+    line-height: 1.8; 
+    color: #374151; 
+    font-size: 1.05rem;
+}
+.article-body ul { 
+    list-style-type: disc; 
+    padding-left: 1.5rem; 
+    margin-bottom: 2rem; 
+    color: #374151; 
+}
+.article-body li { 
+    margin-bottom: 0.75rem; 
+    line-height: 1.7;
+}
+
+/* =========================================
+   6. ANIMATIONS & MODALS
+   ========================================= */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+}
+
+.modal-enter {
+    animation: fadeIn 0.3s ease-out;
+}
+.modal-leave {
+    animation: fadeOut 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.98); }
+}
+
+.grid-item {
+    animation: popIn 0.4s ease-out forwards;
+}
+@keyframes popIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
