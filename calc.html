@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Migration Sizing Calculator | Blueprint Migration</title>
+    <title>Comprehensive Migration ROM Calculator | Blueprint Migration</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -15,74 +15,109 @@
     <link rel="stylesheet" href="cart.css">
 
     <style>
-        /* --- BRANDED CALCULATOR STYLES --- */
+        /* --- HIGH CONTRAST BRANDING --- */
         body {
             font-family: 'DM Sans', sans-serif;
             background-color: #f3f4f6;
-            color: #374151; /* High contrast text */
+            color: #111827; /* Deep Black Text */
         }
 
         .calc-container {
             background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0px !important;
-        }
-
-        .table-header {
-            background-color: #1d4ed8; /* Blueprint Blue */
-            color: white;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
-        }
-
-        /* Input Styling for Readability */
-        input[type="number"], input[type="text"], input[type="email"], select {
-            width: 100%;
-            padding: 8px;
             border: 1px solid #d1d5db;
             border-radius: 0px !important;
-            text-align: center;
-            color: #111827; /* Dark text for readability */
-            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
-        .category-name {
-            font-weight: 700;
-            color: #111827;
-        }
-
-        /* Section Styling */
-        .section { border-bottom: 1px solid #e5e7eb; margin-bottom: 2rem; }
         .section-header {
-            background: #1d4ed8;
+            background-color: #1d4ed8; /* Blueprint Blue */
             color: white;
             padding: 12px 25px;
             font-weight: 700;
             font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        .section-content { padding: 25px; }
 
-        /* Maturity & Complexity Sliders */
-        .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .section-content {
+            padding: 25px;
+        }
+
+        .matrix-header {
+            font-weight: 800;
+            color: #374151;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            border-bottom: 2px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        /* Form Inputs */
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #9ca3af;
+            border-radius: 0px !important;
+            font-size: 0.95rem;
+            color: #000000;
+            background-color: white;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #9ca3af;
+            border-radius: 0px !important;
+            text-align: center;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+        }
+
+        /* Complexity Sliders */
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
         .range-container { position: relative; padding-bottom: 20px; }
         input[type="range"] { width: 100%; cursor: pointer; accent-color: #1d4ed8; }
-        .range-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: #6b7280; font-weight: bold; }
+        .range-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: #4b5563; font-weight: 800; }
 
         .btn-calc {
             background-color: #1d4ed8;
             color: white;
-            padding: 14px 40px;
-            font-weight: 700;
+            padding: 15px 40px;
+            font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
             border-radius: 0px !important;
+            transition: all 0.2s;
             cursor: pointer;
+            border: none;
+        }
+        .btn-calc:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
+        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); display: none;
+            background: rgba(0, 0, 0, 0.8); display: none;
             align-items: center; justify-content: center; z-index: 1000;
+            backdrop-filter: blur(4px);
         }
     </style>
 </head>
@@ -93,90 +128,255 @@
     <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         <div class="mb-10 border-b border-gray-200 pb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Migration ROM Calculator</h1>
-            <p class="text-lg text-gray-600">Inventory your environment and assess maturity to generate your project ROM.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Comprehensive Migration ROM Calculator</h1>
+            <p class="text-lg text-gray-600 font-medium">Inventory your environment and assess maturity to generate a Rough Order of Magnitude (ROM) estimate.</p>
         </div>
 
-        <div class="calc-container shadow-sm">
-            <form id="romForm">
-                
-                <div class="section">
-                    <div class="section-header">1. Database Layer</div>
-                    <div class="section-content">
-                        <table class="w-full text-left border-collapse">
-                            <thead class="table-header">
-                                <tr>
-                                    <th class="p-4">Object Type</th>
-                                    <th class="p-4 text-center">Simple</th>
-                                    <th class="p-4 text-center">Medium</th>
-                                    <th class="p-4 text-center">Complex</th>
-                                    <th class="p-4 text-center">Very Complex</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b">
-                                    <td class="p-4 font-bold">Tables</td>
-                                    <td class="p-4"><input type="number" id="input-table-s" value="0"></td>
-                                    <td class="p-4"><input type="number" id="input-table-m" value="0"></td>
-                                    <td class="p-4"><input type="number" id="input-table-c" value="0"></td>
-                                    <td class="p-4"><input type="number" id="input-table-v" value="0"></td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4 font-bold">Views</td>
-                                    <td class="p-4"><input type="number" id="input-view-s" value="0"></td>
-                                    <td class="p-4"><input type="number" id="input-view-m" value="0"></td>
-                                    <td class="p-4"><input type="number" id="input-view-c" value="0"></td>
-                                    <td class="p-4"><input type="number" id="input-view-v" value="0"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <form id="romForm">
+            
+            <div class="calc-container">
+                <div class="section-header">1. Organization & Tech Stack</div>
+                <div class="section-content">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div><label>Project Name</label><input type="text" id="userName"></div>
+                        <div><label>Company</label><input type="text" id="companyName"></div>
+                        <div><label>Email</label><input type="email" id="clientEmail"></div>
                     </div>
-                </div>
-
-                <div class="section">
-                    <div class="section-header">5. Maturity & Complexity</div>
-                    <div class="section-content">
-                        <p class="text-sm text-gray-500 mb-6">Rate your environment (1=Low/Novice, 5=High/Expert).</p>
-                        <div class="score-grid">
-                            <div class="range-container">
-                                <label class="text-sm font-bold text-gray-700">Team Expertise</label>
-                                <input type="range" id="teamMaturity" min="1" max="5" value="3">
-                                <div class="range-labels"><span>1 (Novice)</span><span>3</span><span>5 (Expert)</span></div>
-                            </div>
-                            <div class="range-container">
-                                <label class="text-sm font-bold text-gray-700">Tool Familiarity</label>
-                                <input type="range" id="toolFamiliarity" min="1" max="5" value="3">
-                                <div class="range-labels"><span>1 (Low)</span><span>3</span><span>5 (High)</span></div>
-                            </div>
-                            <div class="range-container">
-                                <label class="text-sm font-bold text-gray-700">Infrastructure Config</label>
-                                <input type="range" id="infraConfig" min="1" max="5" value="3">
-                                <div class="range-labels"><span>1 (Manual)</span><span>3</span><span>5 (IaC)</span></div>
-                            </div>
-                            <div class="range-container">
-                                <label class="text-sm font-bold text-gray-700">Env. Complexity</label>
-                                <input type="range" id="envComplexity" min="1" max="5" value="3">
-                                <div class="range-labels"><span>1 (Simple)</span><span>3</span><span>5 (Chaotic)</span></div>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label>Current Platform</label>
+                            <select id="currentDWH">
+                                <option value="" disabled selected>Select Source...</option>
+                                <option value="gcp">Google Cloud (GCP)</option> <option value="snowflake">Snowflake</option>
+                                <option value="synapse">Azure Synapse</option>
+                                <option value="databricks">Databricks Legacy</option>
+                                <option value="sqlserver">SQL Server</option>
+                                <option value="oracle">Oracle</option>
+                                <option value="netezza">Netezza</option>
+                                <option value="teradata">Teradata</option>
+                                <option value="sap">SAP / HANA</option>
+                                <option value="hadoop">Hadoop / Cloudera</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Target Cloud</label>
+                            <select id="cloudStack">
+                                <option value="" disabled selected>Select Target...</option>
+                                <option value="azure">Microsoft Azure</option>
+                                <option value="aws">AWS</option>
+                                <option value="gcp">Google Cloud (GCP)</option>
+                                <option value="oracle">Oracle Cloud (OCI)</option>
+                            </select>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-8 bg-gray-50 text-center">
-                    <button type="button" id="calculateBtn" class="btn-calc">Calculate Migration ROM</button>
+            <div class="calc-container">
+                <div class="section-header">2. Database Layer</div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="matrix-header">
+                            <tr>
+                                <th class="p-4 w-1/4">Object Type</th>
+                                <th class="p-4 text-center text-green-700">Simple</th>
+                                <th class="p-4 text-center text-yellow-700">Medium</th>
+                                <th class="p-4 text-center text-red-700">Complex</th>
+                                <th class="p-4 text-center text-red-900">V. Complex</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">Tables</td>
+                                <td class="p-4"><input type="number" id="table_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">Views</td>
+                                <td class="p-4"><input type="number" id="view_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">Stored Procs</td>
+                                <td class="p-4"><input type="number" id="proc_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold">Functions</td>
+                                <td class="p-4"><input type="number" id="func_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_vcomplex" placeholder="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="calc-container">
+                <div class="section-header">3. Integration & Code</div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="matrix-header">
+                            <tr>
+                                <th class="p-4 w-1/4">Workflow Type</th>
+                                <th class="p-4 text-center text-green-700">Simple</th>
+                                <th class="p-4 text-center text-yellow-700">Medium</th>
+                                <th class="p-4 text-center text-red-700">Complex</th>
+                                <th class="p-4 text-center text-red-900">V. Complex</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">ETL Pipelines</td>
+                                <td class="p-4"><input type="number" id="etl_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">Scripts</td>
+                                <td class="p-4"><input type="number" id="script_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold">Orchestration</td>
+                                <td class="p-4"><input type="number" id="orch_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_vcomplex" placeholder="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="calc-container">
+                <div class="section-header">4. Presentation Layer</div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="matrix-header">
+                            <tr>
+                                <th class="p-4 w-1/4">Asset Type</th>
+                                <th class="p-4 text-center text-green-700">Simple</th>
+                                <th class="p-4 text-center text-yellow-700">Medium</th>
+                                <th class="p-4 text-center text-red-700">Complex</th>
+                                <th class="p-4 text-center text-red-900">V. Complex</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">BI Dashboards</td>
+                                <td class="p-4"><input type="number" id="bi_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">Excel Sheets</td>
+                                <td class="p-4"><input type="number" id="excel_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_vcomplex" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold">Reports</td>
+                                <td class="p-4"><input type="number" id="report_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_vcomplex" placeholder="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="calc-container">
+                <div class="section-header">5. Maturity & Complexity</div>
+                <div class="section-content">
+                    <p class="text-sm font-bold text-gray-500 mb-8 uppercase tracking-wide">Rate your environment (1=Low/Novice, 5=High/Expert)</p>
+                    <div class="score-grid">
+                        <div class="range-container">
+                            <label>Team Expertise</label>
+                            <input type="range" id="teamMaturity" min="1" max="5" value="3">
+                            <div class="range-labels"><span>1 (Novice)</span><span>3</span><span>5 (Expert)</span></div>
+                        </div>
+                        <div class="range-container">
+                            <label>Tool Familiarity</label>
+                            <input type="range" id="toolFamiliarity" min="1" max="5" value="3">
+                            <div class="range-labels"><span>1 (Low)</span><span>3</span><span>5 (High)</span></div>
+                        </div>
+                        <div class="range-container">
+                            <label>Infrastructure Config</label>
+                            <input type="range" id="infraConfig" min="1" max="5" value="3">
+                            <div class="range-labels"><span>1 (Manual)</span><span>3</span><span>5 (IaC)</span></div>
+                        </div>
+                        <div class="range-container">
+                            <label>Env. Complexity</label>
+                            <input type="range" id="envComplexity" min="1" max="5" value="3">
+                            <div class="range-labels"><span>1 (Simple)</span><span>3</span><span>5 (Chaotic)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pb-12">
+                <button type="button" id="calculateBtn" class="btn-calc">Calculate Migration ROM</button>
+            </div>
+        </form>
     </main>
 
     <div id="resultModal" class="modal-overlay">
-        <div class="modal-content bg-white p-10 max-w-2xl w-full shadow-2xl text-center">
-            <h2 class="text-2xl font-bold mb-6">Rough Order of Magnitude</h2>
-            <div class="bg-blue-50 p-8 mb-6 border-l-4 border-blue-600">
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Estimated Total Effort</p>
-                <p id="totalHoursDisplay" class="text-5xl font-black text-blue-700">0 Hours</p>
+        <div class="bg-white p-10 max-w-4xl w-full shadow-2xl relative border-t-8 border-blueprint-blue">
+            <div class="absolute top-4 right-4">
+                <button class="close-modal text-3xl font-bold text-gray-400 hover:text-gray-600">&times;</button>
             </div>
-            <button class="close-modal-btn px-6 py-2 bg-gray-200 font-bold">Close</button>
+            
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">ROM Assessment Results</h2>
+            <div class="w-full bg-gray-200 h-1 mb-8"></div>
+
+            <div class="mb-8 text-center">
+                <div class="text-sm font-bold text-gray-500 uppercase tracking-widest">Overall Complexity Rating</div>
+                <div id="ratingText" class="text-2xl font-black text-gray-800 my-2">MODERATE</div>
+                <div class="w-1/2 mx-auto bg-gray-200 h-3 rounded-full overflow-hidden">
+                    <div id="ratingFill" class="h-full bg-yellow-500 w-1/2"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <div class="p-8 bg-gray-50 border border-gray-300 text-center">
+                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Standard Manual Effort</p>
+                    <p id="manualHours" class="text-4xl font-black text-gray-800">0</p>
+                    <p class="text-sm font-bold text-gray-500">Total Man-Hours</p>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <span id="manualDuration" class="text-xl font-bold text-gray-800">0</span> <span class="text-gray-600">Weeks</span>
+                    </div>
+                </div>
+                
+                <div class="p-8 bg-green-50 border border-green-300 text-center relative shadow-sm">
+                    <div class="absolute -top-3 right-0 left-0 mx-auto w-max bg-green-600 text-white text-[10px] px-3 py-1 font-bold uppercase rounded-full">60% Acceleration</div>
+                    <p class="text-xs font-bold text-green-700 uppercase tracking-widest mb-2">Blueprint Accelerated</p>
+                    <p id="aiHours" class="text-4xl font-black text-green-700">0</p>
+                    <p class="text-sm font-bold text-green-600">Total Man-Hours</p>
+                    <div class="mt-4 pt-4 border-t border-green-200">
+                        <span id="aiDuration" class="text-xl font-bold text-green-800">0</span> <span class="text-green-700">Weeks</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button class="close-modal px-6 py-3 border border-gray-300 font-bold text-gray-600 hover:bg-gray-50 transition-colors">Close Report</button>
+                <a href="https://bpcs.com/contact" class="bg-blueprint-blue text-white px-8 py-3 font-bold hover:bg-blue-800 transition-colors shadow-sm">Request Detailed Proposal</a>
+            </div>
         </div>
     </div>
 
@@ -189,42 +389,137 @@
         document.addEventListener('DOMContentLoaded', function() {
             const calculateBtn = document.getElementById('calculateBtn');
             const resultModal = document.getElementById('resultModal');
+            const closeButtons = document.querySelectorAll('.close-modal');
 
-            // Hours per object category
-            const weights = { s: 4, m: 12, c: 32, v: 80 };
+            // --- BENCHMARKS (Hours per object) ---
+            const benchmarks = {
+                table: { s: 2, m: 6, c: 16, v: 40 },
+                view: { s: 2, m: 8, c: 24, v: 40 },
+                proc: { s: 4, m: 12, c: 32, v: 60 },
+                func: { s: 4, m: 12, c: 32, v: 60 },
+                etl: { s: 6, m: 20, c: 50, v: 100 },
+                script: { s: 4, m: 16, c: 40, v: 80 },
+                orch: { s: 2, m: 6, c: 16, v: 32 },
+                bi: { s: 4, m: 16, c: 40, v: 80 },
+                excel: { s: 2, m: 8, c: 24, v: 60 },
+                report: { s: 4, m: 12, c: 32, v: 80 }
+            };
+
+            const platformFactors = {
+                'snowflake': 0.8, 'databricks': 0.8, 'synapse': 0.85, 'sqlserver': 0.9,
+                'oracle': 1.0, 'netezza': 1.1, 'teradata': 1.15, 'sap': 1.2, 'hadoop': 1.25, 'gcp': 1.0, 'other': 1.0
+            };
+
+            function getVal(id) {
+                const el = document.getElementById(id);
+                return el ? (parseInt(el.value) || 0) : 0;
+            }
 
             function calculateROM() {
-                let totalHours = 0;
-                
-                // Inventory Calculation
-                const ids = ['table', 'view']; 
-                ids.forEach(id => {
-                    ['s', 'm', 'c', 'v'].forEach(level => {
-                        const count = parseInt(document.getElementById(`input-${id}-${level}`).value) || 0;
-                        totalHours += (count * weights[level]);
-                    });
-                });
+                let rawHours = 0;
+                let totalCount = 0;
+                let complexCount = 0;
 
-                // Apply Multipliers from Section 5
+                // Loop through all categories and sum hours
+                for (const [cat, weights] of Object.entries(benchmarks)) {
+                    const s = getVal(`${cat}_simple`);
+                    const m = getVal(`${cat}_medium`);
+                    const c = getVal(`${cat}_complex`);
+                    const v = getVal(`${cat}_vcomplex`);
+
+                    rawHours += (s * weights.s) + (m * weights.m) + (c * weights.c) + (v * weights.v);
+                    totalCount += (s + m + c + v);
+                    complexCount += (c + v);
+                }
+
+                // Apply Multipliers
+                const sourcePlatform = document.getElementById('currentDWH').value || 'other';
+                const platformMult = platformFactors[sourcePlatform] || 1.0;
+                
                 const avgMaturity = (
-                    parseInt(document.getElementById('teamMaturity').value) + 
-                    parseInt(document.getElementById('toolFamiliarity').value) + 
-                    parseInt(document.getElementById('infraConfig').value)
+                    getVal('teamMaturity') + 
+                    getVal('toolFamiliarity') + 
+                    getVal('infraConfig')
                 ) / 3;
-                
                 const maturityMult = 1.25 - ((avgMaturity - 1) * 0.1125);
-                const envMult = 0.8 + ((parseInt(document.getElementById('envComplexity').value) - 1) * 0.1125);
+                
+                const envComplexityVal = getVal('envComplexity');
+                const envMult = 0.8 + ((envComplexityVal - 1) * 0.1125);
 
-                const finalHours = Math.ceil(totalHours * maturityMult * envMult);
+                const manualTotalHours = Math.ceil(rawHours * platformMult * maturityMult * envMult);
+                const aiTotalHours = Math.ceil(manualTotalHours * 0.4); // 60% savings
 
-                document.getElementById('totalHoursDisplay').innerText = `${finalHours.toLocaleString()} Hours`;
+                // Duration (Standard Pod: 4 Technical FTEs @ 40hrs/wk = 160hrs/wk)
+                const weeklyVelocity = 160;
+                const manualWeeks = Math.ceil(manualTotalHours / weeklyVelocity);
+                const aiWeeks = Math.ceil(aiTotalHours / weeklyVelocity);
+
+                // Complexity Rating Logic
+                const density = totalCount > 0 ? (complexCount / totalCount) : 0;
+                const scoreMetric = manualTotalHours * (1 + density);
+                
+                let ratingText = "LOW";
+                let ratingColor = "text-green-700";
+                let barColor = "bg-green-600";
+                let barWidth = "25%";
+
+                if (scoreMetric > 25000) { 
+                    ratingText = "TRANSFORMATIONAL"; ratingColor = "text-red-900"; barColor = "bg-red-900"; barWidth = "100%"; 
+                } else if (scoreMetric > 10000) { 
+                    ratingText = "HIGH COMPLEXITY"; ratingColor = "text-red-600"; barColor = "bg-red-600"; barWidth = "75%"; 
+                } else if (scoreMetric > 2500) { 
+                    ratingText = "MODERATE"; ratingColor = "text-yellow-600"; barColor = "bg-yellow-500"; barWidth = "50%"; 
+                }
+
+                // Update UI
+                document.getElementById('manualHours').innerText = manualTotalHours.toLocaleString();
+                document.getElementById('manualDuration').innerText = manualWeeks;
+                document.getElementById('aiHours').innerText = aiTotalHours.toLocaleString();
+                document.getElementById('aiDuration').innerText = aiWeeks;
+                
+                const rText = document.getElementById('ratingText');
+                rText.innerText = ratingText;
+                rText.className = `text-2xl font-black my-2 ${ratingColor}`;
+                
+                const rFill = document.getElementById('ratingFill');
+                rFill.className = `h-full ${barColor}`;
+                rFill.style.width = barWidth;
+
                 resultModal.style.display = 'flex';
             }
 
             calculateBtn.addEventListener('click', calculateROM);
-            document.querySelector('.close-modal-btn').addEventListener('click', () => {
-                resultModal.style.display = 'none';
+            closeButtons.forEach(btn => btn.addEventListener('click', () => resultModal.style.display = 'none'));
+
+            // --- DATA PULL FROM ASSESSMENT (URL Params) ---
+            const params = new URLSearchParams(window.location.search);
+            
+            // Map URL params to Input IDs
+            const map = {
+                'etl_s': 'etl_simple', 'etl_m': 'etl_medium', 'etl_c': 'etl_complex',
+                'table_s': 'table_simple', 'script_s': 'script_simple', 'proc_s': 'proc_simple',
+                'source': 'currentDWH'
+            };
+
+            params.forEach((val, key) => {
+                const targetId = map[key];
+                if(targetId) {
+                    const el = document.getElementById(targetId);
+                    if(el) {
+                        el.value = val;
+                        el.style.backgroundColor = '#dbeafe'; // Blue highlight
+                        setTimeout(() => el.style.backgroundColor = 'white', 2500);
+                    }
+                }
             });
+
+            // Check for Report Data
+            const reportData = sessionStorage.getItem('lastAssessmentReport');
+            if (reportData) {
+                const data = JSON.parse(reportData);
+                if(data.project) document.getElementById('userName').value = data.project;
+                if(data.email) document.getElementById('clientEmail').value = data.email;
+            }
         });
     </script>
 </body>
