@@ -3,6 +3,7 @@
  * - Injects modal HTML into the page.
  * - Handles Open/Close logic globally.
  * - Manages Formspree submissions.
+ * - Supports Dynamic Images and Product Detection.
  */
 
 window.BlueprintModals = {
@@ -15,7 +16,7 @@ window.BlueprintModals = {
             <div class="relative bg-white p-2 border border-gray-200 shadow-xl w-full max-w-4xl rounded-none">
                 <button onclick="window.BlueprintModals.close('techArchModal')" class="absolute -top-3 -right-3 text-white bg-black hover:bg-gray-800 rounded-full w-8 h-8 flex items-center justify-center text-xl z-10">&times;</button>
                 <div class="w-full bg-white flex items-center justify-center overflow-hidden">
-                    <img src="Slide15.JPG" alt="Technical Architecture Diagram" class="w-full h-auto block">
+                    <img id="techArchImage" src="Slide15.JPG" alt="Technical Architecture Diagram" class="w-full h-auto block">
                 </div>
             </div>
         </div>
@@ -124,9 +125,21 @@ window.BlueprintModals = {
     // ============================================
     // 3. LOGIC HANDLERS (Open/Close)
     // ============================================
-    open(modalId) {
+    // UPDATED: Now accepts optional imageSrc to swap images dynamically
+    open(modalId, imageSrc = null) {
         const modal = document.getElementById(modalId);
         if (modal) {
+            // Logic for dynamic image swapping
+            if (modalId === 'techArchModal' && imageSrc) {
+                const img = document.getElementById('techArchImage');
+                if (img) img.src = imageSrc;
+            }
+            // Logic for dynamic product titles in contact form
+            if (modalId === 'contactSalesModal') {
+                const titleField = document.getElementById('hiddenPageTitle');
+                if(titleField) titleField.value = document.title;
+            }
+
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden'; 
         } else {
@@ -159,11 +172,26 @@ window.BlueprintModals = {
             });
 
             proceedBtn.addEventListener('click', () => {
+                // UPDATED: Smart Product Detection
+                const pageTitle = document.title.toLowerCase();
+                let product = { 
+                    id: 'ciq-1', 
+                    title: 'CampaignIQ - Single User', 
+                    price: 1000 
+                }; // Default
+
+                if (pageTitle.includes("sap")) {
+                    product = { id: 'sap-wc-1', title: 'SAP Working Capital - Single User', price: 1000 };
+                } else if (pageTitle.includes("promotion")) {
+                    product = { id: 'promo-1', title: 'PromotionIQ - Single User', price: 1000 };
+                }
+                // Add more conditions here as you add pages
+
                 if (typeof Cart !== 'undefined') {
                     Cart.add({ 
-                        id: 'ciq-1', 
-                        title: 'CampaignIQ - Single User', 
-                        price: 1000, 
+                        id: product.id, 
+                        title: product.title, 
+                        price: product.price, 
                         type: 'Software', 
                         billing: 'monthly' 
                     });
