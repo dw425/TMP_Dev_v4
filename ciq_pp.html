@@ -19,6 +19,7 @@
     <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
 
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
         <header class="mb-10">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-2">CampaignIQ</h1>
             <p class="text-lg text-blueprint-blue font-medium">
@@ -27,6 +28,7 @@
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-10 gap-12">
+            
             <div class="lg:col-span-7 space-y-10">
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -71,6 +73,7 @@
 
             <aside class="lg:col-span-3">
                 <div class="sticky top-28 space-y-8">
+                    
                     <div class="sharp-card p-6">
                         <h3 class="text-xs font-bold uppercase tracking-widest text-blueprint-blue mb-6">Launch Pricing</h3>
                         <div class="space-y-6">
@@ -82,6 +85,7 @@
                                     Add to Cart
                                 </button>
                             </div>
+                            
                             <div class="space-y-4">
                                 <div>
                                     <h4 class="text-md font-bold text-gray-900">Team Account</h4>
@@ -149,11 +153,21 @@
     <div id="contactSalesModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
         <div class="bg-white shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col border-t-8 border-black rounded-none">
             <header class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-gray-900">Contact Sales</h2>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Contact Sales</h2>
+                    <p class="text-xs text-gray-500 mt-1 font-medium">
+                        Call us at <a href="tel:2064558326" class="text-blueprint-blue hover:underline">(206) 455-8326</a> 
+                        or email <a href="mailto:Info@bpcs.com" class="text-blueprint-blue hover:underline">Info@bpcs.com</a>
+                    </p>
+                </div>
                 <button data-close-button class="text-gray-400 hover:text-gray-900 text-2xl">&times;</button>
             </header>
-            <form id="contactSalesForm" action="https://formspree.io/f/xjkavwle" method="POST" class="p-8 space-y-4">
+            
+            <form id="contactSalesForm" action="https://formspree.io/f/mgozdqkj" method="POST" class="p-8 space-y-4">
                  <input type="hidden" name="form_subject" value="New Sales Inquiry from CIQ Page">
+                 
+                 <input type="hidden" name="product_page" id="hiddenPageTitle" value="">
+
                  <div>
                      <label for="contactFullName" class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
                      <input type="text" id="contactFullName" name="fullName" required class="w-full border border-gray-300 p-3 focus:border-blueprint-blue">
@@ -203,7 +217,7 @@
             const checklistItems = amIReadyModal.querySelectorAll('.checklist-item');
             const contactSalesForm = document.getElementById('contactSalesForm');
 
-            // Modal Controls
+            // --- Modal Controls ---
             const showModal = (modal) => {
                 if (!modal) return;
                 modal.classList.remove('hidden');
@@ -218,19 +232,18 @@
                 }
             };
             
-            // Checklist Validation
+            // --- Checklist Validation ---
             const validateChecklist = () => {
                 const allChecked = Array.from(checklistItems).every(item => item.checked);
                 proceedToCartBtn.disabled = !allChecked;
             };
 
-            // Triggers
+            // --- Event Listeners ---
             amIReadyBtn.addEventListener('click', () => showModal(amIReadyModal));
             checklistItems.forEach(item => item.addEventListener('change', validateChecklist));
             
-            // Proceed to Cart from Modal
+            // Proceed to Cart Logic
             proceedToCartBtn.addEventListener('click', () => {
-                // Add the item to cart automatically on success
                 Cart.add({ id: 'ciq-1', title: 'CampaignIQ - Single User', price: 1000, type: 'Software', billing: 'monthly' });
                 closeModal(amIReadyModal);
             });
@@ -244,17 +257,50 @@
                 btn.addEventListener('click', () => showModal(contactSalesModal));
             });
 
-            // Contact Form Logic
+            // --- Contact Form Submission Logic (Fixed) ---
             if (contactSalesForm) {
                 contactSalesForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    closeModal(contactSalesModal);
-                    contactSalesForm.reset();
-                    showModal(messageSentModal);
+                    e.preventDefault(); // Stop page reload
+                    
+                    // 1. Scrape Page Title for Context
+                    document.getElementById('hiddenPageTitle').value = document.title;
+
+                    // 2. Prepare Data
+                    const formData = new FormData(contactSalesForm);
+                    const btn = contactSalesForm.querySelector('button[type="submit"]');
+                    const originalText = btn.innerText;
+                    
+                    // 3. UI Feedback
+                    btn.innerText = "Sending...";
+                    btn.disabled = true;
+
+                    try {
+                        const response = await fetch(contactSalesForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            closeModal(contactSalesModal);
+                            contactSalesForm.reset();
+                            showModal(messageSentModal);
+                        } else {
+                            alert("Oops! There was a problem submitting your form. Please try again.");
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert("Oops! There was a network problem. Please check your connection.");
+                    } finally {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }
                 });
             }
 
-            // Universal Close
+            // --- Universal Close Handlers ---
             document.querySelectorAll('[data-close-button]').forEach(button => {
                 button.addEventListener('click', () => {
                     const modal = button.closest('.fixed.z-50');
