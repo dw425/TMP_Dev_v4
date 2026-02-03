@@ -118,7 +118,15 @@
             background: rgba(0, 0, 0, 0.8); display: none;
             align-items: center; justify-content: center; z-index: 1000;
             backdrop-filter: blur(4px);
+            opacity: 0; visibility: hidden; transition: opacity 0.3s;
         }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        
+        .modal-content {
+            background: white; border-radius: 0px; 
+            transform: scale(0.95); transition: transform 0.3s;
+        }
+        .modal-overlay.visible .modal-content { transform: scale(1); }
     </style>
 </head>
 <body class="antialiased">
@@ -138,16 +146,17 @@
                 <div class="section-header">1. Organization & Tech Stack</div>
                 <div class="section-content">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                        <div><label>Project Name</label><input type="text" id="userName"></div>
-                        <div><label>Company</label><input type="text" id="companyName"></div>
-                        <div><label>Email</label><input type="email" id="clientEmail"></div>
+                        <div><label>Project Name</label><input type="text" id="userName" name="projectName"></div>
+                        <div><label>Company</label><input type="text" id="companyName" name="companyName"></div>
+                        <div><label>Email</label><input type="email" id="clientEmail" name="clientEmail" required></div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label>Current Platform</label>
-                            <select id="currentDWH">
+                            <select id="currentDWH" name="currentPlatform">
                                 <option value="" disabled selected>Select Source...</option>
-                                <option value="gcp">Google Cloud (GCP)</option> <option value="snowflake">Snowflake</option>
+                                <option value="gcp">Google Cloud (GCP)</option>
+                                <option value="snowflake">Snowflake</option>
                                 <option value="synapse">Azure Synapse</option>
                                 <option value="databricks">Databricks Legacy</option>
                                 <option value="sqlserver">SQL Server</option>
@@ -161,7 +170,7 @@
                         </div>
                         <div>
                             <label>Target Cloud</label>
-                            <select id="cloudStack">
+                            <select id="cloudStack" name="targetCloud">
                                 <option value="" disabled selected>Select Target...</option>
                                 <option value="azure">Microsoft Azure</option>
                                 <option value="aws">AWS</option>
@@ -189,31 +198,31 @@
                         <tbody>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">Tables</td>
-                                <td class="p-4"><input type="number" id="table_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="table_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="table_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="table_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_simple" name="table_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_medium" name="table_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_complex" name="table_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="table_vcomplex" name="table_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">Views</td>
-                                <td class="p-4"><input type="number" id="view_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="view_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="view_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="view_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_simple" name="view_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_medium" name="view_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_complex" name="view_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="view_vcomplex" name="view_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">Stored Procs</td>
-                                <td class="p-4"><input type="number" id="proc_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="proc_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="proc_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="proc_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_simple" name="proc_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_medium" name="proc_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_complex" name="proc_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="proc_vcomplex" name="proc_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr>
                                 <td class="p-4 font-bold">Functions</td>
-                                <td class="p-4"><input type="number" id="func_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="func_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="func_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="func_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_simple" name="func_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_medium" name="func_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_complex" name="func_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="func_vcomplex" name="func_vcomplex" placeholder="0"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -236,24 +245,24 @@
                         <tbody>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">ETL Pipelines</td>
-                                <td class="p-4"><input type="number" id="etl_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="etl_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="etl_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="etl_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_simple" name="etl_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_medium" name="etl_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_complex" name="etl_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="etl_vcomplex" name="etl_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">Scripts</td>
-                                <td class="p-4"><input type="number" id="script_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="script_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="script_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="script_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_simple" name="script_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_medium" name="script_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_complex" name="script_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="script_vcomplex" name="script_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr>
                                 <td class="p-4 font-bold">Orchestration</td>
-                                <td class="p-4"><input type="number" id="orch_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="orch_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="orch_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="orch_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_simple" name="orch_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_medium" name="orch_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_complex" name="orch_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="orch_vcomplex" name="orch_vcomplex" placeholder="0"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -276,24 +285,24 @@
                         <tbody>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">BI Dashboards</td>
-                                <td class="p-4"><input type="number" id="bi_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="bi_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="bi_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="bi_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_simple" name="bi_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_medium" name="bi_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_complex" name="bi_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="bi_vcomplex" name="bi_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr class="border-b">
                                 <td class="p-4 font-bold">Excel Sheets</td>
-                                <td class="p-4"><input type="number" id="excel_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="excel_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="excel_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="excel_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_simple" name="excel_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_medium" name="excel_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_complex" name="excel_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="excel_vcomplex" name="excel_vcomplex" placeholder="0"></td>
                             </tr>
                             <tr>
                                 <td class="p-4 font-bold">Reports</td>
-                                <td class="p-4"><input type="number" id="report_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="report_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="report_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="report_vcomplex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_simple" name="report_simple" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_medium" name="report_medium" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_complex" name="report_complex" placeholder="0"></td>
+                                <td class="p-4"><input type="number" id="report_vcomplex" name="report_vcomplex" placeholder="0"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -307,22 +316,22 @@
                     <div class="score-grid">
                         <div class="range-container">
                             <label>Team Expertise</label>
-                            <input type="range" id="teamMaturity" min="1" max="5" value="3">
+                            <input type="range" id="teamMaturity" name="teamMaturity" min="1" max="5" value="3">
                             <div class="range-labels"><span>1 (Novice)</span><span>3</span><span>5 (Expert)</span></div>
                         </div>
                         <div class="range-container">
                             <label>Tool Familiarity</label>
-                            <input type="range" id="toolFamiliarity" min="1" max="5" value="3">
+                            <input type="range" id="toolFamiliarity" name="toolFamiliarity" min="1" max="5" value="3">
                             <div class="range-labels"><span>1 (Low)</span><span>3</span><span>5 (High)</span></div>
                         </div>
                         <div class="range-container">
                             <label>Infrastructure Config</label>
-                            <input type="range" id="infraConfig" min="1" max="5" value="3">
+                            <input type="range" id="infraConfig" name="infraConfig" min="1" max="5" value="3">
                             <div class="range-labels"><span>1 (Manual)</span><span>3</span><span>5 (IaC)</span></div>
                         </div>
                         <div class="range-container">
                             <label>Env. Complexity</label>
-                            <input type="range" id="envComplexity" min="1" max="5" value="3">
+                            <input type="range" id="envComplexity" name="envComplexity" min="1" max="5" value="3">
                             <div class="range-labels"><span>1 (Simple)</span><span>3</span><span>5 (Chaotic)</span></div>
                         </div>
                     </div>
@@ -336,7 +345,7 @@
     </main>
 
     <div id="resultModal" class="modal-overlay">
-        <div class="bg-white p-10 max-w-4xl w-full shadow-2xl relative border-t-8 border-blueprint-blue">
+        <div class="modal-content bg-white p-10 max-w-4xl w-full shadow-2xl relative border-t-8 border-blueprint-blue">
             <div class="absolute top-4 right-4">
                 <button class="close-modal text-3xl font-bold text-gray-400 hover:text-gray-600">&times;</button>
             </div>
@@ -374,9 +383,20 @@
             </div>
 
             <div class="flex justify-center gap-4">
-                <button class="close-modal px-6 py-3 border border-gray-300 font-bold text-gray-600 hover:bg-gray-50 transition-colors">Close Report</button>
-                <a href="https://bpcs.com/contact" class="bg-blueprint-blue text-white px-8 py-3 font-bold hover:bg-blue-800 transition-colors shadow-sm">Request Detailed Proposal</a>
+                <button class="close-modal px-6 py-3 border border-gray-300 font-bold text-gray-600 hover:bg-gray-50 transition-colors">Adjust Inputs</button>
+                <button type="button" id="requestProposalBtn" class="bg-blueprint-blue text-white px-8 py-3 font-bold hover:bg-blue-800 transition-colors shadow-sm">Request Detailed Proposal</button>
             </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content bg-white p-12 max-w-lg w-full shadow-2xl text-center">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
+                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Details Sent!</h2>
+            <p class="text-gray-600 mb-8 leading-relaxed">Thank you for submitting your assessment. Our team has received your migration inventory and ROM estimate. We will review the details and be in contact shortly.</p>
+            <button class="close-success-btn bg-blueprint-blue text-white px-8 py-3 font-bold hover:bg-blue-800 transition-colors w-full">Close</button>
         </div>
     </div>
 
@@ -389,7 +409,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             const calculateBtn = document.getElementById('calculateBtn');
             const resultModal = document.getElementById('resultModal');
+            const successModal = document.getElementById('successModal');
             const closeButtons = document.querySelectorAll('.close-modal');
+            const closeSuccessBtn = document.querySelector('.close-success-btn');
+            const requestProposalBtn = document.getElementById('requestProposalBtn');
 
             // --- BENCHMARKS (Hours per object) ---
             const benchmarks = {
@@ -485,16 +508,15 @@
                 rFill.className = `h-full ${barColor}`;
                 rFill.style.width = barWidth;
 
-                resultModal.style.display = 'flex';
+                resultModal.classList.add('visible');
             }
 
             calculateBtn.addEventListener('click', calculateROM);
-            closeButtons.forEach(btn => btn.addEventListener('click', () => resultModal.style.display = 'none'));
+            closeButtons.forEach(btn => btn.addEventListener('click', () => resultModal.classList.remove('visible')));
+            closeSuccessBtn.addEventListener('click', () => successModal.classList.remove('visible'));
 
             // --- DATA PULL FROM ASSESSMENT (URL Params) ---
             const params = new URLSearchParams(window.location.search);
-            
-            // Map URL params to Input IDs
             const map = {
                 'etl_s': 'etl_simple', 'etl_m': 'etl_medium', 'etl_c': 'etl_complex',
                 'table_s': 'table_simple', 'script_s': 'script_simple', 'proc_s': 'proc_simple',
@@ -507,7 +529,7 @@
                     const el = document.getElementById(targetId);
                     if(el) {
                         el.value = val;
-                        el.style.backgroundColor = '#dbeafe'; // Blue highlight
+                        el.style.backgroundColor = '#dbeafe'; 
                         setTimeout(() => el.style.backgroundColor = 'white', 2500);
                     }
                 }
@@ -520,6 +542,59 @@
                 if(data.project) document.getElementById('userName').value = data.project;
                 if(data.email) document.getElementById('clientEmail').value = data.email;
             }
+
+            // --- SUBMISSION LOGIC ---
+            requestProposalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Change button state
+                const originalText = requestProposalBtn.innerText;
+                requestProposalBtn.innerText = 'Sending...';
+                requestProposalBtn.disabled = true;
+
+                // 1. Gather all form inputs
+                const formData = new FormData();
+                
+                // Add Session Data (Qualitative)
+                if(reportData) {
+                    const sessionData = JSON.parse(reportData);
+                    for(const key in sessionData) {
+                        formData.append(`Assessment_${key}`, sessionData[key]);
+                    }
+                }
+
+                // Add Current Form Data (Quantitative)
+                document.querySelectorAll('#romForm input, #romForm select').forEach(input => {
+                    if (input.value && input.value !== "0") {
+                        formData.append(input.id || input.name, input.value);
+                    }
+                });
+
+                // Add Calculated Results
+                formData.append('Calculated_Manual_Hours', document.getElementById('manualHours').innerText);
+                formData.append('Calculated_Accelerated_Hours', document.getElementById('aiHours').innerText);
+                formData.append('Calculated_Complexity', document.getElementById('ratingText').innerText);
+
+                // 2. Send to Formspree
+                fetch('https://formspree.io/f/mnnoelgb', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                }).then(response => {
+                    if (response.ok) {
+                        resultModal.classList.remove('visible');
+                        successModal.classList.add('visible');
+                    } else {
+                        alert('There was an issue sending your data. Please try again.');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Network error. Please try again.');
+                }).finally(() => {
+                    requestProposalBtn.innerText = originalText;
+                    requestProposalBtn.disabled = false;
+                });
+            });
         });
     </script>
 </body>
