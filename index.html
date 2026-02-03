@@ -185,6 +185,22 @@
                 link: 'churn_iq.html'
             },
             { 
+                id: 1, 
+                assetType: 'tool', 
+                title: 'Lakehouse Optimizer', 
+                description: 'Control costs, optimize architecture, and forecast value. Stop the "cost management whipsaw" and ensure financial accountability for your Databricks commitment.', 
+                tags: ['FinOps', 'Optimization', 'Databricks'], 
+                categories: ['accelerators', 'demos', 'migration-tools'], 
+                pricing: { 
+                    subscription: { monthly: 1000, annual: 10000 }, 
+                    payg: 'Contact Sales for Team/Enterprise', 
+                    byol: true 
+                }, 
+                prerequisites: 'Deploys directly into your Databricks environment (Azure, AWS, or GCP). Contact us for setup assistance.',
+                videoUrl: 'https://www.youtube.com/embed/OREruNWafPE', 
+                link: 'lho.html' 
+            },
+            { 
                 id: 20, 
                 assetType: 'tool', 
                 title: 'The Blueprint Data Migration Suite', 
@@ -212,20 +228,6 @@
                 tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
                 categories: ['accelerators'], 
                 videoUrl: '' 
-            },
-            { 
-                id: 1, 
-                assetType: 'tool', 
-                title: 'Lakehouse Optimizer', 
-                description: 'A cutting-edge tool that observes & monitors Databricks environments, identifies issues in data pipelines, and provides intelligent recommendations to improve performance and reduce cloud costs.', 
-                tags: ['FinOps', 'Optimization', 'Databricks'], 
-                categories: ['accelerators', 'demos', 'migration-tools'], 
-                pricing: { 
-                    subscription: { monthly: 0, annual: 0 }, 
-                    payg: 'Contact Us Today', 
-                    byol: true 
-                }, 
-                prerequisites: 'Deploys directly into your Databricks environment (Azure, AWS, or GCP). Contact us for setup assistance.' 
             }
         ];
         
@@ -336,7 +338,7 @@
 
             let overviewContentForTool;
             // Enhanced overview content logic for new items
-            if ([15, 13, 16, 17, 18, 20].includes(item.id)) {
+            if ([15, 13, 16, 17, 18, 20, 1].includes(item.id)) {
                  overviewContentForTool = `
                  <h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Solution Overview</h5>
                  <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
@@ -374,8 +376,8 @@
                 </div>
             </div>`;
 
-            // Updated pricing check for new products
-            if ([15, 16, 17, 18].includes(item.id)) {
+            // Updated pricing check for new products (added ID 1 for LHO)
+            if ([15, 16, 17, 18, 1].includes(item.id)) {
                  pricingContent = `<div id="tab-pricing" class="tab-content hidden animate-fadeIn">
                         <h5 class="font-bold text-sm uppercase tracking-wide mb-6">Pricing Models</h5>
                         <div class="grid gap-4">
