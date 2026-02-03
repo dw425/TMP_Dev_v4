@@ -6,129 +6,77 @@
     <title>Comprehensive Migration ROM Calculator | Blueprint Migration</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="cart.css">
 
     <style>
         /* --- HIGH CONTRAST BRANDING --- */
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: #f3f4f6;
-            color: #111827; /* Deep Black Text */
+        body { font-family: 'DM Sans', sans-serif; background-color: #f3f4f6; color: #111827; }
+        
+        .calc-container { 
+            background: white; 
+            border: 1px solid #d1d5db; 
+            border-radius: 0px !important; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            margin-bottom: 2rem; 
         }
-
-        .calc-container {
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 0px !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+        
+        .section-header { 
+            background-color: #1d4ed8; 
+            color: white; 
+            padding: 12px 25px; 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
         }
-
-        .section-header {
-            background-color: #1d4ed8; /* Blueprint Blue */
-            color: white;
-            padding: 12px 25px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        
+        .section-content { padding: 25px; }
+        
+        .matrix-header { 
+            font-weight: 800; 
+            color: #374151; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            border-bottom: 2px solid #e5e7eb; 
+            background-color: #f9fafb; 
         }
-
-        .section-content {
-            padding: 25px;
+        
+        /* Inputs */
+        label { display: block; margin-bottom: 6px; font-weight: 700; color: #1f2937; font-size: 0.9rem; }
+        input[type="text"], input[type="email"], select { 
+            width: 100%; padding: 10px; border: 1px solid #9ca3af; border-radius: 0px !important; 
+            font-size: 0.95rem; color: #000000; background-color: white; 
         }
-
-        .matrix-header {
-            font-weight: 800;
-            color: #374151;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            border-bottom: 2px solid #e5e7eb;
-            background-color: #f9fafb;
+        input[type="number"] { 
+            width: 100%; padding: 8px; border: 1px solid #9ca3af; border-radius: 0px !important; 
+            text-align: center; font-weight: 600; color: #000000; 
         }
-
-        /* Form Inputs */
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 700;
-            color: #1f2937;
-            font-size: 0.9rem;
-        }
-
-        input[type="text"], input[type="email"], select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #9ca3af;
-            border-radius: 0px !important;
-            font-size: 0.95rem;
-            color: #000000;
-            background-color: white;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #9ca3af;
-            border-radius: 0px !important;
-            text-align: center;
-            font-weight: 600;
-            color: #000000;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #1d4ed8;
-            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
-        }
-
-        /* Complexity Sliders */
+        input:focus, select:focus { outline: none; border-color: #1d4ed8; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2); }
+        
+        /* Sliders */
         .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
         .range-container { position: relative; padding-bottom: 20px; }
         input[type="range"] { width: 100%; cursor: pointer; accent-color: #1d4ed8; }
         .range-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: #4b5563; font-weight: 800; }
-
-        .btn-calc {
-            background-color: #1d4ed8;
-            color: white;
-            padding: 15px 40px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-radius: 0px !important;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
+        
+        /* Buttons */
+        .btn-calc { 
+            background-color: #1d4ed8; color: white; padding: 15px 40px; font-weight: 800; 
+            text-transform: uppercase; letter-spacing: 0.05em; border-radius: 0px !important; 
+            transition: all 0.2s; cursor: pointer; border: none; 
         }
-        .btn-calc:hover {
-            background-color: #1e40af;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Modal Logic (Fixed) */
+        .btn-calc:hover { background-color: #1e40af; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        
+        /* Modal Logic */
         .modal-overlay {
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); 
-            display: none; /* Hidden by default */
-            align-items: center; justify-content: center; 
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); display: none;
+            align-items: center; justify-content: center; z-index: 1000;
             backdrop-filter: blur(4px);
         }
-        
-        .modal-content {
-            background: white; 
-            border-radius: 0px; 
-            width: 90%;
-            max-width: 900px;
-        }
+        .modal-content { background: white; border-radius: 0px; width: 90%; max-width: 900px; }
     </style>
 </head>
 <body class="antialiased">
@@ -136,20 +84,18 @@
     <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
 
     <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
         <div class="mb-10 border-b border-gray-200 pb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Comprehensive Migration ROM Calculator</h1>
             <p class="text-lg text-gray-600 font-medium">Inventory your environment and assess maturity to generate a Rough Order of Magnitude (ROM) estimate.</p>
         </div>
 
         <form id="romForm">
-            
             <div class="calc-container">
                 <div class="section-header">1. Organization & Tech Stack</div>
                 <div class="section-content">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div><label>Project Name</label><input type="text" id="userName" name="projectName"></div>
-                        <div><label>Company</label><input type="text" id="companyName" name="companyName"></div>
+                        <div><label>Primary Stakeholder</label><input type="text" id="companyName" name="companyName"></div>
                         <div><label>Email</label><input type="email" id="clientEmail" name="clientEmail" required></div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -198,34 +144,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">Tables</td>
-                                <td class="p-4"><input type="number" id="table_simple" name="table_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="table_medium" name="table_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="table_complex" name="table_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="table_vcomplex" name="table_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">Views</td>
-                                <td class="p-4"><input type="number" id="view_simple" name="view_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="view_medium" name="view_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="view_complex" name="view_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="view_vcomplex" name="view_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">Stored Procs</td>
-                                <td class="p-4"><input type="number" id="proc_simple" name="proc_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="proc_medium" name="proc_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="proc_complex" name="proc_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="proc_vcomplex" name="proc_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-bold">Functions</td>
-                                <td class="p-4"><input type="number" id="func_simple" name="func_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="func_medium" name="func_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="func_complex" name="func_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="func_vcomplex" name="func_vcomplex" placeholder="0"></td>
-                            </tr>
+                            <tr class="border-b"><td class="p-4 font-bold">Tables</td><td class="p-4"><input type="number" id="table_simple" name="table_simple" placeholder="0"></td><td class="p-4"><input type="number" id="table_medium" name="table_medium" placeholder="0"></td><td class="p-4"><input type="number" id="table_complex" name="table_complex" placeholder="0"></td><td class="p-4"><input type="number" id="table_vcomplex" name="table_vcomplex" placeholder="0"></td></tr>
+                            <tr class="border-b"><td class="p-4 font-bold">Views</td><td class="p-4"><input type="number" id="view_simple" name="view_simple" placeholder="0"></td><td class="p-4"><input type="number" id="view_medium" name="view_medium" placeholder="0"></td><td class="p-4"><input type="number" id="view_complex" name="view_complex" placeholder="0"></td><td class="p-4"><input type="number" id="view_vcomplex" name="view_vcomplex" placeholder="0"></td></tr>
+                            <tr class="border-b"><td class="p-4 font-bold">Stored Procs</td><td class="p-4"><input type="number" id="proc_simple" name="proc_simple" placeholder="0"></td><td class="p-4"><input type="number" id="proc_medium" name="proc_medium" placeholder="0"></td><td class="p-4"><input type="number" id="proc_complex" name="proc_complex" placeholder="0"></td><td class="p-4"><input type="number" id="proc_vcomplex" name="proc_vcomplex" placeholder="0"></td></tr>
+                            <tr><td class="p-4 font-bold">Functions</td><td class="p-4"><input type="number" id="func_simple" name="func_simple" placeholder="0"></td><td class="p-4"><input type="number" id="func_medium" name="func_medium" placeholder="0"></td><td class="p-4"><input type="number" id="func_complex" name="func_complex" placeholder="0"></td><td class="p-4"><input type="number" id="func_vcomplex" name="func_vcomplex" placeholder="0"></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -245,27 +167,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">ETL Pipelines</td>
-                                <td class="p-4"><input type="number" id="etl_simple" name="etl_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="etl_medium" name="etl_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="etl_complex" name="etl_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="etl_vcomplex" name="etl_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">Scripts</td>
-                                <td class="p-4"><input type="number" id="script_simple" name="script_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="script_medium" name="script_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="script_complex" name="script_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="script_vcomplex" name="script_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-bold">Orchestration</td>
-                                <td class="p-4"><input type="number" id="orch_simple" name="orch_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="orch_medium" name="orch_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="orch_complex" name="orch_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="orch_vcomplex" name="orch_vcomplex" placeholder="0"></td>
-                            </tr>
+                            <tr class="border-b"><td class="p-4 font-bold">ETL Pipelines</td><td class="p-4"><input type="number" id="etl_simple" name="etl_simple" placeholder="0"></td><td class="p-4"><input type="number" id="etl_medium" name="etl_medium" placeholder="0"></td><td class="p-4"><input type="number" id="etl_complex" name="etl_complex" placeholder="0"></td><td class="p-4"><input type="number" id="etl_vcomplex" name="etl_vcomplex" placeholder="0"></td></tr>
+                            <tr class="border-b"><td class="p-4 font-bold">Scripts</td><td class="p-4"><input type="number" id="script_simple" name="script_simple" placeholder="0"></td><td class="p-4"><input type="number" id="script_medium" name="script_medium" placeholder="0"></td><td class="p-4"><input type="number" id="script_complex" name="script_complex" placeholder="0"></td><td class="p-4"><input type="number" id="script_vcomplex" name="script_vcomplex" placeholder="0"></td></tr>
+                            <tr><td class="p-4 font-bold">Orchestration</td><td class="p-4"><input type="number" id="orch_simple" name="orch_simple" placeholder="0"></td><td class="p-4"><input type="number" id="orch_medium" name="orch_medium" placeholder="0"></td><td class="p-4"><input type="number" id="orch_complex" name="orch_complex" placeholder="0"></td><td class="p-4"><input type="number" id="orch_vcomplex" name="orch_vcomplex" placeholder="0"></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -285,27 +189,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">BI Dashboards</td>
-                                <td class="p-4"><input type="number" id="bi_simple" name="bi_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="bi_medium" name="bi_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="bi_complex" name="bi_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="bi_vcomplex" name="bi_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-4 font-bold">Excel Sheets</td>
-                                <td class="p-4"><input type="number" id="excel_simple" name="excel_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="excel_medium" name="excel_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="excel_complex" name="excel_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="excel_vcomplex" name="excel_vcomplex" placeholder="0"></td>
-                            </tr>
-                            <tr>
-                                <td class="p-4 font-bold">Reports</td>
-                                <td class="p-4"><input type="number" id="report_simple" name="report_simple" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="report_medium" name="report_medium" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="report_complex" name="report_complex" placeholder="0"></td>
-                                <td class="p-4"><input type="number" id="report_vcomplex" name="report_vcomplex" placeholder="0"></td>
-                            </tr>
+                            <tr class="border-b"><td class="p-4 font-bold">BI Dashboards</td><td class="p-4"><input type="number" id="bi_simple" name="bi_simple" placeholder="0"></td><td class="p-4"><input type="number" id="bi_medium" name="bi_medium" placeholder="0"></td><td class="p-4"><input type="number" id="bi_complex" name="bi_complex" placeholder="0"></td><td class="p-4"><input type="number" id="bi_vcomplex" name="bi_vcomplex" placeholder="0"></td></tr>
+                            <tr class="border-b"><td class="p-4 font-bold">Excel Sheets</td><td class="p-4"><input type="number" id="excel_simple" name="excel_simple" placeholder="0"></td><td class="p-4"><input type="number" id="excel_medium" name="excel_medium" placeholder="0"></td><td class="p-4"><input type="number" id="excel_complex" name="excel_complex" placeholder="0"></td><td class="p-4"><input type="number" id="excel_vcomplex" name="excel_vcomplex" placeholder="0"></td></tr>
+                            <tr><td class="p-4 font-bold">Reports</td><td class="p-4"><input type="number" id="report_simple" name="report_simple" placeholder="0"></td><td class="p-4"><input type="number" id="report_medium" name="report_medium" placeholder="0"></td><td class="p-4"><input type="number" id="report_complex" name="report_complex" placeholder="0"></td><td class="p-4"><input type="number" id="report_vcomplex" name="report_vcomplex" placeholder="0"></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -316,26 +202,10 @@
                 <div class="section-content">
                     <p class="text-sm font-bold text-gray-500 mb-8 uppercase tracking-wide">Rate your environment (1=Low/Novice, 5=High/Expert)</p>
                     <div class="score-grid">
-                        <div class="range-container">
-                            <label>Team Expertise</label>
-                            <input type="range" id="teamMaturity" name="teamMaturity" min="1" max="5" value="3">
-                            <div class="range-labels"><span>1 (Novice)</span><span>3</span><span>5 (Expert)</span></div>
-                        </div>
-                        <div class="range-container">
-                            <label>Tool Familiarity</label>
-                            <input type="range" id="toolFamiliarity" name="toolFamiliarity" min="1" max="5" value="3">
-                            <div class="range-labels"><span>1 (Low)</span><span>3</span><span>5 (High)</span></div>
-                        </div>
-                        <div class="range-container">
-                            <label>Infrastructure Config</label>
-                            <input type="range" id="infraConfig" name="infraConfig" min="1" max="5" value="3">
-                            <div class="range-labels"><span>1 (Manual)</span><span>3</span><span>5 (IaC)</span></div>
-                        </div>
-                        <div class="range-container">
-                            <label>Env. Complexity</label>
-                            <input type="range" id="envComplexity" name="envComplexity" min="1" max="5" value="3">
-                            <div class="range-labels"><span>1 (Simple)</span><span>3</span><span>5 (Chaotic)</span></div>
-                        </div>
+                        <div class="range-container"><label>Team Expertise</label><input type="range" id="teamMaturity" name="teamMaturity" min="1" max="5" value="3"><div class="range-labels"><span>1 (Novice)</span><span>3</span><span>5 (Expert)</span></div></div>
+                        <div class="range-container"><label>Tool Familiarity</label><input type="range" id="toolFamiliarity" name="toolFamiliarity" min="1" max="5" value="3"><div class="range-labels"><span>1 (Low)</span><span>3</span><span>5 (High)</span></div></div>
+                        <div class="range-container"><label>Infrastructure Config</label><input type="range" id="infraConfig" name="infraConfig" min="1" max="5" value="3"><div class="range-labels"><span>1 (Manual)</span><span>3</span><span>5 (IaC)</span></div></div>
+                        <div class="range-container"><label>Env. Complexity</label><input type="range" id="envComplexity" name="envComplexity" min="1" max="5" value="3"><div class="range-labels"><span>1 (Simple)</span><span>3</span><span>5 (Chaotic)</span></div></div>
                     </div>
                 </div>
             </div>
@@ -347,7 +217,7 @@
     </main>
 
     <div id="resultModal" class="modal-overlay">
-        <div class="modal-content bg-white p-10 shadow-2xl relative border-t-8 border-blueprint-blue mx-auto">
+        <div class="modal-content bg-white p-10 shadow-2xl relative border-t-8 border-blueprint-blue mx-auto mt-20">
             <div class="absolute top-4 right-4">
                 <button class="close-modal text-3xl font-bold text-gray-400 hover:text-gray-600">&times;</button>
             </div>
@@ -392,7 +262,7 @@
     </div>
 
     <div id="successModal" class="modal-overlay">
-        <div class="modal-content bg-white p-12 max-w-lg w-full shadow-2xl text-center mx-auto">
+        <div class="modal-content bg-white p-12 max-w-lg w-full shadow-2xl text-center mx-auto mt-32">
             <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
                 <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </div>
@@ -416,7 +286,36 @@
             const closeSuccessBtn = document.querySelector('.close-success-btn');
             const requestProposalBtn = document.getElementById('requestProposalBtn');
 
-            // --- BENCHMARKS (Hours per object) ---
+            // 1. DATA PULL FROM SESSION (Fixing the missing Name/Email)
+            const reportData = sessionStorage.getItem('lastAssessmentReport');
+            if (reportData) {
+                const data = JSON.parse(reportData);
+                // Correct mapping from gcp.html keys to calc.html IDs
+                if(data.project) document.getElementById('userName').value = data.project; 
+                if(data.stakeholder) document.getElementById('companyName').value = data.stakeholder;
+                if(data.email) document.getElementById('clientEmail').value = data.email;
+            }
+
+            // 2. DATA PULL FROM URL (Inventory)
+            const params = new URLSearchParams(window.location.search);
+            const map = {
+                'etl_simple': 'etl_simple', 'etl_medium': 'etl_medium', 'etl_complex': 'etl_complex', 'etl_vcomplex': 'etl_vcomplex',
+                'table_simple': 'table_simple', 'table_medium': 'table_medium',
+                'script_simple': 'script_simple', 'script_medium': 'script_medium', 'script_complex': 'script_complex',
+                'source': 'currentDWH'
+            };
+
+            params.forEach((val, key) => {
+                const targetId = map[key] || key; 
+                const el = document.getElementById(targetId);
+                if(el) {
+                    el.value = val;
+                    el.style.backgroundColor = '#dbeafe'; 
+                    setTimeout(() => el.style.backgroundColor = 'white', 2500);
+                }
+            });
+
+            // 3. CALCULATION LOGIC
             const benchmarks = {
                 table: { s: 2, m: 6, c: 16, v: 40 },
                 view: { s: 2, m: 8, c: 24, v: 40 },
@@ -445,7 +344,6 @@
                 let totalCount = 0;
                 let complexCount = 0;
 
-                // Loop through all categories and sum hours
                 for (const [cat, weights] of Object.entries(benchmarks)) {
                     const s = getVal(`${cat}_simple`);
                     const m = getVal(`${cat}_medium`);
@@ -457,50 +355,34 @@
                     complexCount += (c + v);
                 }
 
-                // Apply Multipliers
                 const sourcePlatform = document.getElementById('currentDWH').value || 'other';
                 const platformMult = platformFactors[sourcePlatform] || 1.0;
                 
-                const avgMaturity = (
-                    getVal('teamMaturity') + 
-                    getVal('toolFamiliarity') + 
-                    getVal('infraConfig')
-                ) / 3;
+                const avgMaturity = (getVal('teamMaturity') + getVal('toolFamiliarity') + getVal('infraConfig')) / 3;
                 const maturityMult = 1.25 - ((avgMaturity - 1) * 0.1125);
                 
-                const envComplexityVal = getVal('envComplexity');
-                const envMult = 0.8 + ((envComplexityVal - 1) * 0.1125);
+                const envMult = 0.8 + ((getVal('envComplexity') - 1) * 0.1125);
 
                 const manualTotalHours = Math.ceil(rawHours * platformMult * maturityMult * envMult);
-                const aiTotalHours = Math.ceil(manualTotalHours * 0.4); // 60% savings
-
-                // Duration (Standard Pod: 4 Technical FTEs @ 40hrs/wk = 160hrs/wk)
+                const aiTotalHours = Math.ceil(manualTotalHours * 0.4); 
                 const weeklyVelocity = 160;
-                const manualWeeks = Math.ceil(manualTotalHours / weeklyVelocity);
-                const aiWeeks = Math.ceil(aiTotalHours / weeklyVelocity);
 
-                // Complexity Rating Logic
-                const density = totalCount > 0 ? (complexCount / totalCount) : 0;
-                const scoreMetric = manualTotalHours * (1 + density);
-                
+                // Complexity Rating
+                const scoreMetric = manualTotalHours * (1 + (totalCount > 0 ? complexCount/totalCount : 0));
                 let ratingText = "LOW";
                 let ratingColor = "text-green-700";
                 let barColor = "bg-green-600";
                 let barWidth = "25%";
 
-                if (scoreMetric > 25000) { 
-                    ratingText = "TRANSFORMATIONAL"; ratingColor = "text-red-900"; barColor = "bg-red-900"; barWidth = "100%"; 
-                } else if (scoreMetric > 10000) { 
-                    ratingText = "HIGH COMPLEXITY"; ratingColor = "text-red-600"; barColor = "bg-red-600"; barWidth = "75%"; 
-                } else if (scoreMetric > 2500) { 
-                    ratingText = "MODERATE"; ratingColor = "text-yellow-600"; barColor = "bg-yellow-500"; barWidth = "50%"; 
-                }
+                if (scoreMetric > 25000) { ratingText = "TRANSFORMATIONAL"; ratingColor = "text-red-900"; barColor = "bg-red-900"; barWidth = "100%"; }
+                else if (scoreMetric > 10000) { ratingText = "HIGH COMPLEXITY"; ratingColor = "text-red-600"; barColor = "bg-red-600"; barWidth = "75%"; }
+                else if (scoreMetric > 2500) { ratingText = "MODERATE"; ratingColor = "text-yellow-600"; barColor = "bg-yellow-500"; barWidth = "50%"; }
 
                 // Update UI
                 document.getElementById('manualHours').innerText = manualTotalHours.toLocaleString();
-                document.getElementById('manualDuration').innerText = manualWeeks;
+                document.getElementById('manualDuration').innerText = Math.ceil(manualTotalHours / weeklyVelocity);
                 document.getElementById('aiHours').innerText = aiTotalHours.toLocaleString();
-                document.getElementById('aiDuration').innerText = aiWeeks;
+                document.getElementById('aiDuration').innerText = Math.ceil(aiTotalHours / weeklyVelocity);
                 
                 const rText = document.getElementById('ratingText');
                 rText.innerText = ratingText;
@@ -510,7 +392,7 @@
                 rFill.className = `h-full ${barColor}`;
                 rFill.style.width = barWidth;
 
-                // Show Modal using safe Style Display
+                // Modal Display (Fixed)
                 resultModal.style.display = 'flex';
             }
 
@@ -524,68 +406,29 @@
                 successModal.style.display = 'none'; 
             });
 
-            // --- DATA PULL FROM ASSESSMENT (URL Params) ---
-            const params = new URLSearchParams(window.location.search);
-            const map = {
-                'etl_s': 'etl_simple', 'etl_m': 'etl_medium', 'etl_c': 'etl_complex',
-                'table_s': 'table_simple', 'script_s': 'script_simple', 'proc_s': 'proc_simple',
-                'source': 'currentDWH'
-            };
-
-            params.forEach((val, key) => {
-                const targetId = map[key];
-                if(targetId) {
-                    const el = document.getElementById(targetId);
-                    if(el) {
-                        el.value = val;
-                        el.style.backgroundColor = '#dbeafe'; 
-                        setTimeout(() => el.style.backgroundColor = 'white', 2500);
-                    }
-                }
-            });
-
-            // Check for Report Data
-            const reportData = sessionStorage.getItem('lastAssessmentReport');
-            if (reportData) {
-                const data = JSON.parse(reportData);
-                if(data.project) document.getElementById('userName').value = data.project;
-                if(data.email) document.getElementById('clientEmail').value = data.email;
-            }
-
-            // --- SUBMISSION LOGIC ---
+            // 4. SUBMISSION LOGIC
             requestProposalBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                // Change button state
                 const originalText = requestProposalBtn.innerText;
                 requestProposalBtn.innerText = 'Sending...';
                 requestProposalBtn.disabled = true;
 
-                // 1. Gather all form inputs
                 const formData = new FormData();
                 
-                // Add Session Data (Qualitative)
                 if(reportData) {
                     const sessionData = JSON.parse(reportData);
-                    for(const key in sessionData) {
-                        formData.append(`Assessment_${key}`, sessionData[key]);
-                    }
+                    for(const key in sessionData) formData.append(`Assessment_${key}`, sessionData[key]);
                 }
 
-                // Add Current Form Data (Quantitative)
                 document.querySelectorAll('#romForm input, #romForm select').forEach(input => {
-                    if (input.value && input.value !== "0") {
-                        formData.append(input.id || input.name, input.value);
-                    }
+                    if (input.value && input.value !== "0") formData.append(input.id || input.name, input.value);
                 });
 
-                // Add Calculated Results
                 formData.append('Calculated_Manual_Hours', document.getElementById('manualHours').innerText);
                 formData.append('Calculated_Accelerated_Hours', document.getElementById('aiHours').innerText);
                 formData.append('Calculated_Complexity', document.getElementById('ratingText').innerText);
 
-                // 2. Send to Formspree
-                fetch('https://formspree.io/f/mreljzer', {
+                fetch('https://formspree.io/f/mnnoelgb', {
                     method: 'POST',
                     body: formData,
                     headers: { 'Accept': 'application/json' }
