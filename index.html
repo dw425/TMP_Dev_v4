@@ -107,6 +107,19 @@
     <script>
         // --- DATA ---
         const allContent = [
+            // *********************************************************************
+            // CRITICAL: TOP TRENDING INSIGHT MUST BE FIRST. DO NOT CHANGE ORDER.
+            // *********************************************************************
+            { 
+                id: 7, 
+                assetType: 'content', 
+                title: 'Top Trending Insight', 
+                description: 'Stop Guessing: Winning in today’s market requires a shift from hindsight to foresight. Discover how the "AI Factory" model predicts outcomes with precision using CampaignIQ.', 
+                tags: ['AI Strategy', 'Marketing', 'Forecasting'], 
+                categories: ['whitepapers', 'uc-learnings'], 
+                link: 'wp_trending.html'
+            },
+            // *********************************************************************
             { 
                 id: 15, 
                 assetType: 'tool', 
@@ -127,7 +140,7 @@
                 id: 16, 
                 assetType: 'tool', 
                 title: 'SAP Working Capital', 
-                description: 'Real-Time Working Capital Intelligence Powered by SAP and Databricks. Unify disparate SAP sources (receivables, payables, inventory) to automate the entire pipeline. Includes AI-powered forecasting and interactive scenario simulations.', 
+                description: 'Real-Time Working Capital Intelligence Powered by SAP and Databricks. Unify disparate SAP sources (receivables, payables, inventory) to automate pipeline and forecast cash flow.', 
                 tags: ['Finance', 'SAP', 'Manufacturing'], 
                 categories: ['accelerators'], 
                 pricing: { 
@@ -143,7 +156,7 @@
                 id: 17, 
                 assetType: 'tool', 
                 title: 'PromotionIQ', 
-                description: 'Analyze, Optimize, and Recommend Promotions with AI. Designed for aggressive marketing budgets, this tool forecasts promotion effectiveness beyond redemptions. Track spend accountability, explain campaign variance, and equip marketing teams to test and iterate offer structures.', 
+                description: 'Analyze, Optimize, and Recommend Promotions. Forecast promotion effectiveness beyond redemptions and track spend accountability with AI.', 
                 tags: ['Marketing', 'Promotion', 'Sportsbook'], 
                 categories: ['accelerators'], 
                 pricing: { 
@@ -172,23 +185,33 @@
                 link: 'churn_iq.html'
             },
             { 
-                id: 7, 
-                assetType: 'content', 
-                title: 'Top Trending Insight', 
-                description: 'Stop Guessing: Winning in today’s market requires a shift from hindsight to foresight. Discover how the "AI Factory" model predicts outcomes with precision using CampaignIQ.', 
-                tags: ['AI Strategy', 'Marketing', 'Forecasting'], 
-                categories: ['whitepapers', 'uc-learnings'], 
-                link: 'wp_trending.html'
+                id: 20, 
+                assetType: 'tool', 
+                title: 'The Blueprint Data Migration Suite', 
+                description: 'Assess, transform, and enhance your data migration initiative.\n\nMigration Analyzer: Delivers a deep assessment of EDW migration feasibility, complexity, and cost using AI-driven insights.\n\nMigration Transformer: Automates schema, code, and pipeline migration to Databricks using metadata-driven frameworks.\n\nMigration Optimizer: Enhances performance, governance, and BI modernization post-migration using AI-driven cost tuning.', 
+                tags: ['Migration', 'Modernization', 'Legacy'], 
+                categories: ['migration-tools'], 
+                link: 'https://dw425.github.io/TMP_Dev_v4/cover_a.html', 
+                videoUrl: '' 
             },
             { 
                 id: 13, 
                 assetType: 'accelerator', 
                 title: "Blueprint's AI Factory", 
-                description: 'Why the AI Factory? The assembly line for business-ready AI. AI factories are essential because they shift enterprises from experimentation to industrialized delivery — reducing risk, aligning teams, and accelerating value. Our five-phase factory model moves from ideation to implementation with the repeatability, scalability, and governance that enterprise-grade AI demands.', 
+                description: 'The assembly line for business-ready AI. Shift from experimentation to industrialized delivery reducing risk and accelerating value.', 
                 tags: ['GenAI', 'RAG', 'Tutorial'], 
                 categories: ['accelerators', 'videos', 'demos'], 
                 videoUrl: 'https://www.youtube.com/embed/48gEgOcCaKo',
                 link: 'wp_trending.html'
+            },
+            { 
+                id: 19, 
+                assetType: 'accelerator', 
+                title: 'CustomerSupport IQ', 
+                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Analyze support transcripts in real-time to surface coaching opportunities.', 
+                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
+                categories: ['accelerators'], 
+                videoUrl: '' 
             },
             { 
                 id: 1, 
@@ -203,42 +226,6 @@
                     byol: true 
                 }, 
                 prerequisites: 'Deploys directly into your Databricks environment (Azure, AWS, or GCP). Contact us for setup assistance.' 
-            },
-            { 
-                id: 11, 
-                assetType: 'content', 
-                title: 'Whitepaper: Lakehouse for Dummies', 
-                description: 'A beginner-friendly guide to understanding the Lakehouse architecture and its benefits over traditional data warehouses and data lakes.', 
-                tags: ['Lakehouse', 'Architecture', 'Beginner'], 
-                categories: ['whitepapers', 'uc-learnings'], 
-                link: '#'
-            },
-            { 
-                id: 19, 
-                assetType: 'accelerator', 
-                title: 'CustomerSupport IQ', 
-                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Analyze support transcripts in real-time to surface coaching opportunities, churn signals, and escalation risks. Includes dashboards for call volume trends and sentiment analysis.', 
-                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
-                categories: ['accelerators'], 
-                videoUrl: '' 
-            },
-            { 
-                id: 20, 
-                assetType: 'tool', 
-                title: 'AI Powered Data Migration', 
-                description: 'Modernize legacy Teradata and Informatica platforms into governed Databricks architectures. Features automated portfolio assessment to score complexity, AI-assisted translation of SQL/ETL patterns, and a synthetic workbench for safe validation.', 
-                tags: ['Migration', 'Modernization', 'Legacy'], 
-                categories: ['migration-tools'], 
-                videoUrl: '' 
-            },
-            { 
-                id: 21, 
-                assetType: 'accelerator', 
-                title: 'Telco Churn and NBA', 
-                description: 'Predict churn, explain drivers, and generate financially grounded next best actions. Connects churn risk to local drivers like network quality and service issues. Generates targeted retention actions prioritised by financial impact to protect revenue and growth.', 
-                tags: ['Telco', 'Churn', 'Next Best Action'], 
-                categories: ['accelerators'], 
-                videoUrl: '' 
             }
         ];
         
@@ -348,8 +335,8 @@
                 : `<div class="w-full h-full bg-gray-100 flex items-center justify-center border border-gray-200 shadow-inner"><p class="text-gray-500 font-medium">Video Preview Unavailable</p></div>`;
 
             let overviewContentForTool;
-            // Enhanced overview content logic
-            if ([15, 13, 16, 17, 18].includes(item.id)) {
+            // Enhanced overview content logic for new items
+            if ([15, 13, 16, 17, 18, 20].includes(item.id)) {
                  overviewContentForTool = `
                  <h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Solution Overview</h5>
                  <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
