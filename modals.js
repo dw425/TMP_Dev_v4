@@ -12,10 +12,10 @@ window.BlueprintModals = {
     // ============================================
     templates: `
         <div id="techArchModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50" style="background-color: rgba(0,0,0,0.8);">
-            <div class="relative bg-white p-2 border border-gray-200 shadow-xl w-1/2 rounded-none">
+            <div class="relative bg-white p-2 border border-gray-200 shadow-xl w-full max-w-4xl rounded-none">
                 <button onclick="window.BlueprintModals.close('techArchModal')" class="absolute -top-3 -right-3 text-white bg-black hover:bg-gray-800 rounded-full w-8 h-8 flex items-center justify-center text-xl z-10">&times;</button>
-                <div class="bg-gray-100 w-full h-96 flex items-center justify-center text-gray-500 font-mono text-xs border border-dashed border-gray-300">
-                    [Technical Architecture Diagram]
+                <div class="w-full bg-white flex items-center justify-center overflow-hidden">
+                    <img src="Slide15.jpg" alt="Technical Architecture Diagram" class="w-full h-auto block">
                 </div>
             </div>
         </div>
