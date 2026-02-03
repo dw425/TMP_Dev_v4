@@ -112,21 +112,23 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Modal */
+        /* Modal Logic (Fixed) */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); display: none;
-            align-items: center; justify-content: center; z-index: 1000;
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); 
+            display: none; /* Hidden by default */
+            align-items: center; justify-content: center; 
+            z-index: 1000;
             backdrop-filter: blur(4px);
-            opacity: 0; visibility: hidden; transition: opacity 0.3s;
         }
-        .modal-overlay.visible { opacity: 1; visibility: visible; }
         
         .modal-content {
-            background: white; border-radius: 0px; 
-            transform: scale(0.95); transition: transform 0.3s;
+            background: white; 
+            border-radius: 0px; 
+            width: 90%;
+            max-width: 900px;
         }
-        .modal-overlay.visible .modal-content { transform: scale(1); }
     </style>
 </head>
 <body class="antialiased">
@@ -345,12 +347,12 @@
     </main>
 
     <div id="resultModal" class="modal-overlay">
-        <div class="modal-content bg-white p-10 max-w-4xl w-full shadow-2xl relative border-t-8 border-blueprint-blue">
+        <div class="modal-content bg-white p-10 shadow-2xl relative border-t-8 border-blueprint-blue mx-auto">
             <div class="absolute top-4 right-4">
                 <button class="close-modal text-3xl font-bold text-gray-400 hover:text-gray-600">&times;</button>
             </div>
             
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">ROM Assessment Results</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2 text-center">ROM Assessment Results</h2>
             <div class="w-full bg-gray-200 h-1 mb-8"></div>
 
             <div class="mb-8 text-center">
@@ -390,7 +392,7 @@
     </div>
 
     <div id="successModal" class="modal-overlay">
-        <div class="modal-content bg-white p-12 max-w-lg w-full shadow-2xl text-center">
+        <div class="modal-content bg-white p-12 max-w-lg w-full shadow-2xl text-center mx-auto">
             <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
                 <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
             </div>
@@ -508,12 +510,19 @@
                 rFill.className = `h-full ${barColor}`;
                 rFill.style.width = barWidth;
 
-                resultModal.classList.add('visible');
+                // Show Modal using safe Style Display
+                resultModal.style.display = 'flex';
             }
 
             calculateBtn.addEventListener('click', calculateROM);
-            closeButtons.forEach(btn => btn.addEventListener('click', () => resultModal.classList.remove('visible')));
-            closeSuccessBtn.addEventListener('click', () => successModal.classList.remove('visible'));
+            
+            closeButtons.forEach(btn => btn.addEventListener('click', () => { 
+                resultModal.style.display = 'none'; 
+            }));
+            
+            closeSuccessBtn.addEventListener('click', () => { 
+                successModal.style.display = 'none'; 
+            });
 
             // --- DATA PULL FROM ASSESSMENT (URL Params) ---
             const params = new URLSearchParams(window.location.search);
@@ -582,8 +591,8 @@
                     headers: { 'Accept': 'application/json' }
                 }).then(response => {
                     if (response.ok) {
-                        resultModal.classList.remove('visible');
-                        successModal.classList.add('visible');
+                        resultModal.style.display = 'none';
+                        successModal.style.display = 'flex';
                     } else {
                         alert('There was an issue sending your data. Please try again.');
                     }
