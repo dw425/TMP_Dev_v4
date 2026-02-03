@@ -186,13 +186,13 @@
                         <div class="form-group">
                             <label>Current GCP Services in Use (select at least one):</label>
                             <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" id="dataproc" name="gcpServices" value="dataproc"><label for="dataproc">Dataproc</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="dataflow" name="gcpServices" value="dataflow"><label for="dataflow">Dataflow</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="bigquery" name="gcpServices" value="bigquery"><label for="bigquery">BigQuery</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="composer" name="gcpServices" value="composer"><label for="composer">Cloud Composer (Airflow)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="functions" name="gcpServices" value="functions"><label for="functions">Cloud Functions</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="cloudrun" name="gcpServices" value="cloudrun"><label for="cloudrun">Cloud Run</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="vertexai" name="gcpServices" value="vertexai"><label for="vertexai">Vertex AI</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_dataproc" name="gcpServices" value="dataproc"><label for="check_dataproc">Dataproc</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_dataflow" name="gcpServices" value="dataflow"><label for="check_dataflow">Dataflow</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_bigquery" name="gcpServices" value="bigquery"><label for="check_bigquery">BigQuery</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_composer" name="gcpServices" value="composer"><label for="check_composer">Cloud Composer (Airflow)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_functions" name="gcpServices" value="functions"><label for="check_functions">Cloud Functions</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_cloudrun" name="gcpServices" value="cloudrun"><label for="check_cloudrun">Cloud Run</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="check_vertex" name="gcpServices" value="vertexai"><label for="check_vertex">Vertex AI</label></div>
                             </div>
                             <div class="form-group" style="margin-top: 15px;">
                                 <label for="otherServices">Other Services:</label>
@@ -715,10 +715,15 @@
                     return;
                 }
 
-                // --- DATA CAPTURE LOGIC ---
-                // 1. Capture ALL values for report generation
+                // --- 1. DATA CAPTURE (Full Report) ---
                 const formData = new FormData(form);
                 const fullState = {};
+                
+                // Explicitly capture key text fields for the calculator header
+                fullState['project'] = document.getElementById('projectName').value;
+                fullState['stakeholder'] = document.getElementById('stakeholder').value;
+                fullState['email'] = document.getElementById('contactEmail').value;
+                
                 formData.forEach((value, key) => {
                     if(!fullState[key]) {
                         fullState[key] = value;
@@ -729,7 +734,25 @@
                 });
                 sessionStorage.setItem('lastAssessmentReport', JSON.stringify(fullState));
 
-                // 2. Extract specific counts for the Calculator
+                // --- 2. HEURISTIC ENGINE (Complexity Logic) ---
+                // Complexity Drivers
+                const hasComposer = document.getElementById('check_composer').checked;
+                const hasDataflow = document.getElementById('check_dataflow').checked;
+                const hasVertex = document.getElementById('check_vertex').checked;
+                const hasFunctions = document.getElementById('check_functions').checked;
+
+                // Base Distribution (Standard)
+                let pct_s = 0.6, pct_m = 0.3, pct_c = 0.1, pct_v = 0.0;
+
+                // Adjust based on services selected
+                if (hasDataflow || hasComposer) {
+                    pct_s = 0.4; pct_m = 0.4; pct_c = 0.2;
+                }
+                if (hasVertex || hasFunctions) {
+                    pct_s = 0.3; pct_m = 0.4; pct_c = 0.2; pct_v = 0.1;
+                }
+
+                // --- 3. INVENTORY EXTRACTION ---
                 const jobs = parseInt(document.getElementById('totalJobs').value) || 0;
                 const bq = parseInt(document.getElementById('bqDatasets').value) || 0;
                 const buckets = parseInt(document.getElementById('bucketCount').value) || 0;
@@ -737,14 +760,25 @@
                 const sc = parseInt(document.getElementById('scalaCount').value) || 0;
                 const sql = parseInt(document.getElementById('sqlCount').value) || 0;
 
-                // 3. Construct Redirect to Calculator
                 const params = new URLSearchParams();
-                params.append('etl_s', Math.floor(jobs * 0.6));
-                params.append('etl_m', Math.floor(jobs * 0.3));
-                params.append('etl_v', Math.floor(jobs * 0.1));
-                params.append('table_s', bq + buckets);
-                params.append('script_s', py + sc);
-                params.append('proc_s', sql);
+                
+                // ETL (Map Jobs -> ETL Pipeline)
+                params.append('etl_simple', Math.floor(jobs * pct_s));
+                params.append('etl_medium', Math.floor(jobs * pct_m));
+                params.append('etl_complex', Math.floor(jobs * pct_c));
+                params.append('etl_vcomplex', Math.floor(jobs * pct_v));
+
+                // Tables (Map Datasets/Buckets -> Tables)
+                const totalTables = bq + buckets;
+                params.append('table_simple', Math.floor(totalTables * 0.7));
+                params.append('table_medium', Math.floor(totalTables * 0.3));
+
+                // Scripts (Map Codebase -> Scripts)
+                const totalScripts = py + sc + sql;
+                params.append('script_simple', Math.floor(totalScripts * pct_s));
+                params.append('script_medium', Math.floor(totalScripts * pct_m));
+                params.append('script_complex', Math.floor(totalScripts * pct_c));
+
                 params.append('source', 'gcp');
 
                 window.location.href = `calc.html?${params.toString()}`;
