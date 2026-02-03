@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAP Databricks Assessment | Blueprint Migration</title>
+    <title>SAP to Databricks Migration Assessment | Blueprint Migration</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,228 +14,180 @@
     <link rel="stylesheet" href="cart.css">
 
     <style>
-        /* --- PRESERVED FORM STYLES --- */
-        
-        * {
-            box-sizing: border-box;
-        }
-        
-        /* Removed conflicting .container rule */
+        /* --- BRANDED FORM STYLES (Tight Version) --- */
+        * { box-sizing: border-box; }
 
-        .section {
-            margin-bottom: 40px;
-            page-break-inside: avoid;
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-size: 14px;
         }
+
+        .section { margin-bottom: 20px; page-break-inside: avoid; }
+        
         .section-header {
-            background: #1d4ed8; /* Updated to Blueprint Blue */
+            background: #1d4ed8;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 15px;
             font-weight: bold;
-            font-size: 14pt;
+            font-size: 13pt;
             margin: 0;
-            border-radius: 0px; /* Sharp edges */
+            border-radius: 0px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .na-toggle {
-            display: flex;
-            align-items: center;
-            font-size: 10pt;
-            font-weight: normal;
-        }
-        .na-toggle input {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
-        }
+        
+        .na-toggle { display: flex; align-items: center; font-size: 9pt; font-weight: normal; }
+        .na-toggle input { margin-right: 6px; width: 14px; height: 14px; }
+        
         .section-content {
-            padding: 20px;
+            padding: 15px;
+            background: white;
             border: 1px solid #e5e7eb;
             border-top: none;
-            border-radius: 0px; /* Sharp edges */
+            border-radius: 0px;
             transition: opacity 0.3s;
         }
-        .section-content.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            background-color: #f9fafb;
+        
+        .section-content.disabled { opacity: 0.5; pointer-events: none; background-color: #f9fafb; }
+        
+        .form-group { margin-bottom: 12px; }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 4px; 
+            font-weight: 700; 
+            color: #374151; 
+            font-size: 9.5pt; 
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 700;
-            color: #374151;
-            font-size: 10pt;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        input[type="date"],
-        select,
-        textarea {
+        
+        input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #d1d5db;
-            border-radius: 0px; /* Sharp edges */
-            font-size: 10pt;
+            border-radius: 0px;
+            font-size: 9.5pt;
             background: white;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+        
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #1d4ed8;
-            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
-        }
-        .is-invalid {
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
-        }
-        .error-message {
-            color: #ef4444;
-            font-size: 9pt;
-            display: none;
-            margin-top: 4px;
-        }
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        .inline-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .three-column {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .subsection {
-            margin-bottom: 25px;
-        }
-        .subsection h4 {
-            color: #1d4ed8;
-            margin-bottom: 12px;
-            font-size: 12pt;
-            font-weight: 700;
-            border-bottom: 2px solid #1d4ed8;
-            padding-bottom: 4px;
-        }
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4px;
-        }
-        .checkbox-item input[type="checkbox"] {
-            margin-right: 10px;
-            width: 16px;
-            height: 16px;
-            border-radius: 0px;
-        }
-        .checkbox-item label {
-            font-weight: normal;
-            margin-bottom: 0;
-            font-size: 10pt;
-        }
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 8px;
-        }
-        .radio-item {
-            display: flex;
-            align-items: center;
-        }
-        .radio-item input[type="radio"] {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
-        }
-        .radio-item label {
-            font-weight: normal;
-            margin-bottom: 0;
-            font-size: 10pt;
-        }
-        .page-break {
-            page-break-before: always;
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
         }
         
-        /* STYLE FOR DYNAMIC DETAIL BOXES */
-        .app-details-container {
-            display: none; /* Hidden by default */
-            margin-top: 10px;
-            padding: 15px;
-            background: #f9fafb;
-            border: 1px solid #d1d5db; 
-            border-left: 4px solid #1d4ed8; /* Blue accent */
-            border-radius: 0px;
+        .is-invalid { border-color: #ef4444 !important; }
+        .error-message { color: #ef4444; font-size: 8.5pt; display: none; margin-top: 2px; }
+        
+        textarea { min-height: 70px; resize: vertical; }
+        
+        .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .four-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+        
+        .subsection { margin-bottom: 15px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 10px; }
+        .subsection:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .subsection h4 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 5px; }
+        .checkbox-item { display: flex; align-items: flex-start; }
+        .checkbox-item input { margin-right: 8px; width: 16px; height: 16px; margin-top: 2px; }
+        .checkbox-item label { font-weight: normal; font-size: 9.5pt; line-height: 1.3; }
+        
+        /* --- COMPLEXITY SLIDER STYLES --- */
+        .complexity-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8fafc;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+        }
+        .count-input-group { flex: 1; }
+        .slider-group { flex: 2; }
+        
+        input[type="range"] { 
+            width: 100%; 
+            cursor: pointer; 
+            accent-color: #1d4ed8; 
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px; width: 16px;
+            background: #1d4ed8;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .slider-labels { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 0.7rem; 
+            color: #64748b; 
+            font-weight: 700; 
+            margin-top: 5px; 
+            text-transform: uppercase;
         }
 
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 0px;
-            font-weight: bold;
-            font-size: 11pt;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
         .btn-submit {
             background-color: #1d4ed8;
+            color: white;
+            padding: 14px 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 0px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
         }
-        .btn-submit:hover {
-            background-color: #1e40af;
-        }
-        @media print {
-            .no-print {
-                display: none;
-            }
-        }
+        .btn-submit:hover { background-color: #1e40af; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
         @media (max-width: 768px) {
-            .inline-inputs,
-            .three-column {
-                grid-template-columns: 1fr;
-            }
-            .checkbox-group {
-                grid-template-columns: 1fr;
-            }
+            .inline-inputs, .three-column, .four-column, .complexity-row { grid-template-columns: 1fr; flex-direction: column; }
+            .section-header { font-size: 1.1rem; }
+            .section-content { padding: 12px; }
         }
+        
+        .page-break { page-break-before: always; }
     </style>
 </head>
 <body class="antialiased">
 
     <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
 
-    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
-        <div class="mb-10 border-b border-gray-200 pb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">SAP Databricks Assessment</h1>
-            <p class="text-lg text-gray-500">Complete the assessment below to generate your migration roadmap.</p>
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6 border-b border-gray-200 pb-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-2">SAP to Databricks Migration Assessment</h1>
+            <p class="text-md text-gray-500">Inventory your SAP ERP, BW, and HANA landscapes to generate a precise ROM estimate and migration roadmap.</p>
         </div>
 
-        <div class="sharp-card p-8 md:p-12 bg-white">
-            <form id="migrationForm" action="https://formspree.io/f/mgvgjzzd" method="POST" novalidate>
+        <div class="sharp-card p-6 bg-white">
+            <form id="migrationForm" novalidate>
             
             <div class="section">
                 <div class="section-header">
                     <span>Executive Summary</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-exec" class="na-checkbox" data-section-content-id="exec-content"><label for="na-exec">N/A</label></div>
                 </div>
                 <div class="section-content" id="exec-content">
                     <div class="inline-inputs">
@@ -254,7 +205,7 @@
                     <div class="inline-inputs">
                         <div class="form-group">
                             <label for="timeline">Timeline Expectations:</label>
-                            <input type="text" id="timeline" name="timeline">
+                            <input type="text" id="timeline" name="timeline" placeholder="e.g., Q3 2025">
                         </div>
                         <div class="form-group">
                             <label for="contactEmail">Contact Email:</label>
@@ -262,240 +213,83 @@
                             <span class="error-message">Please enter a valid email address.</span>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="section page-break">
-                <div class="section-header">
-                    <span>1. Strategic Use Cases & Drivers</span>
-                    <div class="na-toggle">
-                        <input type="checkbox" id="na-strategy" class="na-checkbox" data-section-content-id="strategy-content">
-                        <label for="na-strategy">N/A</label>
-                    </div>
-                </div>
-                <div class="section-content" id="strategy-content">
-                    <div class="subsection">
-                        <h4>1.1 Business Context</h4>
-                        <div class="form-group">
-                            <label for="sapUsage">How is SAP currently used in the organization?</label>
-                            <textarea id="sapUsage" name="sapUsage" placeholder="Briefly describe the role of SAP in the enterprise ecosystem..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="topUseCases">Top 3 Priority Use Cases (Business Outcomes):</label>
-                            <textarea id="topUseCases" name="topUseCases" placeholder="Ex: Supply Chain Intelligence (demand forecasting, supplier risk), Logistics Optimization, Financial Planning, Customer 360..."></textarea>
-                        </div>
-                         <div class="form-group">
-                            <label>Primary Business Drivers for Databricks:</label>
-                             <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="businessDrivers" value="cost"><label>TCO Reduction / Licensing Costs</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="businessDrivers" value="ai_ml"><label>Advanced AI/ML Capabilities</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="businessDrivers" value="speed"><label>Performance & Speed of Reporting</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="businessDrivers" value="unification"><label>Unifying Data Silos</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="businessDrivers" value="innovation"><label>Innovation / New Product Development</label></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="subsection">
-                        <h4>1.2 SAP Business Data Cloud (BDC)</h4>
-                        <div class="form-group">
-                             <label>Is the organization currently using or planning to use the SAP Databricks BDC (Business Data Connector)?</label>
-                             <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="bdcYes" name="bdcUsage" value="yes" required data-required="true"><label for="bdcYes">Yes, currently using</label></div>
-                                <div class="radio-item"><input type="radio" id="bdcPlanned" name="bdcUsage" value="planned"><label for="bdcPlanned">Planned / Investigating</label></div>
-                                <div class="radio-item"><input type="radio" id="bdcNo" name="bdcUsage" value="no"><label for="bdcNo">No</label></div>
-                            </div>
-                            <span class="error-message">Please select an option.</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="bdcDetails">If using or planning, how is the BDC being utilized?</label>
-                            <textarea id="bdcDetails" name="bdcDetails" placeholder="Describe specific BDC use cases or products..."></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="businessDriver">Business Driver for Migration:</label>
+                        <textarea id="businessDriver" name="businessDriver" placeholder="e.g., S/4HANA upgrade, BW retirement, cost reduction, real-time analytics..."></textarea>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>2. Current SAP Landscape</span>
-                     <div class="na-toggle">
-                        <input type="checkbox" id="na-sap" class="na-checkbox" data-section-content-id="sap-content">
-                        <label for="na-sap">N/A</label>
-                    </div>
+                    <span>1. Current SAP Landscape</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div>
                 </div>
-                <div class="section-content" id="sap-content">
+                <div class="section-content" id="s1-content">
                     <div class="subsection">
-                        <h4>2.1 SAP Source Systems</h4>
-                        <div class="form-group">
-                            <label>Primary SAP ERP System:</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="s4hana" name="sapErpSystem" value="S/4HANA" required data-required="true"><label for="s4hana">SAP S/4HANA</label></div>
-                                <div class="radio-item"><input type="radio" id="ecc" name="sapErpSystem" value="ECC"><label for="ecc">SAP ECC 6.0 (or older)</label></div>
-                                <div class="radio-item"><input type="radio" id="otherErp" name="sapErpSystem" value="Other"><label for="otherErp">Other</label></div>
-                            </div>
-                             <span class="error-message">Please select an option.</span>
-                        </div>
-                        <div class="form-group">
-                            <label>SAP Business Warehouse (BW) in use?</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="bwYes" name="sapBw" value="yes" required data-required="true"><label for="bwYes">Yes</label></div>
-                                <div class="radio-item"><input type="radio" id="bwNo" name="sapBw" value="no"><label for="bwNo">No</label></div>
-                            </div>
-                             <span class="error-message">Please select an option.</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="sapModules">Key SAP Modules in Scope:</label>
-                            <input type="text" id="sapModules" name="sapModules" placeholder="e.g., FI, CO, SD, MM, PP..." required data-required="true">
-                             <span class="error-message">This field is required.</span>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h4>2.2 SAP SaaS & Specialty Apps</h4>
-                        <div class="form-group">
-                            <label>Select Apps to define Scope (Modules, Tables, Volume):</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="Ariba" data-target="ariba-details"><label>ARIBA</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="SuccessFactors" data-target="sf-details"><label>SuccessFactors</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="Fieldglass" data-target="fg-details"><label>Fieldglass</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="Concur" data-target="concur-details"><label>Concur</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="CX" data-target="cx-details"><label>CX (Customer Experience)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="EWM" data-target="ewm-details"><label>EWM</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="GTS" data-target="gts-details"><label>GTS</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="IBP" data-target="ibp-details"><label>IBP</label></div>
-                                <div class="checkbox-item"><input type="checkbox" class="app-trigger" name="apps" value="MDG" data-target="mdg-details"><label>MDG</label></div>
-                            </div>
-                        </div>
-
-                        <div id="ariba-details" class="app-details-container">
-                            <label>ARIBA Details (Required):</label>
-                            <textarea name="ariba_scope" data-required="true" placeholder="Scope (e.g., Sourcing, Procurement), Critical Tables, Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when Ariba is selected.</span>
-                        </div>
-                        <div id="sf-details" class="app-details-container">
-                            <label>SuccessFactors Details (Required):</label>
-                            <textarea name="sf_scope" data-required="true" placeholder="Scope (e.g., Employee Central, Payroll), Critical Tables, Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when SuccessFactors is selected.</span>
-                        </div>
-                        <div id="fg-details" class="app-details-container">
-                            <label>Fieldglass Details (Required):</label>
-                            <textarea name="fg_scope" data-required="true" placeholder="Scope, Critical Tables, Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when Fieldglass is selected.</span>
-                        </div>
-                        <div id="concur-details" class="app-details-container">
-                            <label>Concur Details (Required):</label>
-                            <textarea name="concur_scope" data-required="true" placeholder="Scope (e.g., Expense, Travel), Critical Tables, Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when Concur is selected.</span>
-                        </div>
-                        <div id="cx-details" class="app-details-container">
-                            <label>CX Details (Required):</label>
-                            <textarea name="cx_scope" data-required="true" placeholder="Scope (e.g., Commerce, Sales), Critical Tables, Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when CX is selected.</span>
-                        </div>
-                        <div id="ewm-details" class="app-details-container">
-                            <label>EWM Details (Required):</label>
-                            <textarea name="ewm_scope" data-required="true" placeholder="Scope (e.g., Warehouse tasks, Inventory), Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when EWM is selected.</span>
-                        </div>
-                        <div id="gts-details" class="app-details-container">
-                            <label>GTS Details (Required):</label>
-                            <textarea name="gts_scope" data-required="true" placeholder="Scope (e.g., Compliance, Customs), Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when GTS is selected.</span>
-                        </div>
-                        <div id="ibp-details" class="app-details-container">
-                            <label>IBP Details (Required):</label>
-                            <textarea name="ibp_scope" data-required="true" placeholder="Scope (e.g., Demand, S&OP), Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when IBP is selected.</span>
-                        </div>
-                        <div id="mdg-details" class="app-details-container">
-                            <label>MDG Details (Required):</label>
-                            <textarea name="mdg_scope" data-required="true" placeholder="Scope (e.g., Material, Customer, Vendor), Est. Volume..."></textarea>
-                            <span class="error-message">This field is required when MDG is selected.</span>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <h4>2.3 Database & Infrastructure</h4>
-                        <div class="form-group">
-                             <label for="sapDb">Underlying Database for SAP ERP/BW:</label>
-                             <input type="text" id="sapDb" name="sapDb" placeholder="e.g., HANA, Oracle, DB2, SQL Server" required data-required="true">
-                              <span class="error-message">This field is required.</span>
-                        </div>
-                         <div class="form-group">
-                            <label>SAP System Deployment:</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="onPrem" name="sapDeployment" value="On-premise" required data-required="true"><label for="onPrem">On-premise</label></div>
-                                <div class="radio-item"><input type="radio" id="cloud" name="sapDeployment" value="Cloud (IaaS)"><label for="cloud">Cloud (IaaS)</label></div>
-                                <div class="radio-item"><input type="radio" id="rise" name="sapDeployment" value="RISE with SAP"><label for="rise">RISE with SAP</label></div>
-                            </div>
-                             <span class="error-message">Please select an option.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section page-break">
-                <div class="section-header">
-                    <span>3. SAP Data Extraction & Integration</span>
-                     <div class="na-toggle">
-                        <input type="checkbox" id="na-extraction" class="na-checkbox" data-section-content-id="extraction-content">
-                        <label for="na-extraction">N/A</label>
-                    </div>
-                </div>
-                <div class="section-content" id="extraction-content">
-                    <div class="subsection">
-                        <h4>3.1 Data Extraction Methods</h4>
-                        <div class="form-group">
-                            <label>Current or Planned SAP Data Extraction Tools:</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="extractionTools" value="sap_bdc"><label>SAP Business Data Cloud (BDC) connector to Databricks</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="extractionTools" value="slt"><label>SAP SLT</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="extractionTools" value="bods"><label>SAP Data Services (BODS)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="extractionTools" value="di"><label>SAP Data Intelligence</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="extractionTools" value="partner"><label>Partner Tools (e.g., Fivetran, Qlik, HVR)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="extractionTools" value="custom"><label>Custom ABAP/RFC extractors</label></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="subsection">
-                        <h4>3.2 Data Sources & Volume</h4>
-                        <div class="form-group">
-                            <label>Primary SAP Data Sources for Analytics:</label>
-                             <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="dataSources" value="bdc_custom"><label>BDC custom data products</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="dataSources" value="bdc_curated"><label>BDC curated data products</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="dataSources" value="extractors"><label>Standard/Custom BW Extractors</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="dataSources" value="cds"><label>ABAP CDS Views</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="dataSources" value="tables"><label>Direct Table Extraction (e.g., BKPF, BSEG, MARA)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="dataSources" value="adso"><label>aDSOs / InfoProviders (from BW)</label></div>
-                            </div>
-                        </div>
+                        <h4>1.1 System Architecture</h4>
                         <div class="inline-inputs">
                             <div class="form-group">
-                                <label for="initialLoadSize">Estimated size of initial data load (TB):</label>
-                                <input type="number" id="initialLoadSize" name="initialLoadSize" min="0" step="0.1" required data-required="true">
-                                <span class="error-message">Please enter a number.</span>
+                                <label for="sapSystem">Core System:</label>
+                                <select id="sapSystem" name="sapSystem">
+                                    <option value="">Select...</option>
+                                    <option value="ecc">SAP ECC 6.0</option>
+                                    <option value="s4">SAP S/4HANA</option>
+                                    <option value="bw">SAP BW (NetWeaver)</option>
+                                    <option value="bw4">SAP BW/4HANA</option>
+                                    <option value="crm">SAP CRM/SRM</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="dailyChangeVolume">Daily change data volume (GB):</label>
-                                <input type="number" id="dailyChangeVolume" name="dailyChangeVolume" min="0" required data-required="true">
-                                <span class="error-message">Please enter a number.</span>
+                                <label for="databaseType">Underlying Database:</label>
+                                <input type="text" id="databaseType" name="databaseType" placeholder="e.g., Oracle, HANA, DB2, SQL Server">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Modules in Scope:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="modules" value="fi_co"><label>FI/CO (Finance)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="modules" value="sd"><label>SD (Sales & Dist)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="modules" value="mm"><label>MM (Materials)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="modules" value="pp"><label>PP (Production)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="modules" value="hr"><label>HR/HCM</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="modules" value="bw"><label>BW/BI Reporting</label></div>
                             </div>
                         </div>
                     </div>
-                     <div class="subsection">
-                        <h4>3.3 Data Logic & Transformation</h4>
-                        <div class="form-group">
-                            <label for="sapBusinessLogic">Describe any critical business logic embedded in SAP (e.g., in BW transformations, ABAP code) that needs to be replicated in Databricks:</label>
-                            <textarea id="sapBusinessLogic" name="sapBusinessLogic" placeholder="e.g., currency conversions, complex joins, custom hierarchies..."></textarea>
-                        </div>
-                         <div class="form-group">
-                            <label>Data latency requirements:</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="realtime" name="latency" value="realtime" required data-required="true"><label for="realtime">Near Real-time (<5 mins)</label></div>
-                                <div class="radio-item"><input type="radio" id="hourly" name="latency" value="hourly"><label for="hourly">Hourly</label></div>
-                                <div class="radio-item"><input type="radio" id="daily" name="latency" value="daily"><label for="daily">Daily</label></div>
+
+                    <div class="subsection">
+                        <h4>1.2 Data Objects (Tables & BW)</h4>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Total Tables:</label>
+                                <input type="number" id="tableCount" name="tableCount" value="0">
+                                <span class="text-xs text-gray-500">Transparent, Cluster, & Pool Tables</span>
                             </div>
-                             <span class="error-message">Please select an option.</span>
+                            <div class="slider-group">
+                                <label>Customization Level (Z-Tables):</label>
+                                <input type="range" id="tableComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Standard Only</span><span>Mixed</span><span>Heavy Custom (Z*)</span></div>
+                            </div>
+                        </div>
+
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>BW Objects (DSOs/Cubes):</label>
+                                <input type="number" id="bwObjectCount" name="bwObjectCount" value="0">
+                                <span class="text-xs text-gray-500">InfoCubes, DSOs, ADSOs</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>BW Model Complexity:</label>
+                                <input type="range" id="bwComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Simple Layer</span><span>Mixed</span><span>Multi-Layered LSA++</span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Total Data Volume (TB):</label>
+                            <input type="number" id="totalDataSize" name="totalDataSize" step="0.1">
                         </div>
                     </div>
                 </div>
@@ -503,47 +297,49 @@
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>4. Advanced Data & Technical Governance</span>
-                     <div class="na-toggle">
-                        <input type="checkbox" id="na-adv-gov" class="na-checkbox" data-section-content-id="adv-gov-content">
-                        <label for="na-adv-gov">N/A</label>
-                    </div>
+                    <span>2. Views, Code & Logic (ABAP/HANA)</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div>
                 </div>
-                <div class="section-content" id="adv-gov-content">
+                <div class="section-content" id="s2-content">
+                    
                     <div class="subsection">
-                        <h4>4.1 Technical Readiness & Data Complexity</h4>
-                        <div class="form-group">
-                            <label>Identify Complex SAP Data Semantics required in Lakehouse:</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="sapSemantics" value="hierarchies"><label>Complex Hierarchies (Set/Financial/Cost Center)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="sapSemantics" value="currency"><label>Currency Conversion Logic (TCURR)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="sapSemantics" value="inventory"><label>Inventory/Stock Logic (Non-Cumulative Key Figures)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="sapSemantics" value="fiscal"><label>Fiscal Year Variants (T009)</label></div>
+                        <h4>2.1 Views & Virtual Models</h4>
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>HANA/CDS Views:</label>
+                                <input type="number" id="viewCount" name="viewCount" value="0">
+                                <span class="text-xs text-gray-500">Calculation Views, CDS Views</span>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="customObjects">Are there critical Custom ABAP Objects (Z-Tables) or logic that must be migrated?</label>
-                            <textarea id="customObjects" name="customObjects" placeholder="Estimate volume and complexity of custom Z-data..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Is ODP (Operational Data Provisioning) enabled and modern enough for BDC?</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="odpYes" name="odpReadiness" value="yes"><label for="odpYes">Yes</label></div>
-                                <div class="radio-item"><input type="radio" id="odpNo" name="odpReadiness" value="no"><label for="odpNo">No / Unknown</label></div>
+                            <div class="slider-group">
+                                <label>View Logic Complexity:</label>
+                                <input type="range" id="viewComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Simple Projection</span><span>Joins</span><span>Complex Calc/Script</span></div>
                             </div>
                         </div>
                     </div>
+
                     <div class="subsection">
-                        <h4>4.2 Data Lifecycle & Future Roadmap</h4>
-                        <div class="form-group">
-                            <label for="archivingDetails">Describe the current SAP Data Archiving Strategy (e.g., OpenText, ILM):</label>
-                            <textarea id="archivingDetails" name="archivingDetails" placeholder="Where is historical data stored and is it accessible for migration?"></textarea>
+                        <h4>2.2 ABAP & Procedural Logic</h4>
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>ABAP Reports/Funcs:</label>
+                                <input type="number" id="abapCount" name="abapCount" value="0">
+                                <span class="text-xs text-gray-500">Z-Programs, Function Modules</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>ABAP Complexity:</label>
+                                <input type="range" id="abapComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Simple Selects</span><span>Mixed</span><span>Complex Business Logic</span></div>
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label>Is SAP Datasphere (formerly DWC) currently in use or planned?</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="dsYes" name="datasphereUsage" value="yes"><label for="dsYes">Yes, using/planned</label></div>
-                                <div class="radio-item"><input type="radio" id="dsNo" name="datasphereUsage" value="no"><label for="dsNo">No</label></div>
+                            <label>Logic Details:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="logicFeatures" value="amdp"><label>AMDP (ABAP Managed Database Procedures)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="logicFeatures" value="bapi"><label>BAPIs Custom Usage</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="logicFeatures" value="hana_proc"><label>Native HANA Stored Procedures</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="logicFeatures" value="enhancements"><label>User Exits / Enhancements</label></div>
                             </div>
                         </div>
                     </div>
@@ -552,136 +348,109 @@
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>5. Target Databricks Architecture</span>
-                     <div class="na-toggle">
-                        <input type="checkbox" id="na-databricks" class="na-checkbox" data-section-content-id="databricks-content">
-                        <label for="na-databricks">N/A</label>
-                    </div>
+                    <span>3. Integration & ETL</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div>
                 </div>
-                <div class="section-content" id="databricks-content">
+                <div class="section-content" id="s3-content">
                     <div class="subsection">
-                        <h4>5.1 Lakehouse Setup</h4>
-                         <div class="form-group">
-                            <label>Target Cloud for Databricks:</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="aws" name="databricksCloud" value="aws" required data-required="true"><label for="aws">AWS</label></div>
-                                <div class="radio-item"><input type="radio" id="azure" name="databricksCloud" value="azure"><label for="azure">Azure</label></div>
-                                <div class="radio-item"><input type="radio" id="gcp" name="databricksCloud" value="gcp"><label for="gcp">GCP</label></div>
+                        <h4>3.1 Data Movement Tools</h4>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>ETL Jobs / Chains:</label>
+                                <input type="number" id="etlCount" name="etlCount" value="0">
+                                <span class="text-xs text-gray-500">BODS Jobs, BW Process Chains, SLT</span>
                             </div>
-                             <span class="error-message">Please select an option.</span>
+                            <div class="slider-group">
+                                <label>Integration Complexity:</label>
+                                <input type="range" id="etlComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Direct Extract</span><span>Mixed</span><span>Complex Transforms</span></div>
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label>Planned Data Architecture:</label>
+                            <label>Tools in Use:</label>
                             <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="lakehouseArch" value="medallion"><label>Medallion Architecture (Bronze/Silver/Gold)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="lakehouseArch" value="delta"><label>Delta Lake for all tables</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="lakehouseArch" value="unity"><label>Unity Catalog for Governance</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="bods"><label>SAP Data Services (BODS)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="slt"><label>SLT (Landscape Transformation)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="sdi"><label>HANA SDI / SDA</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="bw_extractors"><label>Standard BW Extractors</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="etlTools" value="po"><label>SAP PO/PI</label></div>
                             </div>
                         </div>
                     </div>
-                     <div class="subsection">
-                        <h4>5.2 Workloads & Use Cases</h4>
-                        <div class="form-group">
-                            <label>Primary workloads to run on SAP data in Databricks:</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="databricksWorkloads" value="bi"><label>BI & Reporting (e.g., Power BI, Tableau)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="databricksWorkloads" value="sql"><label>Databricks SQL</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="databricksWorkloads" value="etl"><label>ETL/ELT with Delta Live Tables</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="databricksWorkloads" value="ai-ml"><label>AI / Machine Learning</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="databricksWorkloads" value="streaming"><label>Real-time Streaming Analytics</label></div>
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label for="keyReports">Identify 1-3 key SAP reports or dashboards that are critical to replicate:</label>
-                            <textarea id="keyReports" name="keyReports" placeholder="List critical reports by name or function..."></textarea>
-                        </div>
+
+                    <div class="subsection">
+                        <h4>3.2 Dependencies</h4>
+                        <div class="form-group"><label>Source Systems (Upstream):</label><textarea id="upstream" name="upstream" placeholder="Other SAP systems, Non-SAP DBs, Flat files..."></textarea></div>
+                        <div class="form-group"><label>Downstream Consumers:</label><textarea id="downstream" name="downstream" placeholder="BOBJ, Analytics Cloud, Tableau, PowerBI..."></textarea></div>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>6. Security & Governance</span>
-                    <div class="na-toggle">
-                        <input type="checkbox" id="na-security" class="na-checkbox" data-section-content-id="security-content">
-                        <label for="na-security">N/A</label>
-                    </div>
+                    <span>4. Security & Governance</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s4" class="na-checkbox" data-section-content-id="s4-content"><label for="na-s4">N/A</label></div>
                 </div>
-                <div class="section-content" id="security-content">
+                <div class="section-content" id="s4-content">
                     <div class="subsection">
-                        <h4>6.1 Data Security & Compliance</h4>
-                         <div class="form-group">
-                            <label>Are there any PII, SOX, or other sensitive data considerations?</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="piiYes" name="piiData" value="yes" required data-required="true"><label for="piiYes">Yes</label></div>
-                                <div class="radio-item"><input type="radio" id="piiNo" name="piiData" value="no"><label for="piiNo">No</label></div>
-                            </div>
-                             <span class="error-message">Please select an option.</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="dataMasking">Describe data masking or anonymization requirements:</label>
-                            <textarea id="dataMasking" name="dataMasking"></textarea>
-                        </div>
-                    </div>
-                    <div class="subsection">
-                        <h4>6.2 Access Control</h4>
-                         <div class="form-group">
-                            <label>Identity Provider for Databricks Users:</label>
-                            <div class="radio-group">
-                                <div class="radio-item"><input type="radio" id="aad" name="identityProvider" value="aad" required data-required="true"><label for="aad">Azure Active Directory</label></div>
-                                <div class="radio-item"><input type="radio" id="okta" name="identityProvider" value="okta"><label for="okta">Okta</label></div>
-                                <div class="radio-item"><input type="radio" id="otherIdp" name="identityProvider" value="other"><label for="otherIdp">Other</label></div>
-                            </div>
-                             <span class="error-message">Please select an option.</span>
-                        </div>
-                         <div class="form-group">
-                            <label for="accessControl">Describe requirements for row-level or column-level security:</label>
-                            <textarea id="accessControl" name="accessControl" placeholder="e.g., Sales team can only see their region's data..."></textarea>
-                        </div>
+                        <div class="form-group"><label>Analysis Authorizations:</label><textarea id="analysisAuth" name="analysisAuth" placeholder="Describe complexity of BW/HANA analysis authorizations (Row-level security)."></textarea></div>
+                        <div class="form-group"><label>Role Hierarchy:</label><textarea id="roleHierarchy" name="roleHierarchy" placeholder="Derived roles, composite roles, structural authorizations?"></textarea></div>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>7. Success Criteria & Budget</span>
+                    <span>5. Target State & Priorities</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s5" class="na-checkbox" data-section-content-id="s5-content"><label for="na-s5">N/A</label></div>
                 </div>
-                <div class="section-content">
+                <div class="section-content" id="s5-content">
                     <div class="subsection">
-                        <h4>7.1 Migration Success Metrics</h4>
-                        <div class="form-group">
-                            <label>Primary goals for this migration project:</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="goals" value="cost"><label>Reduce Total Cost of Ownership (TCO)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="goals" value="performance"><label>Improve data processing performance</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="goals" value="innovation"><label>Enable new AI/ML use cases</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="goals" value="centralize"><label>Create a single source of truth for all data</label></div>
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label for="performanceTarget">What is the target performance improvement for key data pipelines? (e.g., reduce runtime from 4 hours to 30 mins):</label>
-                            <input type="text" id="performanceTarget" name="performanceTarget">
-                        </div>
-                    </div>
-                     <div class="subsection">
-                        <h4>7.2 Budget Considerations</h4>
+                        <h4>5.1 Architecture</h4>
                         <div class="inline-inputs">
                             <div class="form-group">
-                                <label for="currentSapSpend">Current annual SAP-related analytics spend ($):</label>
-                                <input type="number" id="currentSapSpend" name="currentSapSpend" min="0">
+                                <label>Target Cloud:</label>
+                                <select id="targetCloudProvider" name="targetCloudProvider">
+                                    <option value="">Select...</option>
+                                    <option value="aws">AWS</option>
+                                    <option value="azure">Azure</option>
+                                    <option value="gcp">GCP</option>
+                                </select>
                             </div>
-                             <div class="form-group">
-                                <label for="targetDatabricksSpend">Target annual Databricks spend ($):</label>
-                                <input type="number" id="targetDatabricksSpend" name="targetDatabricksSpend" min="0">
+                            <div class="form-group">
+                                <label>Strategy:</label>
+                                <select id="migrationStrategy" name="migrationStrategy">
+                                    <option value="">Select...</option>
+                                    <option value="replicate">Replicate (Cortex/Fivetran -> Datalake)</option>
+                                    <option value="federate">Federate (Query SAP directly)</option>
+                                    <option value="migrate">Full Migration (Decommission SAP BW)</option>
+                                </select>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Databricks Features:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="uc"><label>Unity Catalog</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="dbsql"><label>Databricks SQL</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="dlt"><label>Delta Live Tables (DLT)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="sap_connector"><label>SAP Connectors (Spark)</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h4>5.2 Budget & Costs</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Current Annual SAP Spend ($):</label><input type="number" id="totalSpend" name="totalSpend" min="0"></div>
+                            <div class="form-group"><label>Services Budget ($):</label><input type="number" id="servicesBudget" name="servicesBudget" min="0"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-            <div class="section page-break">
-                <div class="section-header">Form Completion Details</div>
+            <div class="section">
+                <div class="section-header"><span>Form Completion Details</span></div>
                 <div class="section-content">
                     <div class="inline-inputs">
                         <div class="form-group">
@@ -698,230 +467,176 @@
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 40px;" class="no-print">
-                <button type="submit" class="btn btn-submit">Submit Assessment</button>
+            <div class="text-center mt-12 pb-12">
+                <button type="submit" class="btn-submit">Generate ROM & Report</button>
             </div>
         </form>
         </div>
-
     </main>
 
     <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
 
     <script src="cart.js"></script>
     <script src="load-components.js"></script>
+    <script src="modals.js"></script>
     
     <script>
-        
         document.addEventListener('DOMContentLoaded', function() {
-            const completionDateInput = document.getElementById('completionDate');
-            if(completionDateInput) {
-                completionDateInput.valueAsDate = new Date();
-            }
+            // Set Date
+            const dateInput = document.getElementById('completionDate');
+            if(dateInput) dateInput.valueAsDate = new Date();
 
-            const form = document.getElementById('migrationForm');
-            const naToggles = form.querySelectorAll('.na-checkbox');
-
-            // --- NEW LOGIC: Dynamic Detail Boxes ---
-            const appTriggers = form.querySelectorAll('.app-trigger');
-            appTriggers.forEach(trigger => {
-                trigger.addEventListener('change', function() {
-                    const targetId = this.dataset.target;
-                    const detailBox = document.getElementById(targetId);
-                    const textArea = detailBox.querySelector('textarea');
-                    
-                    if (this.checked) {
-                        detailBox.style.display = 'block';
-                        // Add validation requirement when visible
-                        textArea.required = true;
-                    } else {
-                        detailBox.style.display = 'none';
-                        textArea.required = false;
-                        textArea.value = ''; // Clean data if unchecked
-                        textArea.classList.remove('is-invalid');
-                        const errorMsg = detailBox.querySelector('.error-message');
-                        if(errorMsg) errorMsg.style.display = 'none';
-                    }
-                });
-            });
-            // ----------------------------------------
-
-            naToggles.forEach(toggle => {
+            // Toggle N/A sections
+            document.querySelectorAll('.na-checkbox').forEach(toggle => {
                 toggle.addEventListener('change', function() {
-                    const contentId = this.dataset.sectionContentId;
-                    const contentElement = document.getElementById(contentId);
-                    const inputs = contentElement.querySelectorAll('input, select, textarea');
-
-                    if (this.checked) {
-                        contentElement.classList.add('disabled');
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                            if (input.hasAttribute('data-required')) {
-                                input.required = false;
-                            }
-                            input.classList.remove('is-invalid');
-                            const errorSpan = input.parentElement.querySelector('.error-message') || (input.closest('.form-group') ? input.closest('.form-group').querySelector('.error-message') : null);
-                            if (errorSpan) {
-                                errorSpan.style.display = 'none';
-                            }
-                        });
+                    const el = document.getElementById(this.dataset.sectionContentId);
+                    if(this.checked) {
+                        el.classList.add('disabled');
+                        el.querySelectorAll('input, textarea, select').forEach(i => i.disabled = true);
                     } else {
-                        contentElement.classList.remove('disabled');
-                        inputs.forEach(input => {
-                            input.disabled = false;
-                            if (input.hasAttribute('data-required')) {
-                                input.required = true;
-                            }
-                        });
-                        // Re-trigger dynamic boxes check to ensure correct required state is restored
-                        const appCheckboxes = contentElement.querySelectorAll('.app-trigger');
-                        appCheckboxes.forEach(cb => {
-                            if(cb.checked) {
-                                cb.dispatchEvent(new Event('change'));
-                            }
-                        });
+                        el.classList.remove('disabled');
+                        el.querySelectorAll('input, textarea, select').forEach(i => i.disabled = false);
                     }
                 });
             });
 
-            if (form) {
-                const validateField = (field) => {
-                    if (field.disabled) return true;
+            // Form Validation Helper
+            const validateField = (field) => {
+                let isValid = true;
+                const value = field.value.trim();
+                const errorSpan = field.nextElementSibling;
 
-                    let isValid = true;
-                    let errorMessage = 'This field is required.';
-                    const value = field.value.trim();
-                    
-                    // Determine where the error message is located.
-                    // For standard groups, it's in .form-group. For dynamic boxes, it's inside .app-details-container.
-                    let container = field.closest('.form-group');
-                    if (!container) container = field.closest('.app-details-container');
-                    
-                    const errorSpan = container ? container.querySelector('.error-message') : null;
+                if (field.disabled) return true;
 
-                    if (!container) return true; 
+                if (field.required && value === '') isValid = false;
+                if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) isValid = false;
 
-                    if (field.type === 'radio' && field.required) {
-                        const radioGroup = form.querySelectorAll(`input[name="${field.name}"]`);
-                        const isAnyChecked = Array.from(radioGroup).some(radio => radio.checked);
-                        if (!isAnyChecked) {
-                            isValid = false;
-                            errorMessage = 'Please select an option.';
-                        }
-                    } else if (field.required && value === '') {
-                        isValid = false;
-                    } else if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                        isValid = false;
-                        errorMessage = 'Please enter a valid email address.';
-                    } else if (field.type === 'number' && field.hasAttribute('min') && value !== '' && parseFloat(value) < parseFloat(field.min)) {
-                        isValid = false;
-                        errorMessage = `Value must be ${field.min} or more.`;
-                    }
-                    
-                    if (isValid) {
-                        field.classList.remove('is-invalid');
-                        if (errorSpan) errorSpan.style.display = 'none';
-                    } else {
-                        field.classList.add('is-invalid');
-                        if (errorSpan) {
-                            errorSpan.textContent = errorMessage;
-                            errorSpan.style.display = 'block';
-                        }
-                    }
-                    return isValid;
-                };
-
-                // Attach blur listeners to all potentially required fields
-                const attachListeners = () => {
-                    form.querySelectorAll('[data-required="true"]').forEach(field => {
-                        // Remove old listener to prevent duplicates (simple approach)
-                        field.removeEventListener('blur', () => validateField(field));
-                        field.addEventListener('blur', () => validateField(field));
-                        
-                        if(field.type === 'radio') {
-                            const radioGroup = form.querySelectorAll(`input[name="${field.name}"]`);
-                            radioGroup.forEach(radio => radio.addEventListener('change', () => validateField(field)));
-                        }
-                    });
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                    if (errorSpan && errorSpan.classList.contains('error-message')) errorSpan.style.display = 'none';
+                } else {
+                    field.classList.add('is-invalid');
+                    if (errorSpan && errorSpan.classList.contains('error-message')) errorSpan.style.display = 'block';
                 }
-                attachListeners();
+                return isValid;
+            };
 
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    let isFormValid = true;
-                    
-                    // Validate standard required fields
-                    form.querySelectorAll('[data-required="true"]').forEach(field => {
-                        if (!field.disabled) {
-                           if (!validateField(field)) {
-                                isFormValid = false;
-                            }
-                        }
-                    });
+            document.getElementById('migrationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
 
-                    // Validate visible dynamic textareas
-                    form.querySelectorAll('.app-details-container textarea').forEach(area => {
-                        if(area.offsetParent !== null && area.required) { // Check visibility
-                             if(!area.value.trim()) {
-                                 isFormValid = false;
-                                 area.classList.add('is-invalid');
-                                 const err = area.parentElement.querySelector('.error-message');
-                                 if(err) err.style.display = 'block';
-                             }
-                        }
-                    });
-
-                    if (!isFormValid) {
-                        const firstInvalidField = form.querySelector('.is-invalid');
-                        if (firstInvalidField) {
-                            firstInvalidField.focus();
-                            firstInvalidField.closest('.section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                        return;
-                    }
-                    
-                    const formData = new FormData(form);
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    submitButton.textContent = 'Submitting...';
-                    submitButton.disabled = true;
-
-                    fetch(form.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    }).then(response => {
-                        if (response.ok) {
-                            alert('Form submitted successfully!');
-                            form.reset();
-                            // Hide dynamic boxes
-                            document.querySelectorAll('.app-details-container').forEach(el => el.style.display = 'none');
-                            
-                            naToggles.forEach(toggle => {
-                                if (toggle.checked) {
-                                    toggle.checked = false;
-                                }
-                                toggle.dispatchEvent(new Event('change'));
-                            });
-                             if(completionDateInput) {
-                                completionDateInput.valueAsDate = new Date();
-                            }
-                        } else {
-                            response.json().then(data => {
-                                alert(data.errors ? data.errors.map(e => e.message).join(", ") : 'Oops! There was a problem submitting the form.');
-                            })
-                        }
-                    }).catch(error => {
-                        console.error('Submission Error:', error);
-                        alert('Oops! There was a network error.');
-                    }).finally(() => {
-                        submitButton.textContent = 'Submit Assessment';
-                        submitButton.disabled = false;
-                    });
+                // Validate
+                let isFormValid = true;
+                this.querySelectorAll('[required]').forEach(field => {
+                    if (!validateField(field)) isFormValid = false;
                 });
-            }
-        });
-    
-    </script>
 
+                if (!isFormValid) {
+                    const firstInvalid = this.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // 1. CAPTURE DATA FOR REPORT
+                const formData = new FormData(e.target);
+                const fullState = {};
+                
+                // Capture Header Data
+                fullState['project'] = document.getElementById('projectName').value;
+                fullState['stakeholder'] = document.getElementById('stakeholder').value;
+                fullState['email'] = document.getElementById('contactEmail').value;
+                
+                formData.forEach((value, key) => {
+                    if (!fullState[key]) {
+                        fullState[key] = value;
+                    } else {
+                        if (!Array.isArray(fullState[key])) fullState[key] = [fullState[key]];
+                        fullState[key].push(value);
+                    }
+                });
+                
+                sessionStorage.setItem('lastAssessmentReport', JSON.stringify(fullState));
+
+                // 2. DISTRIBUTION LOGIC
+                function distribute(total, sliderVal) {
+                    let s = 0, m = 0, c = 0, v = 0;
+                    const t = parseInt(total) || 0;
+                    const val = parseInt(sliderVal) || 3;
+
+                    if (val === 1) { s = 0.8; m = 0.2; c = 0.0; v = 0.0; } 
+                    else if (val === 2) { s = 0.6; m = 0.3; c = 0.1; v = 0.0; }
+                    else if (val === 3) { s = 0.4; m = 0.4; c = 0.2; v = 0.0; }
+                    else if (val === 4) { s = 0.2; m = 0.4; c = 0.3; v = 0.1; }
+                    else if (val === 5) { s = 0.1; m = 0.2; c = 0.4; v = 0.3; }
+
+                    return {
+                        s: Math.floor(t * s),
+                        m: Math.floor(t * m),
+                        c: Math.floor(t * c),
+                        v: Math.floor(t * v)
+                    };
+                }
+
+                // 3. APPLY LOGIC
+                // Tables: Standard + BW Objects
+                const totalTables = (parseInt(document.getElementById('tableCount').value) || 0) + 
+                                    (parseInt(document.getElementById('bwObjectCount').value) || 0);
+                // Weighted average complexity between Tables and BW Objects could be complex, 
+                // but we will use the Table Complexity slider as the primary driver for simplicity/robustness.
+                const tableDist = distribute(totalTables, document.getElementById('tableComplexity').value);
+                
+                // Views: HANA/CDS Views
+                const viewDist = distribute(document.getElementById('viewCount').value, document.getElementById('viewComplexity').value);
+                
+                // Procs: ABAP Programs + Funcs
+                const procDist = distribute(document.getElementById('abapCount').value, document.getElementById('abapComplexity').value);
+                
+                // ETL: BODS Jobs / Chains
+                const etlDist = distribute(document.getElementById('etlCount').value, document.getElementById('etlComplexity').value);
+                
+                // Orchestration: Assuming 1:1 with ETL chains for simplicity in this model
+                const orchDist = distribute(document.getElementById('etlCount').value, document.getElementById('etlComplexity').value);
+
+                // 4. BUILD URL
+                const params = new URLSearchParams();
+                
+                // Tables
+                params.append('table_simple', tableDist.s);
+                params.append('table_medium', tableDist.m);
+                params.append('table_complex', tableDist.c);
+                params.append('table_vcomplex', tableDist.v);
+                
+                // Views
+                params.append('view_simple', viewDist.s);
+                params.append('view_medium', viewDist.m);
+                params.append('view_complex', viewDist.c);
+                params.append('view_vcomplex', viewDist.v);
+
+                // Procs (ABAP)
+                params.append('proc_simple', procDist.s);
+                params.append('proc_medium', procDist.m);
+                params.append('proc_complex', procDist.c);
+                params.append('proc_vcomplex', procDist.v);
+                
+                // ETL
+                params.append('etl_simple', etlDist.s);
+                params.append('etl_medium', etlDist.m);
+                params.append('etl_complex', etlDist.c);
+                params.append('etl_vcomplex', etlDist.v);
+                
+                // Orchestration
+                params.append('orch_simple', orchDist.s);
+                params.append('orch_medium', orchDist.m);
+                params.append('orch_complex', orchDist.c);
+                params.append('orch_vcomplex', orchDist.v);
+
+                params.append('source', 'sap'); 
+
+                window.location.href = `calc.html?${params.toString()}`;
+            });
+        });
+    </script>
 </body>
 </html>
