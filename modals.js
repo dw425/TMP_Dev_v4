@@ -117,7 +117,6 @@ window.BlueprintModals = {
             container.id = 'blueprint-modals-container';
             container.innerHTML = this.templates;
             document.body.appendChild(container);
-            
             this.attachLogic();
         }
     },
@@ -125,16 +124,15 @@ window.BlueprintModals = {
     // ============================================
     // 3. LOGIC HANDLERS (Open/Close)
     // ============================================
-    // UPDATED: Now accepts optional imageSrc to swap images dynamically
     open(modalId, imageSrc = null) {
         const modal = document.getElementById(modalId);
         if (modal) {
-            // Logic for dynamic image swapping
+            // Dynamic Image Handling
             if (modalId === 'techArchModal' && imageSrc) {
                 const img = document.getElementById('techArchImage');
                 if (img) img.src = imageSrc;
             }
-            // Logic for dynamic product titles in contact form
+            // Dynamic Form Subject Handling
             if (modalId === 'contactSalesModal') {
                 const titleField = document.getElementById('hiddenPageTitle');
                 if(titleField) titleField.value = document.title;
@@ -172,7 +170,7 @@ window.BlueprintModals = {
             });
 
             proceedBtn.addEventListener('click', () => {
-                // UPDATED: Smart Product Detection
+                // --- SMART PRODUCT DETECTION ---
                 const pageTitle = document.title.toLowerCase();
                 let product = { 
                     id: 'ciq-1', 
@@ -182,10 +180,11 @@ window.BlueprintModals = {
 
                 if (pageTitle.includes("sap")) {
                     product = { id: 'sap-wc-1', title: 'SAP Working Capital - Single User', price: 1000 };
+                } else if (pageTitle.includes("churn")) {
+                    product = { id: 'churn-iq-1', title: 'ChurnIQ - Single User', price: 1000 };
                 } else if (pageTitle.includes("promotion")) {
                     product = { id: 'promo-1', title: 'PromotionIQ - Single User', price: 1000 };
                 }
-                // Add more conditions here as you add pages
 
                 if (typeof Cart !== 'undefined') {
                     Cart.add({ 
@@ -206,7 +205,6 @@ window.BlueprintModals = {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
-                // Scrape page title
                 const titleField = document.getElementById('hiddenPageTitle');
                 if(titleField) titleField.value = document.title;
                 
