@@ -8,7 +8,7 @@ const Cart = {
     key: 'blueprint_cart_v1',
 
     get() {
-        return JSON.parse(sessionStorage.getItem(this.key) || '[]');
+        return JSON.parse(localStorage.getItem(this.key) || '[]');
     },
 
     add(product) {
@@ -25,7 +25,7 @@ const Cart = {
             cart.push(product);
         }
 
-        sessionStorage.setItem(this.key, JSON.stringify(cart));
+        localStorage.setItem(this.key, JSON.stringify(cart));
         this.updateHeaderCount();
         
         // NO ALERTS. Silent update.
@@ -36,7 +36,7 @@ const Cart = {
         // Remove item completely regardless of quantity
         cart = cart.filter(i => i.id !== id);
         
-        sessionStorage.setItem(this.key, JSON.stringify(cart));
+        localStorage.setItem(this.key, JSON.stringify(cart));
         this.updateHeaderCount();
         
         // If on cart page, re-render
@@ -53,12 +53,14 @@ const Cart = {
         const badges = document.querySelectorAll('#header-cart-count');
         badges.forEach(b => {
             b.innerText = count;
+            // Force visibility logic
             if (count > 0) {
                 b.classList.remove('hidden');
-                b.classList.add('flex');
+                b.style.display = 'flex'; // Enforce flex to override CSS
+                b.style.backgroundColor = '#dc2626'; // Tailwind red-600
             } else {
                 b.classList.add('hidden');
-                b.classList.remove('flex');
+                b.style.display = 'none';
             }
         });
     },
@@ -75,9 +77,9 @@ const Cart = {
         
         if (cart.length === 0) {
             if(emptyMsg) emptyMsg.classList.remove('hidden');
-            document.getElementById('summary-monthly').innerText = "$0.00";
-            document.getElementById('summary-onetime').innerText = "$0.00";
-            document.getElementById('summary-total').innerText = "$0.00";
+            if(document.getElementById('summary-monthly')) document.getElementById('summary-monthly').innerText = "$0.00";
+            if(document.getElementById('summary-onetime')) document.getElementById('summary-onetime').innerText = "$0.00";
+            if(document.getElementById('summary-total')) document.getElementById('summary-total').innerText = "$0.00";
             return;
         }
 
@@ -164,20 +166,59 @@ const Cart = {
     },
 
     clear() {
-        sessionStorage.removeItem(this.key);
+        localStorage.removeItem(this.key);
         this.updateHeaderCount();
         if (document.getElementById('cart-page-items')) this.renderCartPage();
     }
 };
 
-// Initialize Cart on page load
+// --- INITIALIZATION LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initial Attempt
     Cart.updateHeaderCount();
-    // Only verify checkout logic if we are on the cart page
+    Cart.renderCartPage();
+
+    // 2. CHECKOUT LISTENERS
     if (document.getElementById('checkoutBtn')) {
         document.getElementById('checkoutBtn').addEventListener('click', () => {
             Cart.prepareCheckout();
         });
     }
-    Cart.renderCartPage();
+
+    // 3. LISTEN FOR "ADD TO CART" (Global Listener)
+    document.body.addEventListener('click', function(e) {
+        const btn = e.target.closest('.add-to-cart-btn');
+        if (btn) {
+            e.preventDefault();
+            const product = {
+                id: btn.dataset.id || Date.now(),
+                title: btn.dataset.name || "Unknown Item",
+                price: btn.dataset.price || "0",
+                type: btn.dataset.type || "Software",
+                billing: btn.dataset.billing || "onetime"
+            };
+            Cart.add(product);
+            
+            // Visual Feedback
+            const originalText = btn.innerText;
+            btn.innerText = "Added!";
+            btn.classList.add('bg-green-600');
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('bg-green-600');
+            }, 1000);
+        }
+    });
+
+    // 4. SAFETY CHECK FOR DYNAMIC HEADER (The Fix)
+    // Since your header loads via load-components.js, we must keep checking for it.
+    const checkInterval = setInterval(() => {
+        const badge = document.querySelector('#header-cart-count');
+        if (badge) {
+            Cart.updateHeaderCount();
+        }
+    }, 100);
+
+    // Stop checking after 2 seconds to save memory
+    setTimeout(() => clearInterval(checkInterval), 2000);
 });
