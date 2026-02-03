@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakehouse Optimizer | Blueprint Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <header class="mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-2">Lakehouse Optimizer</h1>
+            <p class="text-lg text-blueprint-blue font-medium">
+                Getting the most value out of your Databricks commitment.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-10 gap-12">
+            
+            <div class="lg:col-span-7 space-y-10">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <section class="sharp-card p-1 border-t-0 border-l border-r border-b shadow-sm flex flex-col justify-center bg-black">
+                        <div class="aspect-video w-full">
+                            <iframe src="https://www.youtube.com/embed/OREruNWafPE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full"></iframe>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-6 border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4">Summary</h2>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-3">
+                            The CFO of a large enterprise has a substantial five-year, $5 million commitment with Databricks. Her responsibility is twofold: ensuring financial accountability and validating the value realization from this investment. 
+                        </p>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Simultaneously, the FinOps team faces the "cost management whipsaw"—alternating between under-consumption gaps and unsustainable spending spikes due to unoptimized workloads.
+                        </p>
+                    </section>
+                </div>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">What It Does</h2>
+                    <div class="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
+                        <h3 class="text-lg font-bold text-blueprint-blue">Control costs, optimize architecture, and forecast value</h3>
+                        
+                        <p><strong>Value Forecasting & Accountability:</strong> Forecast how your investment translates into measurable business outcomes. We break down planned usage into specific initiatives, allowing you to track budget-to-actual performance quarterly and hold business owners accountable for adoption targets.</p>
+                        
+                        <p><strong>Stop the "Cost Whipsaw":</strong> Migration delays often lead to under-consumption, followed by panic-driven spikes in usage that overrun budgets. Lakehouse Optimizer provides the visibility needed to smooth out consumption, preventing the operational chaos of resource overuse.</p>
+                        
+                        <p><strong>Architectural Optimization:</strong> Don't just shut things down to save money. We identify specific workloads that are inefficient or over-provisioned and recommend architectural changes to right-size your environment. This ensures you balance cost management with performance and scalability.</p>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">Benefits</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Real-time Cost and Performance Insights.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Workload-specific Optimization Opportunities.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Roadmap for Sustainable Architecture.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-3">
+                <div class="sticky top-28 space-y-8">
+                    
+                    <div class="sharp-card p-6">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-blueprint-blue mb-6">Launch Pricing</h3>
+                        <div class="space-y-6">
+                            
+                            <div class="pb-6 border-b border-gray-100">
+                                <h4 class="text-md font-bold text-gray-900">Single User</h4>
+                                <p class="text-2xl font-bold text-blueprint-blue mt-1">$1,000.00<span class="text-xs text-gray-500 font-normal"> / mo</span></p>
+                                
+                                <button 
+                                    class="add-to-cart-btn w-full mt-4 bg-blueprint-blue text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors"
+                                    data-id="lho-1"
+                                    data-name="Lakehouse Optimizer - Single User"
+                                    data-price="1000"
+                                    data-type="Software"
+                                    data-billing="monthly">
+                                    Add to Cart
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-md font-bold text-gray-900">Team Account</h4>
+                                    <p class="text-sm text-gray-500 mt-1">Starting at $5,000.00/mo</p>
+                                    
+                                    <button onclick="window.BlueprintModals.open('contactSalesModal')" class="w-full mt-3 bg-black text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-colors">
+                                        Contact Sales
+                                    </button>
+                                </div>
+                                
+                                <button onclick="window.BlueprintModals.open('amIReadyModal')" class="w-full bg-gray-200 text-gray-800 font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-gray-300 transition-colors">
+                                    Am I Ready?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-gray-200">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Resources</h3>
+                        <ul class="space-y-4">
+                            <li>
+                                <a href="#" onclick="event.preventDefault(); window.BlueprintModals.open('techArchModal', 'lho.png')" class="text-sm font-bold text-blueprint-blue hover:underline">
+                                    View Technical Architecture
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://bpcs.com/case-studies" class="text-sm font-bold text-blueprint-blue hover:underline">
+                                    Case Studies
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    
+    <script src="modals.js"></script>
+
+</body>
+</html>
