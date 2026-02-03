@@ -27,8 +27,7 @@
         <section>
             <div class="flex items-center justify-between mb-8">
                 <h3 id="grid-title" class="text-3xl font-light text-gray-900 tracking-tight">All Industries</h3>
-                
-            </div>
+                </div>
             
             <div id="content-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </section>
@@ -121,12 +120,30 @@
             },
             // *********************************************************************
             { 
+                id: 1, 
+                assetType: 'tool', 
+                title: 'Lakehouse Optimizer', 
+                description: 'Control costs, optimize architecture, and forecast value. Stop the "cost management whipsaw" and ensure financial accountability for your Databricks commitment.', 
+                tags: ['FinOps', 'Optimization', 'Databricks'], 
+                // FILTER LOGIC: Financial Services, Gaming, Media, Oil & Gas, Defense
+                categories: ['financial-services', 'gaming', 'media', 'oil-gas', 'defense', 'accelerators', 'demos', 'migration-tools'], 
+                pricing: { 
+                    subscription: { monthly: 1000, annual: 10000 }, 
+                    payg: 'Contact Sales for Team/Enterprise', 
+                    byol: true 
+                }, 
+                prerequisites: 'Deploys directly into your Databricks environment (Azure, AWS, or GCP). Contact us for setup assistance.',
+                videoUrl: 'https://www.youtube.com/embed/OREruNWafPE', 
+                link: 'lho.html' 
+            },
+            { 
                 id: 15, 
                 assetType: 'tool', 
                 title: 'CampaignIQ', 
                 description: 'AI-powered media planning. Campaign IQ’s ROAS Maximizer connects campaign data from disparate sources, providing a single source of truth for your marketing performance.', 
                 tags: ['AI', 'Marketing', 'ROAS'], 
-                categories: ['accelerators', 'demos'], 
+                // FILTER LOGIC: Gaming, Media
+                categories: ['gaming', 'media', 'accelerators', 'demos'], 
                 pricing: { 
                     subscription: { monthly: 1000, annual: 10000 }, 
                     payg: 'Contact Sales for Team/Enterprise', 
@@ -142,7 +159,8 @@
                 title: 'SAP Working Capital', 
                 description: 'Real-Time Working Capital Intelligence Powered by SAP and Databricks. Unify disparate SAP sources (receivables, payables, inventory) to automate pipeline and forecast cash flow.', 
                 tags: ['Finance', 'SAP', 'Manufacturing'], 
-                categories: ['accelerators'], 
+                // FILTER LOGIC: Financial Services
+                categories: ['financial-services', 'accelerators'], 
                 pricing: { 
                     subscription: { monthly: 1000, annual: 10000 }, 
                     payg: 'Contact Sales for Team/Enterprise', 
@@ -158,7 +176,8 @@
                 title: 'PromotionIQ', 
                 description: 'Analyze, Optimize, and Recommend Promotions. Forecast promotion effectiveness beyond redemptions and track spend accountability with AI.', 
                 tags: ['Marketing', 'Promotion', 'Sportsbook'], 
-                categories: ['accelerators'], 
+                // FILTER LOGIC: Gaming, Media
+                categories: ['gaming', 'media', 'accelerators'], 
                 pricing: { 
                     subscription: { monthly: 1000, annual: 10000 }, 
                     payg: 'Contact Sales for Team/Enterprise', 
@@ -172,9 +191,10 @@
                 id: 18, 
                 assetType: 'tool', 
                 title: 'ChurnIQ', 
-                description: 'Predict, Segment, and Retain Customers with Databricks. Proactively identify at-risk users using behavioral patterns and generate tailored next-best actions. Track the impact of retention strategies on churn, revenue, and engagement KPIs.', 
+                description: 'Predict, Segment, and Retain Customers with Databricks. Proactively identify at-risk users using behavioral patterns and generate tailored next-best actions.', 
                 tags: ['Customer Success', 'Churn', 'Gaming'], 
-                categories: ['accelerators'], 
+                // FILTER LOGIC: Financial Services, Gaming, Media
+                categories: ['financial-services', 'gaming', 'media', 'accelerators'], 
                 pricing: { 
                     subscription: { monthly: 1000, annual: 10000 }, 
                     payg: 'Contact Sales for Team/Enterprise', 
@@ -185,20 +205,32 @@
                 link: 'churn_iq.html'
             },
             { 
-                id: 1, 
+                id: 19, 
                 assetType: 'tool', 
-                title: 'Lakehouse Optimizer', 
-                description: 'Control costs, optimize architecture, and forecast value. Stop the "cost management whipsaw" and ensure financial accountability for your Databricks commitment.', 
-                tags: ['FinOps', 'Optimization', 'Databricks'], 
-                categories: ['accelerators', 'demos', 'migration-tools'], 
+                title: 'CustomerSupport IQ', 
+                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Elevating Customer Experience Through GenAI-Powered Insights. The VP of Customer Support at a global enterprise is responsible for improving customer satisfaction, reducing churn, and coaching a distributed team of agents handling thousands of customer calls weekly. Key Challenges: Agent Coaching at Scale, Churn Signals and Escalation Risk, Customer Sentiment and Trend Analysis, Team Performance Accountability.', 
+                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
+                // FILTER LOGIC: Healthcare
+                categories: ['healthcare', 'accelerators'], 
                 pricing: { 
                     subscription: { monthly: 1000, annual: 10000 }, 
                     payg: 'Contact Sales for Team/Enterprise', 
-                    byol: true 
-                }, 
-                prerequisites: 'Deploys directly into your Databricks environment (Azure, AWS, or GCP). Contact us for setup assistance.',
-                videoUrl: 'https://www.youtube.com/embed/OREruNWafPE', 
-                link: 'lho.html' 
+                    byol: false 
+                },
+                prerequisites: 'Call Transcript Data. Databricks Workspace.',
+                videoUrl: '', 
+                link: 'cs_iq.html' 
+            },
+            { 
+                id: 13, 
+                assetType: 'accelerator', 
+                title: "Blueprint's AI Factory", 
+                description: 'The assembly line for business-ready AI. Shift from experimentation to industrialized delivery reducing risk and accelerating value.', 
+                tags: ['GenAI', 'RAG', 'Tutorial'], 
+                // FILTER LOGIC: Healthcare, Oil & Gas, Defense
+                categories: ['healthcare', 'oil-gas', 'defense', 'accelerators', 'videos', 'demos'], 
+                videoUrl: 'https://www.youtube.com/embed/48gEgOcCaKo',
+                link: 'wp_trending.html'
             },
             { 
                 id: 20, 
@@ -208,25 +240,6 @@
                 tags: ['Migration', 'Modernization', 'Legacy'], 
                 categories: ['migration-tools'], 
                 link: 'https://dw425.github.io/TMP_Dev_v4/cover_a.html', 
-                videoUrl: '' 
-            },
-            { 
-                id: 13, 
-                assetType: 'accelerator', 
-                title: "Blueprint's AI Factory", 
-                description: 'The assembly line for business-ready AI. Shift from experimentation to industrialized delivery reducing risk and accelerating value.', 
-                tags: ['GenAI', 'RAG', 'Tutorial'], 
-                categories: ['accelerators', 'videos', 'demos'], 
-                videoUrl: 'https://www.youtube.com/embed/48gEgOcCaKo',
-                link: 'wp_trending.html'
-            },
-            { 
-                id: 19, 
-                assetType: 'accelerator', 
-                title: 'CustomerSupport IQ', 
-                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Analyze support transcripts in real-time to surface coaching opportunities.', 
-                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
-                categories: ['accelerators'], 
                 videoUrl: '' 
             }
         ];
@@ -338,7 +351,7 @@
 
             let overviewContentForTool;
             // Enhanced overview content logic for new items
-            if ([15, 13, 16, 17, 18, 20, 1].includes(item.id)) {
+            if ([15, 13, 16, 17, 18, 19, 20, 1].includes(item.id)) {
                  overviewContentForTool = `
                  <h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Solution Overview</h5>
                  <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
@@ -376,8 +389,8 @@
                 </div>
             </div>`;
 
-            // Updated pricing check for new products (added ID 1 for LHO)
-            if ([15, 16, 17, 18, 1].includes(item.id)) {
+            // Updated pricing check for new products (added ID 1 for LHO, ID 19 for CS IQ)
+            if ([15, 16, 17, 18, 1, 19].includes(item.id)) {
                  pricingContent = `<div id="tab-pricing" class="tab-content hidden animate-fadeIn">
                         <h5 class="font-bold text-sm uppercase tracking-wide mb-6">Pricing Models</h5>
                         <div class="grid gap-4">
