@@ -21,16 +21,17 @@
             font-family: 'DM Sans', sans-serif;
             background-color: #f3f4f6;
             color: #1f2937;
+            font-size: 14px; /* Base font size slightly smaller for density */
         }
 
-        .section { margin-bottom: 40px; page-break-inside: avoid; }
+        .section { margin-bottom: 20px; page-break-inside: avoid; }
         
         .section-header {
             background: #1d4ed8;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 15px; /* Tighter header padding */
             font-weight: bold;
-            font-size: 14pt;
+            font-size: 13pt;
             margin: 0;
             border-radius: 0px; 
             display: flex;
@@ -38,11 +39,11 @@
             align-items: center;
         }
         
-        .na-toggle { display: flex; align-items: center; font-size: 10pt; font-weight: normal; }
-        .na-toggle input { margin-right: 8px; width: 16px; height: 16px; }
+        .na-toggle { display: flex; align-items: center; font-size: 9pt; font-weight: normal; }
+        .na-toggle input { margin-right: 6px; width: 14px; height: 14px; }
         
         .section-content {
-            padding: 25px;
+            padding: 15px; /* Reduced from 25px */
             background: white;
             border: 1px solid #e5e7eb;
             border-top: none;
@@ -52,22 +53,22 @@
         
         .section-content.disabled { opacity: 0.5; pointer-events: none; background-color: #f9fafb; }
         
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: 12px; } /* Reduced from 20px */
         
         .form-group label { 
             display: block; 
-            margin-bottom: 8px; 
+            margin-bottom: 4px; /* Reduced from 8px */
             font-weight: 700; 
             color: #374151; 
-            font-size: 10pt; 
+            font-size: 9.5pt; 
         }
         
         input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 8px; /* Reduced from 12px */
             border: 1px solid #d1d5db;
             border-radius: 0px;
-            font-size: 10pt;
+            font-size: 9.5pt;
             background: white;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
@@ -75,44 +76,44 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #1d4ed8;
-            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
         }
         
         .is-invalid { border-color: #ef4444 !important; }
-        .error-message { color: #ef4444; font-size: 9pt; display: none; margin-top: 4px; }
+        .error-message { color: #ef4444; font-size: 8.5pt; display: none; margin-top: 2px; }
         
-        textarea { min-height: 100px; resize: vertical; }
+        textarea { min-height: 70px; resize: vertical; } /* Reduced from 100px */
         
-        .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .four-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+        .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .four-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
         
-        .subsection { margin-bottom: 30px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 20px; }
-        .subsection:last-child { border-bottom: none; }
+        .subsection { margin-bottom: 15px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 10px; }
+        .subsection:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         
         .subsection h4 {
             color: #1d4ed8;
-            margin-bottom: 15px;
-            font-size: 12pt;
+            margin-bottom: 10px;
+            font-size: 11pt;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
         
-        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 8px; }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 5px; }
         .checkbox-item { display: flex; align-items: flex-start; }
-        .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; margin-top: 2px; }
-        .checkbox-item label { font-weight: normal; font-size: 10pt; line-height: 1.4; }
+        .checkbox-item input { margin-right: 8px; width: 16px; height: 16px; margin-top: 2px; }
+        .checkbox-item label { font-weight: normal; font-size: 9.5pt; line-height: 1.3; }
         
         /* --- COMPLEXITY SLIDER STYLES --- */
         .complexity-row {
             display: flex;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
             background: #f8fafc;
-            padding: 20px;
+            padding: 12px; /* Reduced from 20px */
             border: 1px solid #e2e8f0;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .count-input-group { flex: 1; }
         .slider-group { flex: 2; }
@@ -128,30 +129,30 @@
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 20px; width: 20px;
+            height: 16px; width: 16px; /* Slightly smaller thumb */
             background: #1d4ed8;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         
         .slider-labels { 
             display: flex; 
             justify-content: space-between; 
-            font-size: 0.75rem; 
+            font-size: 0.7rem; 
             color: #64748b; 
             font-weight: 700; 
-            margin-top: 8px; 
+            margin-top: 5px; 
             text-transform: uppercase;
         }
 
         .btn-submit {
             background-color: #1d4ed8;
             color: white;
-            padding: 16px 48px;
+            padding: 14px 40px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             border-radius: 0px;
@@ -164,6 +165,7 @@
         @media (max-width: 768px) {
             .inline-inputs, .three-column, .four-column, .complexity-row { grid-template-columns: 1fr; flex-direction: column; }
             .section-header { font-size: 1.1rem; }
+            .section-content { padding: 12px; }
         }
         
         .page-break { page-break-before: always; }
@@ -173,13 +175,13 @@
 
     <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
 
-    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="mb-10 border-b border-gray-200 pb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Informatica to Databricks Migration Assessment</h1>
-            <p class="text-lg text-gray-500">Inventory your Informatica PowerCenter estate to generate a precise ROM estimate and migration roadmap.</p>
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6 border-b border-gray-200 pb-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-2">Informatica to Databricks Migration Assessment</h1>
+            <p class="text-md text-gray-500">Inventory your Informatica PowerCenter estate to generate a precise ROM estimate and migration roadmap.</p>
         </div>
 
-        <div class="sharp-card p-8 md:p-12 bg-white">
+        <div class="sharp-card p-6 bg-white">
             <form id="migrationForm" novalidate>
             
             <div class="section">
@@ -220,7 +222,7 @@
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>1. Current Informatica Environment</span>
+                    <span>1. Current Informatica Estate</span>
                     <div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div>
                 </div>
                 <div class="section-content" id="s1-content">
@@ -312,7 +314,7 @@
                     <div class="subsection">
                         <h4>2.2 Critical Transformation Types</h4>
                         <p class="text-sm text-gray-500 mb-2">Check all that are frequently used. These impact conversion automation rates.</p>
-                        <div class="four-column checkbox-group mb-6">
+                        <div class="four-column checkbox-group mb-4">
                             <div class="checkbox-item"><input type="checkbox" name="transforms" value="aggregator"><label>Aggregator</label></div>
                             <div class="checkbox-item"><input type="checkbox" name="transforms" value="expression"><label>Expression</label></div>
                             <div class="checkbox-item"><input type="checkbox" name="transforms" value="filter"><label>Filter</label></div>
