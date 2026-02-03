@@ -220,7 +220,7 @@
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>1. Current Informatica Estate</span>
+                    <span>1. Current Informatica Environment</span>
                     <div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div>
                 </div>
                 <div class="section-content" id="s1-content">
@@ -249,6 +249,10 @@
                             <label>Common Table Structures & Features:</label>
                             <textarea id="tableStructures" name="tableStructures" placeholder="Describe typical data models (SCD Type 1/2, Fact/Dim). Do jobs rely on specific DB features like Partitioning, Materialized Views, or Stored Procs?"></textarea>
                         </div>
+                        <div class="form-group">
+                            <label>DB Performance Features:</label>
+                            <textarea id="dbFeatures" name="dbFeatures" placeholder="Reliance on partitioning, indexing strategies, etc."></textarea>
+                        </div>
                     </div>
 
                     <div class="subsection">
@@ -274,6 +278,10 @@
                         <div class="form-group">
                             <label>Recovery & SLAs:</label>
                             <textarea id="recoverySla" name="recoverySla" placeholder="Describe critical SLAs (e.g. 6AM cutoff) and typical failure recovery strategies."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Workflow Logic Complexity:</label>
+                            <textarea id="wfLogicComplex" name="wfLogicComplex" placeholder="Describe conditional branching, event waits, or timer dependencies."></textarea>
                         </div>
                     </div>
                 </div>
@@ -368,6 +376,7 @@
                             </div>
                         </div>
                         <div class="form-group"><label>Parameter Files Strategy:</label><textarea id="parameterFiles" name="parameterFiles" placeholder="Describe the extent and complexity of parameter file usage across workflows."></textarea></div>
+                         <div class="form-group"><label>Pre/Post-Session Commands:</label><textarea id="prepostCommands" name="prepostCommands" placeholder="Are shell scripts used for file cleanup, archiving, or triggering external events?"></textarea></div>
                     </div>
 
                     <div class="subsection">
@@ -395,15 +404,26 @@
                 </div>
                 <div class="section-content" id="s4-content">
                     <div class="subsection">
-                        <h4>4.1 Migration Strategy</h4>
-                        <div class="form-group">
-                            <label for="migrationApproach">Preferred Approach:</label>
-                            <select id="migrationApproach" name="migrationApproach">
-                                <option value="">Select...</option>
-                                <option value="replatform">Convert to Databricks SQL / DLT (Auto-conversion)</option>
-                                <option value="refactor">Redesign for Spark/PySpark (Optimization)</option>
-                                <option value="hybrid">Hybrid (Convert Simple, Refactor Complex)</option>
-                            </select>
+                        <h4>4.1 Target Cloud & Strategy</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group">
+                                <label for="cloudProvider">Target Cloud Provider:</label>
+                                <select id="cloudProvider" name="cloudProvider">
+                                    <option value="">Select...</option>
+                                    <option value="aws">AWS</option>
+                                    <option value="azure">Azure</option>
+                                    <option value="gcp">GCP</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="migrationApproach">Preferred Approach:</label>
+                                <select id="migrationApproach" name="migrationApproach">
+                                    <option value="">Select...</option>
+                                    <option value="replatform">Convert to Databricks SQL / DLT (Auto-conversion)</option>
+                                    <option value="refactor">Redesign for Spark/PySpark (Optimization)</option>
+                                    <option value="hybrid">Hybrid (Convert Simple, Refactor Complex)</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Databricks Features of Interest:</label>
@@ -412,12 +432,36 @@
                                 <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="workflows"><label>Databricks Workflows</label></div>
                                 <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="autoloader"><label>Auto Loader</label></div>
                                 <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="unity"><label>Unity Catalog</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="dbsql"><label>Databricks SQL</label></div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label><strong>Critical Workloads (Phase 1):</strong></label>
                         <textarea id="criticalWorkloads" name="criticalWorkloads" placeholder="List workloads that must migrate first (high value, low complexity, or urgent deadline)..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>5. Cost & Success Criteria</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s5" class="na-checkbox" data-section-content-id="s5-content"><label for="na-s5">N/A</label></div>
+                </div>
+                <div class="section-content" id="s5-content">
+                    <div class="subsection">
+                         <h4>5.1 Budgeting</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Current Informatica Spend ($):</label><input type="number" id="totalSpend" name="totalSpend" min="0"></div>
+                            <div class="form-group"><label>Migration Services Budget ($):</label><input type="number" id="servicesBudget" name="servicesBudget" min="0"></div>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                         <h4>5.2 KPIs</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Cost Savings Target (%):</label><input type="number" id="costSavingsTarget" name="costSavingsTarget" min="0"></div>
+                            <div class="form-group"><label>Performance Improvement (%):</label><input type="number" id="performanceTarget" name="performanceTarget" min="0"></div>
+                        </div>
                     </div>
                 </div>
             </div>
