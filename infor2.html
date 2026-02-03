@@ -85,6 +85,7 @@
         
         .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .four-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
         
         .subsection { margin-bottom: 30px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 20px; }
         .subsection:last-child { border-bottom: none; }
@@ -161,7 +162,7 @@
         .btn-submit:hover { background-color: #1e40af; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
         @media (max-width: 768px) {
-            .inline-inputs, .three-column, .complexity-row { grid-template-columns: 1fr; flex-direction: column; }
+            .inline-inputs, .three-column, .four-column, .complexity-row { grid-template-columns: 1fr; flex-direction: column; }
             .section-header { font-size: 1.1rem; }
         }
         
@@ -235,11 +236,23 @@
                                 <input type="number" id="repoCount" name="repoCount" min="0" value="0">
                             </div>
                         </div>
+                        <div class="form-group"><label for="serverSetup">Server Setup:</label><textarea id="serverSetup" name="serverSetup" placeholder="Describe the server environment (OS, on-premise vs. cloud, high availability, grid)..."></textarea></div>
                     </div>
 
                     <div class="subsection">
-                        <h4>1.2 Workflows & Orchestration</h4>
-                        <p class="text-sm text-gray-500 mb-4">Workflows typically map to the Orchestration layer in the ROM.</p>
+                        <h4>1.2 Data Architecture</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Source Systems:</label><textarea id="sourceSystems" name="sourceSystems" placeholder="Oracle, SAP, Mainframe, Flat Files..."></textarea></div>
+                            <div class="form-group"><label>Target Systems:</label><textarea id="targetSystems" name="targetSystems" placeholder="Snowflake, Teradata, Oracle..."></textarea></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Common Table Structures & Features:</label>
+                            <textarea id="tableStructures" name="tableStructures" placeholder="Describe typical data models (SCD Type 1/2, Fact/Dim). Do jobs rely on specific DB features like Partitioning, Materialized Views, or Stored Procs?"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>1.3 Workflows & Orchestration</h4>
                         
                         <div class="complexity-row">
                             <div class="count-input-group">
@@ -253,16 +266,28 @@
                             </div>
                         </div>
                         
-                        <div class="inline-inputs">
+                        <div class="three-column">
                             <div class="form-group"><label>Total Sessions:</label><input type="number" id="sessionCount" name="sessionCount" value="0"></div>
-                            <div class="form-group"><label>Scheduling Tool:</label><input type="text" id="schedulingTool" name="schedulingTool" placeholder="e.g., Autosys, Control-M"></div>
+                            <div class="form-group"><label>Reusable Worklets:</label><input type="number" id="workletCount" name="workletCount" value="0"></div>
+                            <div class="form-group"><label>Scheduling Tool:</label><input type="text" id="schedulingTool" name="schedulingTool" placeholder="Autosys, Control-M"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Recovery & SLAs:</label>
+                            <textarea id="recoverySla" name="recoverySla" placeholder="Describe critical SLAs (e.g. 6AM cutoff) and typical failure recovery strategies."></textarea>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>2. Mappings & Transformations</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div>
+                </div>
+                <div class="section-content" id="s2-content">
+                    
                     <div class="subsection">
-                        <h4>1.3 Mappings (ETL Logic)</h4>
-                        <p class="text-sm text-gray-500 mb-4">Mappings map to ETL Pipelines in the ROM.</p>
-
+                        <h4>2.1 Mapping Inventory</h4>
                         <div class="complexity-row">
                             <div class="count-input-group">
                                 <label>Total Mappings:</label>
@@ -274,10 +299,36 @@
                                 <div class="slider-labels"><span>1:1 Passthrough</span><span>Mixed</span><span>Heavy Transformation</span></div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="three-column">
-                            <div class="form-group"><label>Mapplets:</label><input type="number" id="mappletCount" name="mappletCount" value="0"></div>
-                            <div class="form-group"><label>Reusable Transformations:</label><input type="number" id="reusableTransformCount" name="reusableTransformCount" value="0"></div>
+                    <div class="subsection">
+                        <h4>2.2 Critical Transformation Types</h4>
+                        <p class="text-sm text-gray-500 mb-2">Check all that are frequently used. These impact conversion automation rates.</p>
+                        <div class="four-column checkbox-group mb-6">
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="aggregator"><label>Aggregator</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="expression"><label>Expression</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="filter"><label>Filter</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="joiner"><label>Joiner</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="lookup"><label>Lookup</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="normalizer"><label>Normalizer</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="rank"><label>Rank</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="router"><label>Router</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="sequence"><label>Sequence Gen</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="sorter"><label>Sorter</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="sq"><label>Source Qualifier</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="union"><label>Union</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="update"><label>Update Strategy</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="xml"><label>XML Parser</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="transforms" value="stored_proc"><label>Stored Proc</label></div>
+                        </div>
+                        
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Mapplets Count:</label><input type="number" id="mappletCount" name="mappletCount" value="0"></div>
+                            <div class="form-group"><label>User Defined Functions (UDFs):</label><input type="number" id="udfCount" name="udfCount" value="0"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Lookup Complexity:</label>
+                            <textarea id="lookupComplexity" name="lookupComplexity" placeholder="Describe lookup usage: persistent caching, dynamic lookups, SQL overrides?"></textarea>
                         </div>
                     </div>
                 </div>
@@ -285,13 +336,12 @@
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>2. Data & Scripting</span>
-                    <div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div>
+                    <span>3. Operational Dependencies</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div>
                 </div>
-                <div class="section-content" id="s2-content">
+                <div class="section-content" id="s3-content">
                     <div class="subsection">
-                        <h4>2.1 Scripts & Command Tasks</h4>
-                        <p class="text-sm text-gray-500 mb-4">External scripts invoked by Informatica.</p>
+                        <h4>3.1 Scripts & Commands</h4>
                         
                         <div class="complexity-row">
                             <div class="count-input-group">
@@ -307,9 +357,21 @@
                     </div>
 
                     <div class="subsection">
-                        <h4>2.2 Source & Target Scope</h4>
-                        <p class="text-sm text-gray-500 mb-4">Estimates for the underlying database objects involved.</p>
+                        <h4>3.2 Advanced Session Configs</h4>
+                        <div class="form-group">
+                            <label>Session Features:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="sessionFeatures" value="partitioning"><label>Session Partitioning</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="sessionFeatures" value="pushdown"><label>Pushdown Optimization (PDO)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="sessionFeatures" value="target_load_type"><label>Bulk Load Mode</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="sessionFeatures" value="error_handling"><label>Custom Error Handling</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Parameter Files Strategy:</label><textarea id="parameterFiles" name="parameterFiles" placeholder="Describe the extent and complexity of parameter file usage across workflows."></textarea></div>
+                    </div>
 
+                    <div class="subsection">
+                        <h4>3.3 Source & Target Scope</h4>
                         <div class="complexity-row">
                             <div class="count-input-group">
                                 <label>Total Tables Involved:</label>
@@ -323,40 +385,17 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="subsection">
-                        <h4>2.3 Connectivity & Advanced Features</h4>
-                        <div class="form-group">
-                            <label>Advanced Connectors (PowerExchange):</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="powerexchange" value="mainframe"><label>Mainframe (CDC)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="powerexchange" value="sap"><label>SAP</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="powerexchange" value="salesforce"><label>Salesforce</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="powerexchange" value="web_services"><label>Web Services (SOAP/REST)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="powerexchange" value="kafka"><label>Kafka/Messaging</label></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Complex Transformations Used:</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item"><input type="checkbox" name="complexTrans" value="java"><label>Java Transformations</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="complexTrans" value="sql"><label>SQL Transformations (Mid-stream)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="complexTrans" value="update_strategy"><label>Update Strategy (Stateful)</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="complexTrans" value="normalizer"><label>Normalizer</label></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="section page-break">
                 <div class="section-header">
-                    <span>3. Target Architecture & Priorities</span>
-                    <div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div>
+                    <span>4. Target Architecture & Priorities</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s4" class="na-checkbox" data-section-content-id="s4-content"><label for="na-s4">N/A</label></div>
                 </div>
-                <div class="section-content" id="s3-content">
+                <div class="section-content" id="s4-content">
                     <div class="subsection">
-                        <h4>3.1 Migration Strategy</h4>
+                        <h4>4.1 Migration Strategy</h4>
                         <div class="form-group">
                             <label for="migrationApproach">Preferred Approach:</label>
                             <select id="migrationApproach" name="migrationApproach">
@@ -412,7 +451,9 @@
 
     <script src="cart.js"></script>
     <script src="load-components.js"></script>
-    <script src="modals.js"></script> <script>
+    <script src="modals.js"></script> 
+    
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Set Date
             const dateInput = document.getElementById('completionDate');
@@ -551,7 +592,7 @@
                 params.append('table_complex', tableDist.c);
                 params.append('table_vcomplex', tableDist.v);
 
-                params.append('source', 'informatica'); // Or just 'other'/specific key if supported by calc.html
+                params.append('source', 'informatica'); 
 
                 window.location.href = `calc.html?${params.toString()}`;
             });
