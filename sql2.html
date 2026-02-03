@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Migration to Databricks Assessment | Blueprint Migration</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+
+    <style>
+        /* --- BRANDED FORM STYLES (Tight Version) --- */
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-size: 14px;
+        }
+
+        .section { margin-bottom: 20px; page-break-inside: avoid; }
+        
+        .section-header {
+            background: #1d4ed8;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 13pt;
+            margin: 0;
+            border-radius: 0px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .na-toggle { display: flex; align-items: center; font-size: 9pt; font-weight: normal; }
+        .na-toggle input { margin-right: 6px; width: 14px; height: 14px; }
+        
+        .section-content {
+            padding: 15px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            border-radius: 0px;
+            transition: opacity 0.3s;
+        }
+        
+        .section-content.disabled { opacity: 0.5; pointer-events: none; background-color: #f9fafb; }
+        
+        .form-group { margin-bottom: 12px; }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 4px; 
+            font-weight: 700; 
+            color: #374151; 
+            font-size: 9.5pt; 
+        }
+        
+        input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 0px;
+            font-size: 9.5pt;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
+        }
+        
+        .is-invalid { border-color: #ef4444 !important; }
+        .error-message { color: #ef4444; font-size: 8.5pt; display: none; margin-top: 2px; }
+        
+        textarea { min-height: 70px; resize: vertical; }
+        
+        .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .four-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+        
+        .subsection { margin-bottom: 15px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 10px; }
+        .subsection:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .subsection h4 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 5px; }
+        .checkbox-item { display: flex; align-items: flex-start; }
+        .checkbox-item input { margin-right: 8px; width: 16px; height: 16px; margin-top: 2px; }
+        .checkbox-item label { font-weight: normal; font-size: 9.5pt; line-height: 1.3; }
+        
+        /* --- COMPLEXITY SLIDER STYLES --- */
+        .complexity-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #f8fafc;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+        }
+        .count-input-group { flex: 1; }
+        .slider-group { flex: 2; }
+        
+        input[type="range"] { 
+            width: 100%; 
+            cursor: pointer; 
+            accent-color: #1d4ed8; 
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px; width: 16px;
+            background: #1d4ed8;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .slider-labels { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 0.7rem; 
+            color: #64748b; 
+            font-weight: 700; 
+            margin-top: 5px; 
+            text-transform: uppercase;
+        }
+
+        .btn-submit {
+            background-color: #1d4ed8;
+            color: white;
+            padding: 14px 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 0px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-submit:hover { background-color: #1e40af; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        @media (max-width: 768px) {
+            .inline-inputs, .three-column, .four-column, .complexity-row { grid-template-columns: 1fr; flex-direction: column; }
+            .section-header { font-size: 1.1rem; }
+            .section-content { padding: 12px; }
+        }
+        
+        .page-break { page-break-before: always; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6 border-b border-gray-200 pb-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-2">SQL Migration to Databricks Assessment</h1>
+            <p class="text-md text-gray-500">Inventory your SQL Server, Oracle, or Postgres estate to generate a precise ROM estimate.</p>
+        </div>
+
+        <div class="sharp-card p-6 bg-white">
+            <form id="migrationForm" novalidate>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span>Executive Summary</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-exec" class="na-checkbox" data-section-content-id="exec-content"><label for="na-exec">N/A</label></div>
+                </div>
+                <div class="section-content" id="exec-content">
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="projectName">Project Name:</label>
+                            <input type="text" id="projectName" name="projectName" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="stakeholder">Primary Stakeholder:</label>
+                            <input type="text" id="stakeholder" name="stakeholder" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="timeline">Timeline Expectations:</label>
+                            <input type="text" id="timeline" name="timeline" placeholder="e.g., Q2 2025">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Contact Email:</label>
+                            <input type="email" id="contactEmail" name="contactEmail" required data-required="true">
+                            <span class="error-message">Please enter a valid email address.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessDriver">Business Driver for Migration:</label>
+                        <textarea id="businessDriver" name="businessDriver" placeholder="e.g., License renewal, performance issues, move to Lakehouse..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>1. Current SQL Environment</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div>
+                </div>
+                <div class="section-content" id="s1-content">
+                    <div class="subsection">
+                        <h4>1.1 System & Hosting</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group">
+                                <label for="sqlSystem">Source SQL System:</label>
+                                <select id="sqlSystem" name="sqlSystem">
+                                    <option value="">Select...</option>
+                                    <option value="sqlserver">SQL Server (T-SQL)</option>
+                                    <option value="oracle">Oracle (PL/SQL)</option>
+                                    <option value="postgresql">PostgreSQL</option>
+                                    <option value="mysql">MySQL</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="hostingEnv">Hosting Environment:</label>
+                                <select id="hostingEnv" name="hostingEnv">
+                                    <option value="">Select...</option>
+                                    <option value="on_premises">On-Premises</option>
+                                    <option value="aws_rds">AWS (RDS)</option>
+                                    <option value="azure_sql">Azure (SQL DB / MI)</option>
+                                    <option value="gcp_sql">GCP (Cloud SQL)</option>
+                                    <option value="other_cloud">Other Cloud/VM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>1.2 Object Inventory</h4>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Total Tables:</label>
+                                <input type="number" id="tableCount" name="tableCount" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Schema Complexity:</label>
+                                <input type="range" id="tableComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Simple</span><span>Mixed</span><span>Wide/Complex Keys</span></div>
+                            </div>
+                        </div>
+
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Total Views:</label>
+                                <input type="number" id="viewCount" name="viewCount" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>View Logic Complexity:</label>
+                                <input type="range" id="viewComplexity" min="1" max="5" value="2">
+                                <div class="slider-labels"><span>Simple</span><span>Nested</span><span>Indexed/Materialized</span></div>
+                            </div>
+                        </div>
+
+                        <div class="three-column">
+                            <div class="form-group"><label>Databases:</label><input type="number" id="databaseCount" name="databaseCount" value="0"></div>
+                            <div class="form-group"><label>Schemas:</label><input type="number" id="schemaCount" name="schemaCount" value="0"></div>
+                            <div class="form-group"><label>Data Size (TB):</label><input type="number" id="totalDataSize" name="totalDataSize" step="0.1"></div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>1.3 Data Structure & Features</h4>
+                        <div class="form-group">
+                            <label>Features Used:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="dataFeatures" value="temp_tables"><label>Temporary Tables</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dataFeatures" value="ext_tables"><label>External Tables</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dataFeatures" value="m_views"><label>Materialized Views</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dataFeatures" value="partitioning"><label>Data Partitioning</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dataFeatures" value="clr"><label>CLR Assemblies (.NET)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dataFeatures" value="java_db"><label>Java in DB</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Indexing & Partitioning:</label>
+                            <textarea id="indexingStrategy" name="indexingStrategy" placeholder="Describe clustered indexes, partitioning keys, and performance tuning strategies."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Linked Servers / DB Links Count:</label>
+                            <input type="number" id="linkCount" name="linkCount" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>2. Compute, Logic & ETL</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div>
+                </div>
+                <div class="section-content" id="s2-content">
+                    
+                    <div class="subsection">
+                        <h4>2.1 Stored Procedures & Logic</h4>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Stored Procedures:</label>
+                                <input type="number" id="spCount" name="spCount" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Procedural Complexity:</label>
+                                <input type="range" id="spComplexityVal" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Simple CRUD</span><span>Mixed</span><span>Heavy Logic/Cursors</span></div>
+                            </div>
+                        </div>
+
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>User-Defined Functions:</label>
+                                <input type="number" id="udfCount" name="udfCount" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Function Complexity:</label>
+                                <input type="range" id="udfComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Scalar</span><span>Mixed</span><span>Table-Valued/CLR</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Triggers:</label><input type="number" id="triggerCount" name="triggerCount" value="0"></div>
+                            <div class="form-group"><label>SP/Trigger Details:</label><input type="text" id="spDetails" name="spDetails" placeholder="Dynamic SQL, Transaction Control?"></div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>2.2 Data Loading & ETL</h4>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>ETL Packages (SSIS/Other):</label>
+                                <input type="number" id="etlCount" name="etlCount" value="0">
+                                <span class="text-xs text-gray-500">SSIS Packages, DTS, Informatica Jobs</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>ETL Complexity:</label>
+                                <input type="range" id="etlComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Data Pump</span><span>Mixed</span><span>Complex Transformations</span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Methods:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="ingestionMethods" value="log_shipping"><label>Log Shipping/Replication</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="ingestionMethods" value="bulk_insert"><label>Bulk Insert/BCP</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="ingestionMethods" value="cdc"><label>CDC (Change Data Capture)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="ingestionMethods" value="ssis"><label>SSIS/Integration Services</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>SSIS/ETL Details:</label><textarea id="ssisPackages" name="ssisPackages" placeholder="Describe complexity of SSIS packages (Script tasks, custom components)."></textarea></div>
+                    </div>
+
+                    <div class="subsection">
+                        <h4>2.3 External Scripts</h4>
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>External Scripts (.bat/ps1):</label>
+                                <input type="number" id="scriptCount" name="scriptCount" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Script Complexity:</label>
+                                <input type="range" id="scriptComplexity" min="1" max="5" value="2">
+                                <div class="slider-labels"><span>Simple Trigger</span><span>Mixed</span><span>Heavy Orchestration</span></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Script Details:</label><textarea id="sqlScripts" name="sqlScripts" placeholder="Describe reliance on external batch, PowerShell, or shell scripts."></textarea></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>3. Orchestration & Infrastructure</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div>
+                </div>
+                <div class="section-content" id="s3-content">
+                    <div class="subsection">
+                        <h4>3.1 Job Scheduling</h4>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Scheduled Jobs (Agent):</label>
+                                <input type="number" id="jobCount" name="jobCount" value="0">
+                                <span class="text-xs text-gray-500">SQL Agent Jobs / DBMS_SCHEDULER</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>Job Complexity:</label>
+                                <input type="range" id="jobComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Simple Schedule</span><span>Mixed</span><span>Multi-Step/Dependencies</span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Methods:</label>
+                             <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="orchestration" value="db_jobs"><label>Database Jobs (Agent)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="orchestration" value="airflow"><label>External (Airflow)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="orchestration" value="third_party"><label>3rd Party (Control-M, Autosys)</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>3.2 Server Infrastructure</h4>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Server Count:</label><input type="number" id="serverCount" name="serverCount" value="0"></div>
+                            <div class="form-group"><label>Specs (Avg):</label><input type="text" id="serverSpecs" name="serverSpecs" placeholder="vCores, RAM..."></div>
+                        </div>
+                        <div class="form-group"><label>Instance Usage:</label><textarea id="instanceUsage" name="instanceUsage" placeholder="HA/DR setup, OLTP vs OLAP separation."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>4. Security & Governance</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s4" class="na-checkbox" data-section-content-id="s4-content"><label for="na-s4">N/A</label></div>
+                </div>
+                <div class="section-content" id="s4-content">
+                    <div class="subsection">
+                         <div class="form-group"><label>User & Role Management:</label><textarea id="accessManagement" name="accessManagement" placeholder="Active Directory integration, Windows Auth, Mixed Mode?"></textarea></div>
+                         <div class="form-group">
+                            <label>Security Features:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="rls"><label>Row-Level Security</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="masking"><label>Dynamic Masking</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="secFeatures" value="tde"><label>TDE (Transparent Encryption)</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>5. Cost & Priorities</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s5" class="na-checkbox" data-section-content-id="s5-content"><label for="na-s5">N/A</label></div>
+                </div>
+                <div class="section-content" id="s5-content">
+                    <div class="subsection">
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Annual Licensing Cost ($):</label><input type="number" id="totalSpend" name="totalSpend" min="0"></div>
+                            <div class="form-group"><label>Services Budget ($):</label><input type="number" id="servicesBudget" name="servicesBudget" min="0"></div>
+                        </div>
+                        <div class="form-group"><label>Critical SLAs:</label><textarea id="jobSLAs" name="jobSLAs" placeholder="Time windows for batch processing."></textarea></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section page-break">
+                <div class="section-header">
+                    <span>6. Target State</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s6" class="na-checkbox" data-section-content-id="s6-content"><label for="na-s6">N/A</label></div>
+                </div>
+                <div class="section-content" id="s6-content">
+                    <div class="subsection">
+                        <div class="inline-inputs">
+                            <div class="form-group">
+                                <label>Target Cloud:</label>
+                                <select id="targetCloudProvider" name="targetCloudProvider">
+                                    <option value="">Select...</option>
+                                    <option value="aws">AWS</option>
+                                    <option value="azure">Azure</option>
+                                    <option value="gcp">GCP</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Databricks Features:</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="uc"><label>Unity Catalog</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="dbsql"><label>Databricks SQL</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="dbxFeatures" value="dlt"><label>Delta Live Tables</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header"><span>Form Completion Details</span></div>
+                <div class="section-content">
+                    <div class="inline-inputs">
+                        <div class="form-group">
+                            <label for="completedBy">Questionnaire Completed By:</label>
+                            <input type="text" id="completedBy" name="completedBy" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="completionDate">Date:</label>
+                            <input type="date" id="completionDate" name="completionDate" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 pb-12">
+                <button type="submit" class="btn-submit">Generate ROM & Report</button>
+            </div>
+        </form>
+        </div>
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    <script src="modals.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set Date
+            const dateInput = document.getElementById('completionDate');
+            if(dateInput) dateInput.valueAsDate = new Date();
+
+            // Toggle N/A sections
+            document.querySelectorAll('.na-checkbox').forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const el = document.getElementById(this.dataset.sectionContentId);
+                    if(this.checked) {
+                        el.classList.add('disabled');
+                        el.querySelectorAll('input, textarea, select').forEach(i => i.disabled = true);
+                    } else {
+                        el.classList.remove('disabled');
+                        el.querySelectorAll('input, textarea, select').forEach(i => i.disabled = false);
+                    }
+                });
+            });
+
+            // Form Validation Helper
+            const validateField = (field) => {
+                let isValid = true;
+                const value = field.value.trim();
+                const errorSpan = field.nextElementSibling;
+
+                if (field.disabled) return true;
+
+                if (field.required && value === '') isValid = false;
+                if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) isValid = false;
+
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                    if (errorSpan && errorSpan.classList.contains('error-message')) errorSpan.style.display = 'none';
+                } else {
+                    field.classList.add('is-invalid');
+                    if (errorSpan && errorSpan.classList.contains('error-message')) errorSpan.style.display = 'block';
+                }
+                return isValid;
+            };
+
+            document.getElementById('migrationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validate
+                let isFormValid = true;
+                this.querySelectorAll('[required]').forEach(field => {
+                    if (!validateField(field)) isFormValid = false;
+                });
+
+                if (!isFormValid) {
+                    const firstInvalid = this.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+
+                // 1. CAPTURE DATA FOR REPORT
+                const formData = new FormData(e.target);
+                const fullState = {};
+                
+                // Capture Header Data
+                fullState['project'] = document.getElementById('projectName').value;
+                fullState['stakeholder'] = document.getElementById('stakeholder').value;
+                fullState['email'] = document.getElementById('contactEmail').value;
+                
+                formData.forEach((value, key) => {
+                    if (!fullState[key]) {
+                        fullState[key] = value;
+                    } else {
+                        if (!Array.isArray(fullState[key])) fullState[key] = [fullState[key]];
+                        fullState[key].push(value);
+                    }
+                });
+                
+                sessionStorage.setItem('lastAssessmentReport', JSON.stringify(fullState));
+
+                // 2. DISTRIBUTION LOGIC
+                function distribute(total, sliderVal) {
+                    let s = 0, m = 0, c = 0, v = 0;
+                    const t = parseInt(total) || 0;
+                    const val = parseInt(sliderVal) || 3;
+
+                    if (val === 1) { s = 0.8; m = 0.2; c = 0.0; v = 0.0; } 
+                    else if (val === 2) { s = 0.6; m = 0.3; c = 0.1; v = 0.0; }
+                    else if (val === 3) { s = 0.4; m = 0.4; c = 0.2; v = 0.0; }
+                    else if (val === 4) { s = 0.2; m = 0.4; c = 0.3; v = 0.1; }
+                    else if (val === 5) { s = 0.1; m = 0.2; c = 0.4; v = 0.3; }
+
+                    return {
+                        s: Math.floor(t * s),
+                        m: Math.floor(t * m),
+                        c: Math.floor(t * c),
+                        v: Math.floor(t * v)
+                    };
+                }
+
+                // 3. APPLY LOGIC
+                // Tables -> Tables
+                const tableDist = distribute(document.getElementById('tableCount').value, document.getElementById('tableComplexity').value);
+                
+                // Views -> Views
+                const viewDist = distribute(document.getElementById('viewCount').value, document.getElementById('viewComplexity').value);
+                
+                // Procs (SPs + Triggers) -> Procs
+                const totalProcs = (parseInt(document.getElementById('spCount').value) || 0) + 
+                                   (parseInt(document.getElementById('triggerCount').value) || 0);
+                const procDist = distribute(totalProcs, document.getElementById('spComplexityVal').value);
+                
+                // Functions -> Functions
+                const funcDist = distribute(document.getElementById('udfCount').value, document.getElementById('udfComplexity').value);
+                
+                // ETL Packages -> ETL Pipelines
+                const etlDist = distribute(document.getElementById('etlCount').value, document.getElementById('etlComplexity').value);
+                
+                // Scripts -> Scripts
+                const scriptDist = distribute(document.getElementById('scriptCount').value, document.getElementById('scriptComplexity').value);
+                
+                // Orchestration (Agent Jobs) -> Orchestration
+                const orchDist = distribute(document.getElementById('jobCount').value, document.getElementById('jobComplexity').value);
+
+                // 4. BUILD URL
+                const params = new URLSearchParams();
+                
+                // Tables
+                params.append('table_simple', tableDist.s);
+                params.append('table_medium', tableDist.m);
+                params.append('table_complex', tableDist.c);
+                params.append('table_vcomplex', tableDist.v);
+                
+                // Views
+                params.append('view_simple', viewDist.s);
+                params.append('view_medium', viewDist.m);
+                params.append('view_complex', viewDist.c);
+                params.append('view_vcomplex', viewDist.v);
+
+                // Procs
+                params.append('proc_simple', procDist.s);
+                params.append('proc_medium', procDist.m);
+                params.append('proc_complex', procDist.c);
+                params.append('proc_vcomplex', procDist.v);
+                
+                // Functions
+                params.append('func_simple', funcDist.s);
+                params.append('func_medium', funcDist.m);
+                params.append('func_complex', funcDist.c);
+                params.append('func_vcomplex', funcDist.v);
+
+                // ETL
+                params.append('etl_simple', etlDist.s);
+                params.append('etl_medium', etlDist.m);
+                params.append('etl_complex', etlDist.c);
+                params.append('etl_vcomplex', etlDist.v);
+                
+                // Scripts
+                params.append('script_simple', scriptDist.s);
+                params.append('script_medium', scriptDist.m);
+                params.append('script_complex', scriptDist.c);
+                params.append('script_vcomplex', scriptDist.v);
+                
+                // Orchestration
+                params.append('orch_simple', orchDist.s);
+                params.append('orch_medium', orchDist.m);
+                params.append('orch_complex', orchDist.c);
+                params.append('orch_vcomplex', orchDist.v);
+
+                params.append('source', 'sqlserver'); 
+
+                window.location.href = `calc.html?${params.toString()}`;
+            });
+        });
+    </script>
+</body>
+</html>
