@@ -108,18 +108,10 @@
         // --- DATA ---
         const allContent = [
             { 
-                id: 7, 
-                assetType: 'content', 
-                title: 'Top Trending Insight', 
-                description: 'Stop Guessing: Winning in today’s market requires a shift from hindsight to foresight. Discover how the "AI Factory" model predicts outcomes with precision using CampaignIQ.', 
-                tags: ['AI Strategy', 'Marketing', 'Forecasting'], 
-                categories: ['whitepapers', 'uc-learnings'], 
-            },
-            { 
                 id: 15, 
                 assetType: 'tool', 
                 title: 'CampaignIQ', 
-                description: 'What is CampaignIQ? AI-powered media planning. Campaign IQ’s ROAS Maximizer is a cutting-edge analytics platform designed to provide unparalleled insight into your advertising spend. By leveraging advanced machine learning algorithms, it connects campaign data from disparate sources, providing a single source of truth for your marketing performance.', 
+                description: 'AI-powered media planning. Campaign IQ’s ROAS Maximizer connects campaign data from disparate sources, providing a single source of truth for your marketing performance.', 
                 tags: ['AI', 'Marketing', 'ROAS'], 
                 categories: ['accelerators', 'demos'], 
                 pricing: { 
@@ -127,8 +119,66 @@
                     payg: 'Contact Sales for Team/Enterprise', 
                     byol: false 
                 }, 
-                prerequisites: 'Requires Databricks Account. Workspace setup to accept notebook. Marketing data setup inside workspace. Unity Catalog recommended.',
-                videoUrl: 'https://www.youtube.com/embed/smNEBimkSGI'
+                prerequisites: 'Requires Databricks Account. Unity Catalog recommended.',
+                videoUrl: 'https://www.youtube.com/embed/smNEBimkSGI',
+                link: 'ciq_pp.html'
+            },
+            { 
+                id: 16, 
+                assetType: 'tool', 
+                title: 'SAP Working Capital', 
+                description: 'Real-Time Working Capital Intelligence Powered by SAP and Databricks. Unify disparate SAP sources (receivables, payables, inventory) to automate the entire pipeline. Includes AI-powered forecasting and interactive scenario simulations.', 
+                tags: ['Finance', 'SAP', 'Manufacturing'], 
+                categories: ['accelerators'], 
+                pricing: { 
+                    subscription: { monthly: 1000, annual: 10000 }, 
+                    payg: 'Contact Sales for Team/Enterprise', 
+                    byol: false 
+                },
+                prerequisites: 'SAP ECC or S/4HANA. Databricks Workspace.',
+                videoUrl: '', 
+                link: 'sap_wc.html'
+            },
+            { 
+                id: 17, 
+                assetType: 'tool', 
+                title: 'PromotionIQ', 
+                description: 'Analyze, Optimize, and Recommend Promotions with AI. Designed for aggressive marketing budgets, this tool forecasts promotion effectiveness beyond redemptions. Track spend accountability, explain campaign variance, and equip marketing teams to test and iterate offer structures.', 
+                tags: ['Marketing', 'Promotion', 'Sportsbook'], 
+                categories: ['accelerators'], 
+                pricing: { 
+                    subscription: { monthly: 1000, annual: 10000 }, 
+                    payg: 'Contact Sales for Team/Enterprise', 
+                    byol: false 
+                },
+                prerequisites: 'Historical Campaign Data. Databricks Workspace.',
+                videoUrl: '', 
+                link: 'promotion_iq.html'
+            },
+            { 
+                id: 18, 
+                assetType: 'tool', 
+                title: 'ChurnIQ', 
+                description: 'Predict, Segment, and Retain Customers with Databricks. Proactively identify at-risk users using behavioral patterns and generate tailored next-best actions. Track the impact of retention strategies on churn, revenue, and engagement KPIs.', 
+                tags: ['Customer Success', 'Churn', 'Gaming'], 
+                categories: ['accelerators'], 
+                pricing: { 
+                    subscription: { monthly: 1000, annual: 10000 }, 
+                    payg: 'Contact Sales for Team/Enterprise', 
+                    byol: false 
+                },
+                prerequisites: 'User Event Data. Databricks Workspace.',
+                videoUrl: '', 
+                link: 'churn_iq.html'
+            },
+            { 
+                id: 7, 
+                assetType: 'content', 
+                title: 'Top Trending Insight', 
+                description: 'Stop Guessing: Winning in today’s market requires a shift from hindsight to foresight. Discover how the "AI Factory" model predicts outcomes with precision using CampaignIQ.', 
+                tags: ['AI Strategy', 'Marketing', 'Forecasting'], 
+                categories: ['whitepapers', 'uc-learnings'], 
+                link: 'wp_trending.html'
             },
             { 
                 id: 13, 
@@ -137,61 +187,8 @@
                 description: 'Why the AI Factory? The assembly line for business-ready AI. AI factories are essential because they shift enterprises from experimentation to industrialized delivery — reducing risk, aligning teams, and accelerating value. Our five-phase factory model moves from ideation to implementation with the repeatability, scalability, and governance that enterprise-grade AI demands.', 
                 tags: ['GenAI', 'RAG', 'Tutorial'], 
                 categories: ['accelerators', 'videos', 'demos'], 
-                videoUrl: 'https://www.youtube.com/embed/48gEgOcCaKo'
-            },
-            { 
-                id: 16, 
-                assetType: 'accelerator', 
-                title: 'SAP Working Capital', 
-                description: 'Real-Time Working Capital Intelligence Powered by SAP and Databricks. Unify disparate SAP sources (receivables, payables, inventory) to automate the entire pipeline. Includes AI-powered forecasting and interactive scenario simulations.', 
-                tags: ['Finance', 'SAP', 'Manufacturing'], 
-                categories: ['accelerators'], 
-                videoUrl: '' 
-            },
-            { 
-                id: 17, 
-                assetType: 'accelerator', 
-                title: 'PromotionIQ', 
-                description: 'Analyze, Optimize, and Recommend Promotions with AI. Designed for aggressive marketing budgets, this tool forecasts promotion effectiveness beyond redemptions. Track spend accountability, explain campaign variance, and equip marketing teams to test and iterate offer structures.', 
-                tags: ['Marketing', 'Promotion', 'Sportsbook'], 
-                categories: ['accelerators'], 
-                videoUrl: ''
-            },
-            { 
-                id: 18, 
-                assetType: 'accelerator', 
-                title: 'ChurnIQ', 
-                description: 'Predict, Segment, and Retain Customers with Databricks. Proactively identify at-risk users using behavioral patterns and generate tailored next-best actions. Track the impact of retention strategies on churn, revenue, and engagement KPIs.', 
-                tags: ['Customer Success', 'Churn', 'Gaming'], 
-                categories: ['accelerators'], 
-                videoUrl: ''
-            },
-            { 
-                id: 19, 
-                assetType: 'accelerator', 
-                title: 'CustomerSupport IQ', 
-                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Analyze support transcripts in real-time to surface coaching opportunities, churn signals, and escalation risks. Includes dashboards for call volume trends and sentiment analysis.', 
-                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
-                categories: ['accelerators'], 
-                videoUrl: ''
-            },
-            { 
-                id: 20, 
-                assetType: 'tool', 
-                title: 'AI Powered Data Migration', 
-                description: 'Modernize legacy Teradata and Informatica platforms into governed Databricks architectures. Features automated portfolio assessment to score complexity, AI-assisted translation of SQL/ETL patterns, and a synthetic workbench for safe validation.', 
-                tags: ['Migration', 'Modernization', 'Legacy'], 
-                categories: ['migration-tools'], 
-                videoUrl: ''
-            },
-            { 
-                id: 21, 
-                assetType: 'accelerator', 
-                title: 'Telco Churn and NBA', 
-                description: 'Predict churn, explain drivers, and generate financially grounded next best actions. Connects churn risk to local drivers like network quality and service issues. Generates targeted retention actions prioritised by financial impact to protect revenue and growth.', 
-                tags: ['Telco', 'Churn', 'Next Best Action'], 
-                categories: ['accelerators'], 
-                videoUrl: ''
+                videoUrl: 'https://www.youtube.com/embed/48gEgOcCaKo',
+                link: 'wp_trending.html'
             },
             { 
                 id: 1, 
@@ -214,7 +211,35 @@
                 description: 'A beginner-friendly guide to understanding the Lakehouse architecture and its benefits over traditional data warehouses and data lakes.', 
                 tags: ['Lakehouse', 'Architecture', 'Beginner'], 
                 categories: ['whitepapers', 'uc-learnings'], 
+                link: '#'
             },
+            { 
+                id: 19, 
+                assetType: 'accelerator', 
+                title: 'CustomerSupport IQ', 
+                description: 'Real-Time Transcript Intelligence and Agent Coaching with GenAI. Analyze support transcripts in real-time to surface coaching opportunities, churn signals, and escalation risks. Includes dashboards for call volume trends and sentiment analysis.', 
+                tags: ['Customer Support', 'GenAI', 'Sentiment Analysis'], 
+                categories: ['accelerators'], 
+                videoUrl: '' 
+            },
+            { 
+                id: 20, 
+                assetType: 'tool', 
+                title: 'AI Powered Data Migration', 
+                description: 'Modernize legacy Teradata and Informatica platforms into governed Databricks architectures. Features automated portfolio assessment to score complexity, AI-assisted translation of SQL/ETL patterns, and a synthetic workbench for safe validation.', 
+                tags: ['Migration', 'Modernization', 'Legacy'], 
+                categories: ['migration-tools'], 
+                videoUrl: '' 
+            },
+            { 
+                id: 21, 
+                assetType: 'accelerator', 
+                title: 'Telco Churn and NBA', 
+                description: 'Predict churn, explain drivers, and generate financially grounded next best actions. Connects churn risk to local drivers like network quality and service issues. Generates targeted retention actions prioritised by financial impact to protect revenue and growth.', 
+                tags: ['Telco', 'Churn', 'Next Best Action'], 
+                categories: ['accelerators'], 
+                videoUrl: '' 
+            }
         ];
         
         // --- CATEGORIES ---
@@ -298,9 +323,9 @@
             modalActionButton.onclick = null;
             if (isTool) { 
                 modalActionButton.textContent = 'Contact Sales';
-                if (item.id === 15) { 
+                if (item.link) { 
                     modalActionButton.textContent = 'Get Started';
-                    modalActionButton.onclick = () => window.location.href = 'ciq_pp.html';
+                    modalActionButton.onclick = () => window.location.href = item.link;
                 } else if (item.id === 13) {
                      modalActionButton.textContent = 'Get Started';
                      modalActionButton.onclick = () => window.location.href = 'wp_trending.html';
@@ -323,7 +348,8 @@
                 : `<div class="w-full h-full bg-gray-100 flex items-center justify-center border border-gray-200 shadow-inner"><p class="text-gray-500 font-medium">Video Preview Unavailable</p></div>`;
 
             let overviewContentForTool;
-            if (item.id === 15 || item.id === 13) {
+            // Enhanced overview content logic
+            if ([15, 13, 16, 17, 18].includes(item.id)) {
                  overviewContentForTool = `
                  <h5 class="font-bold text-lg mb-4 text-gray-900 uppercase tracking-wide text-xs">Solution Overview</h5>
                  <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed">
@@ -361,7 +387,8 @@
                 </div>
             </div>`;
 
-            if (item.id === 15) {
+            // Updated pricing check for new products
+            if ([15, 16, 17, 18].includes(item.id)) {
                  pricingContent = `<div id="tab-pricing" class="tab-content hidden animate-fadeIn">
                         <h5 class="font-bold text-sm uppercase tracking-wide mb-6">Pricing Models</h5>
                         <div class="grid gap-4">
