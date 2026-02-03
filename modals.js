@@ -42,7 +42,7 @@ window.BlueprintModals = {
                 </div>
                 <div class="flex items-center justify-end space-x-4 p-6 border-t border-gray-100">
                     <button onclick="window.BlueprintModals.close('amIReadyModal')" class="px-6 py-2 text-xs font-bold uppercase text-gray-500 hover:text-gray-800">Close</button>
-                    <button id="proceedToCartBtn" class="px-8 py-3 bg-blueprint-blue text-white font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Proceed to Cart</button>
+                    <button id="proceedToCartBtn" class="px-8 py-3 bg-blueprint-blue text-white font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Add to Cart</button>
                 </div>
             </div>
         </div>
