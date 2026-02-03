@@ -6,7 +6,6 @@
     <title>Unity Catalog Migration Assessment | Blueprint Migration</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,398 +14,429 @@
     <link rel="stylesheet" href="cart.css">
 
     <style>
-        /* --- PRESERVED FORM STYLES --- */
-        
-        * {
-            box-sizing: border-box;
-        }
-        
-        /* Removed conflicting .container rule */
+        /* --- BRANDED FORM STYLES (Tight Version) --- */
+        * { box-sizing: border-box; }
 
-        .section {
-            margin-bottom: 40px;
-            page-break-inside: avoid;
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-size: 14px;
         }
+
+        .section { margin-bottom: 20px; page-break-inside: avoid; }
+        
         .section-header {
-            background: #1d4ed8; /* Updated to Blueprint Blue */
+            background: #1d4ed8;
             color: white;
-            padding: 12px 20px;
+            padding: 10px 15px;
             font-weight: bold;
-            font-size: 14pt;
+            font-size: 13pt;
             margin: 0;
-            border-radius: 0px; /* Sharp edges */
+            border-radius: 0px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .na-toggle {
-            display: flex;
-            align-items: center;
-            font-size: 10pt;
-            font-weight: normal;
-        }
-        .na-toggle input {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
-        }
+        
+        .na-toggle { display: flex; align-items: center; font-size: 9pt; font-weight: normal; }
+        .na-toggle input { margin-right: 6px; width: 14px; height: 14px; }
+        
         .section-content {
-            padding: 20px;
+            padding: 15px;
+            background: white;
             border: 1px solid #e5e7eb;
             border-top: none;
-            border-radius: 0px; /* Sharp edges */
+            border-radius: 0px;
             transition: opacity 0.3s;
         }
-        .section-content.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            background-color: #f9fafb;
+        
+        .section-content.disabled { opacity: 0.5; pointer-events: none; background-color: #f9fafb; }
+        
+        .form-group { margin-bottom: 12px; }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 4px; 
+            font-weight: 700; 
+            color: #374151; 
+            font-size: 9.5pt; 
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 700;
-            color: #374151;
-            font-size: 10pt;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        input[type="date"],
-        select,
-        textarea {
+        
+        input[type="text"], input[type="number"], input[type="email"], input[type="date"], select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #d1d5db;
-            border-radius: 0px; /* Sharp edges */
-            font-size: 10pt;
+            border-radius: 0px;
+            font-size: 9.5pt;
             background: white;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+        
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #1d4ed8;
-            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.2);
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
         }
-        .is-invalid {
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
-        }
-        .error-message {
-            color: #ef4444;
-            font-size: 9pt;
-            display: none;
-            margin-top: 4px;
-        }
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        .inline-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .three-column {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .subsection {
-            margin-bottom: 25px;
-        }
+        
+        .is-invalid { border-color: #ef4444 !important; }
+        .error-message { color: #ef4444; font-size: 8.5pt; display: none; margin-top: 2px; }
+        
+        textarea { min-height: 70px; resize: vertical; }
+        
+        .inline-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .three-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+        .four-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+        
+        .subsection { margin-bottom: 15px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 10px; }
+        .subsection:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
         .subsection h4 {
             color: #1d4ed8;
-            margin-bottom: 12px;
-            font-size: 12pt;
+            margin-bottom: 10px;
+            font-size: 11pt;
             font-weight: 700;
-            border-bottom: 2px solid #1d4ed8;
-            padding-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .checkbox-item {
+        
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 5px; }
+        .checkbox-item { display: flex; align-items: flex-start; }
+        .checkbox-item input { margin-right: 8px; width: 16px; height: 16px; margin-top: 2px; }
+        .checkbox-item label { font-weight: normal; font-size: 9.5pt; line-height: 1.3; }
+        
+        /* --- COMPLEXITY SLIDER STYLES --- */
+        .complexity-row {
             display: flex;
             align-items: center;
-            margin-bottom: 4px;
+            gap: 20px;
+            background: #f8fafc;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
         }
-        .checkbox-item input[type="checkbox"] {
-            margin-right: 10px;
-            width: 16px;
-            height: 16px;
-            border-radius: 0px;
+        .count-input-group { flex: 1; }
+        .slider-group { flex: 2; }
+        
+        input[type="range"] { 
+            width: 100%; 
+            cursor: pointer; 
+            accent-color: #1d4ed8; 
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            appearance: none;
         }
-        .checkbox-item label {
-            font-weight: normal;
-            margin-bottom: 0;
-            font-size: 10pt;
-        }
-        .page-break {
-            page-break-before: always;
-        }
-        .btn, .btn-add-row {
-            padding: 12px 24px;
-            border-radius: 0px; /* Sharp edges */
-            font-weight: bold;
-            font-size: 11pt;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px; width: 16px;
+            background: #1d4ed8;
+            border-radius: 50%;
             cursor: pointer;
-            transition: all 0.2s;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
+        
+        .slider-labels { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 0.7rem; 
+            color: #64748b; 
+            font-weight: 700; 
+            margin-top: 5px; 
+            text-transform: uppercase;
+        }
+
         .btn-submit {
-            border: none;
-            color: white;
             background-color: #1d4ed8;
+            color: white;
+            padding: 14px 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 0px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
         }
-        .btn-submit:hover {
-            background-color: #1e40af;
-        }
+        .btn-submit:hover { background-color: #1e40af; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        
+        /* Dynamic Row Styles */
         .btn-add-row {
             background: none;
             border: 1px dashed #1d4ed8;
             color: #1d4ed8;
             padding: 8px 12px;
             margin-top: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
         }
-        .btn-add-row:hover {
-            background: rgba(29, 78, 216, 0.1);
+        .btn-add-row:hover { background: rgba(29, 78, 216, 0.1); }
+        .dynamic-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .dynamic-row input { flex-grow: 1; }
+        .btn-remove-row { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .inline-inputs, .three-column, .four-column, .complexity-row { grid-template-columns: 1fr; flex-direction: column; }
+            .section-header { font-size: 1.1rem; }
+            .section-content { padding: 12px; }
         }
-        .dynamic-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .dynamic-row input {
-            flex-grow: 1;
-        }
-        .btn-remove-row {
-            background: none; border: none; color: #ef4444; font-size: 1.5rem; cursor: pointer;
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .modal-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 0px; /* Sharp edges */
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-        }
-        .modal-overlay.visible .modal-content {
-            transform: scale(1);
-        }
-        @media print {
-            .no-print {
-                display: none;
-            }
-        }
+        
+        .page-break { page-break-before: always; }
     </style>
 </head>
 <body class="antialiased">
 
     <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
 
-    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
-        <div class="mb-10 border-b border-gray-200 pb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Unity Catalog Migration Assessment</h1>
-            <p class="text-lg text-gray-500">Complete the assessment below to generate your migration roadmap.</p>
+    <main class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6 border-b border-gray-200 pb-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-2">Unity Catalog Migration Assessment</h1>
+            <p class="text-md text-gray-500">Inventory your current catalogs, tables, and code to generate a precise upgrade roadmap.</p>
         </div>
 
-        <div class="sharp-card p-8 md:p-12 bg-white">
-            <form id="migrationForm" action="https://formspree.io/f/xgvpgrpe" method="POST" novalidate>
+        <div class="sharp-card p-6 bg-white">
+            <form id="migrationForm" novalidate>
             
             <div class="section">
-                <div class="section-header"><span>Application & Ownership Details</span></div>
+                <div class="section-header"><span>Application & Ownership</span></div>
                 <div class="section-content">
                      <div class="subsection">
                         <div class="inline-inputs">
-                            <div class="form-group"><label for="appName">Application/Team Name & Business Function:</label><input type="text" id="appName" name="appName" required data-required="true"><span class="error-message">This field is required.</span></div>
-                            <div class="form-group"><label for="appWorkspaces">Databricks Workspaces Utilized:</label><input type="text" id="appWorkspaces" name="appWorkspaces" required data-required="true"><span class="error-message">This field is required.</span></div>
+                            <div class="form-group">
+                                <label for="appName">Application/Team Name:</label>
+                                <input type="text" id="appName" name="appName" required data-required="true">
+                                <span class="error-message">Required.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="appWorkspaces">Databricks Workspaces:</label>
+                                <input type="text" id="appWorkspaces" name="appWorkspaces" required data-required="true">
+                                <span class="error-message">Required.</span>
+                            </div>
                         </div>
                         <div class="inline-inputs">
-                            <div class="form-group"><label for="businessOwner">Business Owner(s):</label><input type="text" id="businessOwner" name="businessOwner" required data-required="true"><span class="error-message">This field is required.</span></div>
-                            <div class="form-group"><label for="techOwner">Technical Owner / Point of Contact:</label><input type="text" id="techOwner" name="techOwner" required data-required="true"><span class="error-message">This field is required.</span></div>
+                            <div class="form-group"><label>Business Owner:</label><input type="text" id="businessOwner" name="businessOwner" required data-required="true"></div>
+                            <div class="form-group"><label>Technical Owner:</label><input type="text" id="techOwner" name="techOwner" required data-required="true"></div>
                         </div>
                          <div class="inline-inputs">
-                            <div class="form-group"><label for="appType">Application Type:</label><select id="appType" name="appType" required data-required="true"><option value="">Select...</option><option value="internal">Internal</option><option value="customer_facing">Customer-Facing</option><option value="third_party">Third-Party</option></select><span class="error-message">Required.</span></div>
-                            <div class="form-group"><label for="appCriticality">Business Criticality:</label><select id="appCriticality" name="appCriticality" required data-required="true"><option value="">Select...</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select><span class="error-message">Required.</span></div>
+                            <div class="form-group">
+                                <label>Application Type:</label>
+                                <select id="appType" name="appType">
+                                    <option value="">Select...</option>
+                                    <option value="internal">Internal</option>
+                                    <option value="customer_facing">Customer-Facing</option>
+                                    <option value="third_party">Third-Party</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Criticality:</label>
+                                <select id="appCriticality" name="appCriticality">
+                                    <option value="">Select...</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group"><label for="upstreamTeams">Does your team own the upstream processes that create the data?</label><textarea id="upstreamTeams" name="upstreamTeams" placeholder="If no, please list the teams you depend on for data."></textarea></div>
+                        <div class="form-group">
+                            <label>Upstream Data Ownership:</label>
+                            <textarea id="upstreamTeams" name="upstreamTeams" placeholder="Do you own the upstream data? If not, list dependencies."></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
-                <div class="section-header"><span>1. Current Catalog & Data Environment</span><div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div></div>
+                <div class="section-header">
+                    <span>1. Current Catalog & Environment</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s1" class="na-checkbox" data-section-content-id="s1-content"><label for="na-s1">N/A</label></div>
+                </div>
                 <div class="section-content" id="s1-content">
                     <div class="subsection">
-                        <h4>1.1 Source Catalog System</h4>
+                        <h4>1.1 Source Systems</h4>
                         <div class="form-group">
                             <label for="sourceCatalog">Primary Source Catalog:</label>
-                            <select id="sourceCatalog" name="sourceCatalog" required data-required="true">
+                            <select id="sourceCatalog" name="sourceCatalog">
                                 <option value="">Select...</option>
-                                <option value="hms">Hive Metastore (HMS)</option>
-                                <option value="glue">AWS Glue Data Catalog</option>
+                                <option value="hms">Hive Metastore (Legacy)</option>
+                                <option value="glue">AWS Glue</option>
                                 <option value="purview">Azure Purview</option>
-                                <option value="gcp_datacatalog">Google Cloud Data Catalog</option>
+                                <option value="gcp">Google Data Catalog</option>
                             </select>
-                            <span class="error-message">Required.</span>
                         </div>
                         <div class="form-group">
-                            <label for="otherCatalogs">Other Catalog Tools in Use:</label>
+                            <label>Other Catalog Tools:</label>
                             <div id="other-catalogs-container">
-                                <div class="dynamic-row"><input type="text" name="other_catalogs[]" placeholder="e.g., Alation, Collibra..."><button type="button" class="btn-remove-row" style="display:none;">&times;</button></div>
+                                <div class="dynamic-row">
+                                    <input type="text" name="other_catalogs[]" placeholder="e.g., Alation, Collibra...">
+                                    <button type="button" class="btn-remove-row" style="display:none;">&times;</button>
+                                </div>
                             </div>
-                            <button type="button" class="btn-add-row" data-container="other-catalogs-container">+ Add Another Tool</button>
+                            <button type="button" class="btn-add-row" data-container="other-catalogs-container">+ Add Tool</button>
                         </div>
                     </div>
+
                     <div class="subsection">
                         <h4>1.2 Environment Inventory</h4>
-                        <div class="inline-inputs">
-                            <div class="form-group"><label for="workspaceCount">Number of Workspaces:</label><input type="number" id="workspaceCount" name="workspaceCount" min="0" value="0" required data-required="true"><span class="error-message">Required.</span></div>
-                             <div class="form-group"><label for="dbCount">Number of Databases:</label><input type="number" id="dbCount" name="dbCount" min="0" value="0" required data-required="true"><span class="error-message">Required.</span></div>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Total Tables:</label>
+                                <input type="number" id="tableCount" name="tableCount" value="0">
+                                <span class="text-xs text-gray-500">Tables to upgrade to UC</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>Table Complexity:</label>
+                                <input type="range" id="tableComplexity" min="1" max="5" value="2">
+                                <div class="slider-labels"><span>Managed</span><span>Mixed</span><span>External/Unmanaged</span></div>
+                            </div>
                         </div>
-                        <div class="inline-inputs">
-                            <div class="form-group"><label for="schemaCount">Number of Schemas:</label><input type="number" id="schemaCount" name="schemaCount" min="0" value="0" required data-required="true"><span class="error-message">Required.</span></div>
-                            <div class="form-group"><label for="tableCount">Number of Tables:</label><input type="number" id="tableCount" name="tableCount" min="0" value="0" required data-required="true"><span class="error-message">Required.</span></div>
+
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Workspaces Involved:</label>
+                                <input type="number" id="workspaceCount" name="workspaceCount" value="0">
+                                <span class="text-xs text-gray-500">Workspaces needing UC binding</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>Isolation Level:</label>
+                                <input type="range" id="workspaceComplexity" min="1" max="5" value="2">
+                                <div class="slider-labels"><span>Shared</span><span>Mixed</span><span>Strict Isolation</span></div>
+                            </div>
                         </div>
-                         <div class="form-group"><label for="envBuckets">Environment Storage Buckets/Containers:</label><textarea id="envBuckets" name="envBuckets" placeholder="List the primary S3 buckets, ADLS containers, or GCS buckets for each environment (e.g., dev, test, prod)." required data-required="true"></textarea><span class="error-message">Required.</span></div>
+
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Databases:</label><input type="number" id="dbCount" name="dbCount" value="0"></div>
+                            <div class="form-group"><label>Schemas:</label><input type="number" id="schemaCount" name="schemaCount" value="0"></div>
+                        </div>
+                         <div class="form-group">
+                             <label>Storage Buckets/Containers:</label>
+                             <textarea id="envBuckets" name="envBuckets" placeholder="List primary S3 buckets, ADLS containers, or GCS buckets."></textarea>
+                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
-                <div class="section-header"><span>2. Data & Schema Details</span><div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div></div>
+                <div class="section-header">
+                    <span>2. Data & Schema Details</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s2" class="na-checkbox" data-section-content-id="s2-content"><label for="na-s2">N/A</label></div>
+                </div>
                 <div class="section-content" id="s2-content">
                     <div class="subsection">
                         <h4>2.1 Table Properties</h4>
-                        <div class="form-group"><label for="partitioningStrategy">Table Partitioning Strategy:</label><textarea id="partitioningStrategy" name="partitioningStrategy" placeholder="Describe the common partitioning schemes for your largest or most critical tables." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="zordering">Use of Z-Ordering:</label><textarea id="zordering" name="zordering" placeholder="Are any tables currently using Z-ORDER? If so, on which columns?"></textarea></div>
+                        <div class="form-group"><label>Partitioning Strategy:</label><textarea id="partitioningStrategy" name="partitioningStrategy" placeholder="Describe partitioning on large tables."></textarea></div>
+                        <div class="form-group"><label>Z-Ordering:</label><textarea id="zordering" name="zordering" placeholder="Tables using Z-ORDER?"></textarea></div>
                     </div>
                     <div class="subsection">
-                        <h4>2.2 Data Types & Structures</h4>
+                        <h4>2.2 Data Types</h4>
                          <div class="form-group">
-                            <label>Use of Complex or Nested Data Types:</label>
+                            <label>Complex Types:</label>
                             <div class="checkbox-group">
                                 <div class="checkbox-item"><input type="checkbox" name="dataTypes" value="struct"><label>STRUCT</label></div>
                                 <div class="checkbox-item"><input type="checkbox" name="dataTypes" value="array"><label>ARRAY</label></div>
                                 <div class="checkbox-item"><input type="checkbox" name="dataTypes" value="map"><label>MAP</label></div>
-                                <div class="checkbox-item"><input type="checkbox" name="dataTypes" value="json"><label>JSON strings requiring parsing</label></div>
+                                <div class="checkbox-item"><input type="checkbox" name="dataTypes" value="json"><label>JSON Parsing</label></div>
                             </div>
                         </div>
                     </div>
                     <div class="subsection">
-                        <h4>2.3 Data I/O & Dependencies</h4>
-                        <div class="form-group"><label for="readTables">What tables does the application read from?</label><textarea id="readTables" name="readTables" placeholder="List all tables in schema.table format..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="writeTables">What tables does the application write to?</label><textarea id="writeTables" name="writeTables" placeholder="List all tables in schema.table format..."></textarea></div>
-                        <div class="form-group"><label for="downstreamConsumers">Who consumes the data this application writes?</label><textarea id="downstreamConsumers" name="downstreamConsumers" placeholder="List downstream teams, applications, or BI reports..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
+                        <h4>2.3 Dependencies</h4>
+                        <div class="form-group"><label>Read Tables (Inputs):</label><textarea id="readTables" name="readTables" placeholder="List schema.table inputs..."></textarea></div>
+                        <div class="form-group"><label>Write Tables (Outputs):</label><textarea id="writeTables" name="writeTables" placeholder="List schema.table outputs..."></textarea></div>
+                        <div class="form-group"><label>Downstream Consumers:</label><textarea id="downstreamConsumers" name="downstreamConsumers" placeholder="BI Reports, other teams..."></textarea></div>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
-                <div class="section-header"><span>3. Security & Access Control</span><div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div></div>
+                <div class="section-header">
+                    <span>3. Security & Access Control</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s3" class="na-checkbox" data-section-content-id="s3-content"><label for="na-s3">N/A</label></div>
+                </div>
                 <div class="section-content" id="s3-content">
                     <div class="subsection">
-                        <h4>3.1 Identity & Authentication</h4>
-                        <div class="form-group"><label for="identityProvider">Identity Provider & User Management:</label><textarea id="identityProvider" name="identityProvider" placeholder="How are users and groups managed? e.g., Azure Active Directory / Entra ID, Okta, SCIM provisioning..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="groupStructure">Group Structure:</label><textarea id="groupStructure" name="groupStructure" placeholder="Describe the group structure used for granting permissions (e.g., groups for business units, roles like 'analyst' or 'engineer')." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="authMethod">Application Authentication Method:</label><textarea id="authMethod" name="authMethod" placeholder="e.g., Service Principal, User Personal Access Token (PAT)..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
+                        <h4>3.1 Identity</h4>
+                        <div class="form-group"><label>Identity Provider (IdP):</label><textarea id="identityProvider" name="identityProvider" placeholder="Azure AD, Okta, SCIM status..."></textarea></div>
+                        <div class="form-group"><label>Group Structure:</label><textarea id="groupStructure" name="groupStructure" placeholder="How are groups/roles structured today?"></textarea></div>
+                        <div class="form-group"><label>Authentication:</label><textarea id="authMethod" name="authMethod" placeholder="Service Principals, PATs?"></textarea></div>
                     </div>
                     <div class="subsection">
-                        <h4>3.2 Permissions & Compliance</h4>
-                        <div class="form-group"><label for="dataAccessModel">Current Data Access Control Method:</label><textarea id="dataAccessModel" name="dataAccessModel" placeholder="Describe how data access is granted today. e.g., Hive Table ACLs, IAM policies on S3 buckets, ADLS ACLs..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="rowLevelSecurity">Row-Level Security / Dynamic Views:</label><textarea id="rowLevelSecurity" name="rowLevelSecurity" placeholder="Is there any form of row-level filtering currently in place? Please provide a sample of the logic if possible."></textarea></div>
-                        <div class="form-group"><label for="columnMasking">Column-Level Masking:</label><textarea id="columnMasking" name="columnMasking" placeholder="Is there any column-level masking in place for sensitive data (e.g., PII)? Please provide a sample of the logic."></textarea></div>
+                        <h4>3.2 Permissions</h4>
+                        <div class="form-group"><label>Current Access Control:</label><textarea id="dataAccessModel" name="dataAccessModel" placeholder="Hive ACLs, S3 Policies, ADLS ACLs?"></textarea></div>
+                        <div class="form-group"><label>Row-Level Security (RLS):</label><textarea id="rowLevelSecurity" name="rowLevelSecurity" placeholder="Current RLS implementation?"></textarea></div>
+                        <div class="form-group"><label>Column Masking:</label><textarea id="columnMasking" name="columnMasking" placeholder="Current masking implementation?"></textarea></div>
                     </div>
                 </div>
             </div>
             
             <div class="section page-break">
-                <div class="section-header"><span>4. Workloads & Technical Implementation</span><div class="na-toggle"><input type="checkbox" id="na-s4" class="na-checkbox" data-section-content-id="s4-content"><label for="na-s4">N/A</label></div></div>
+                <div class="section-header">
+                    <span>4. Workloads & Code</span>
+                    <div class="na-toggle"><input type="checkbox" id="na-s4" class="na-checkbox" data-section-content-id="s4-content"><label for="na-s4">N/A</label></div>
+                </div>
                 <div class="section-content" id="s4-content">
                     <div class="subsection">
                         <h4>4.1 Execution Environment</h4>
-                        <div class="form-group"><label for="codeLocation">Where is the application code located?</label><textarea id="codeLocation" name="codeLocation" placeholder="List all known Databricks jobs, notebooks, or code repositories." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="codeExecution">How is the application code executed?</label><textarea id="codeExecution" name="codeExecution" placeholder="e.g., Databricks Jobs, Airflow, Azure Data Factory. If external tools, who is responsible for updating them?" required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="clusterAccessModel">Cluster/Compute Access Control:</label><textarea id="clusterAccessModel" name="clusterAccessModel" placeholder="How is access to compute controlled? e.g., Cluster policies, instance profiles/service principals..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
+                        
+                        <div class="complexity-row">
+                            <div class="count-input-group">
+                                <label>Notebooks/Jobs to Refactor:</label>
+                                <input type="number" id="notebookCount" name="notebookCount" value="0">
+                                <span class="text-xs text-gray-500">Est. count of items needing path updates</span>
+                            </div>
+                            <div class="slider-group">
+                                <label>Code Complexity:</label>
+                                <input type="range" id="codeComplexity" min="1" max="5" value="3">
+                                <div class="slider-labels"><span>Hardcoded Paths</span><span>Mixed</span><span>Dynamic/Parametrized</span></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group"><label>Code Location:</label><textarea id="codeLocation" name="codeLocation" placeholder="Repos, Workspace paths..."></textarea></div>
+                        <div class="form-group"><label>Job Orchestrator:</label><textarea id="codeExecution" name="codeExecution" placeholder="DBJobs, Airflow, ADF..."></textarea></div>
                     </div>
                     <div class="subsection">
-                        <h4>4.2 Performance & Risk</h4>
-                        <div class="form-group"><label for="perfSLAs">What are the Performance SLAs for this application?</label><textarea id="perfSLAs" name="perfSLAs" placeholder="e.g., job completion times, query latency..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="drPlan">Does the application have a documented fallback or Disaster Recovery (DR) plan today?</label><textarea id="drPlan" name="drPlan" placeholder="Please describe briefly."></textarea></div>
+                        <h4>4.2 Performance</h4>
+                        <div class="form-group"><label>SLAs:</label><textarea id="perfSLAs" name="perfSLAs" placeholder="Critical job timings."></textarea></div>
+                        <div class="form-group"><label>Disaster Recovery:</label><textarea id="drPlan" name="drPlan" placeholder="Current DR strategy."></textarea></div>
                     </div>
                 </div>
             </div>
 
              <div class="section page-break">
-                <div class="section-header"><span>5. Migration Planning & Strategy</span><div class="na-toggle"><input type="checkbox" id="na-s5" class="na-checkbox" data-section-content-id="s5-content"><label for="na-s5">N/A</label></div></div>
+                <div class="section-header"><span>5. Migration Strategy</span><div class="na-toggle"><input type="checkbox" id="na-s5" class="na-checkbox" data-section-content-id="s5-content"><label for="na-s5">N/A</label></div></div>
                 <div class="section-content" id="s5-content">
                     <div class="subsection">
-                        <h4>5.1 Foundational Setup</h4>
-                        <div class="form-group"><label for="scimStatus">Is Account-Level SCIM Provisioning Configured?</label><select id="scimStatus" name="scimStatus" required data-required="true"><option value="">Select...</option><option value="yes">Yes</option><option value="no">No</option><option value="unknown">Unknown</option></select><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="cloudPermissions">Do you have cloud-level permissions to create the UC Metastore root storage?</label><select id="cloudPermissions" name="cloudPermissions" required data-required="true"><option value="">Select...</option><option value="yes">Yes</option><option value="no">No</option><option value="unknown">Unknown</option></select><span class="error-message">Required.</span></div>
-                    </div>
-                    <div class="subsection">
-                        <h4>5.2 Migration Process</h4>
-                        <div class="form-group"><label for="migrationTooling">What tools are planned for the upgrade process?</label><textarea id="migrationTooling" name="migrationTooling" placeholder="e.g., SYNC command, partner tools like Privacera, custom scripts..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="migrationPhasing">What is the planned migration phasing strategy?</label><textarea id="migrationPhasing" name="migrationPhasing" placeholder="e.g., By environment (dev then prod), by business unit, one schema at a time..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="validationPlan">How will the migration be validated?</label><textarea id="validationPlan" name="validationPlan" placeholder="Describe the plan for testing and validation, e.g., comparing table row counts, running checksums, user acceptance testing (UAT)..." required data-required="true"></textarea><span class="error-message">Required.</span></div>
+                        <div class="inline-inputs">
+                            <div class="form-group"><label>Account-Level SCIM Ready?</label><select id="scimStatus" name="scimStatus"><option value="">Select...</option><option value="yes">Yes</option><option value="no">No</option><option value="unknown">Unknown</option></select></div>
+                            <div class="form-group"><label>Cloud Permissions Ready?</label><select id="cloudPermissions" name="cloudPermissions"><option value="">Select...</option><option value="yes">Yes</option><option value="no">No</option><option value="unknown">Unknown</option></select></div>
+                        </div>
+                        <div class="form-group"><label>Tooling Plan:</label><textarea id="migrationTooling" name="migrationTooling" placeholder="SYNC command, UCX, Partners?"></textarea></div>
+                        <div class="form-group"><label>Phasing Strategy:</label><textarea id="migrationPhasing" name="migrationPhasing" placeholder="By workspace, business unit, or layer?"></textarea></div>
                     </div>
                 </div>
             </div>
 
              <div class="section page-break">
-                <div class="section-header"><span>6. Target Unity Catalog Architecture</span><div class="na-toggle"><input type="checkbox" id="na-s6" class="na-checkbox" data-section-content-id="s6-content"><label for="na-s6">N/A</label></div></div>
+                <div class="section-header"><span>6. Target Architecture</span><div class="na-toggle"><input type="checkbox" id="na-s6" class="na-checkbox" data-section-content-id="s6-content"><label for="na-s6">N/A</label></div></div>
                 <div class="section-content" id="s6-content">
                     <div class="subsection">
-                        <div class="form-group"><label for="metastoreStrategy">Metastore Strategy:</label><textarea id="metastoreStrategy" name="metastoreStrategy" placeholder="Describe the planned metastore architecture. e.g., One metastore per region? One for prod and one for non-prod?" required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="catalogDesign">Catalog Design:</label><textarea id="catalogDesign" name="catalogDesign" placeholder="Describe the planned catalog structure. e.g., Catalogs for business units, environments (dev/prod), or data sources?" required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="storageCredentials">Strategy for Storage Credentials & External Locations:</label><textarea id="storageCredentials" name="storageCredentials" placeholder="How will you manage access to the underlying cloud storage for different teams or projects?" required data-required="true"></textarea><span class="error-message">Required.</span></div>
-                        <div class="form-group"><label for="ownershipModel">Ownership & Governance Model:</label><textarea id="ownershipModel" name="ownershipModel" placeholder="Who will own objects (Catalogs, Schemas, Tables) in Unity Catalog? How will permissions be managed?" required data-required="true"></textarea><span class="error-message">Required.</span></div>
+                        <div class="form-group"><label>Metastore Strategy:</label><textarea id="metastoreStrategy" name="metastoreStrategy" placeholder="One per region? Prod vs Non-Prod?"></textarea></div>
+                        <div class="form-group"><label>Catalog Design:</label><textarea id="catalogDesign" name="catalogDesign" placeholder="Catalog per BU, Environment, or Source?"></textarea></div>
+                        <div class="form-group"><label>Storage Credentials:</label><textarea id="storageCredentials" name="storageCredentials" placeholder="Managed Identities, Instance Profiles?"></textarea></div>
+                        <div class="form-group"><label>Governance Model:</label><textarea id="ownershipModel" name="ownershipModel" placeholder="Centralized vs Decentralized ownership."></textarea></div>
                     </div>
                 </div>
             </div>
 
             <div class="section page-break">
-                <div class="section-header"><span>7. Organizational Readiness & Future Plans</span><div class="na-toggle"><input type="checkbox" id="na-s7" class="na-checkbox" data-section-content-id="s7-content"><label for="na-s7">N/A</label></div></div>
+                <div class="section-header"><span>7. Readiness</span><div class="na-toggle"><input type="checkbox" id="na-s7" class="na-checkbox" data-section-content-id="s7-content"><label for="na-s7">N/A</label></div></div>
                 <div class="section-content" id="s7-content">
                     <div class="subsection">
-                        <h4>7.1 Change Management</h4>
-                        <div class="form-group"><label for="trainingPlan">Team Enablement & Training Plan:</label><textarea id="trainingPlan" name="trainingPlan" placeholder="What is the plan to train developers and analysts on Unity Catalog concepts and the new security model?"></textarea></div>
-                        <div class="form-group"><label for="communicationPlan">User Communication Plan:</label><textarea id="communicationPlan" name="communicationPlan" placeholder="How will changes be communicated to end-users (e.g., BI tool users, data scientists)?"></textarea></div>
-                    </div>
-                    <div class="subsection">
-                        <h4>7.2 Future Plans</h4>
-                        <div class="form-group"><label for="newHiveTables">Are new tables/schemas planned for this application in the next 6-12 months?</label><textarea id="newHiveTables" name="newHiveTables" placeholder="Please describe any planned expansions."></textarea></div>
-                         <div class="form-group"><label for="additionalInfo">Is there anything else we should know about this application, its data, or its dependencies?</label><textarea id="additionalInfo" name="additionalInfo"></textarea></div>
+                        <div class="form-group"><label>Training Plan:</label><textarea id="trainingPlan" name="trainingPlan" placeholder="Enablement for teams on UC concepts."></textarea></div>
+                        <div class="form-group"><label>Communication:</label><textarea id="communicationPlan" name="communicationPlan" placeholder="Plan for communicating downtime/changes."></textarea></div>
+                        <div class="form-group"><label>Future Growth:</label><textarea id="newHiveTables" name="newHiveTables" placeholder="Planned expansions in next 6-12 months."></textarea></div>
                     </div>
                 </div>
             </div>
@@ -415,165 +445,183 @@
                 <div class="section-header"><span>Form Completion Details</span></div>
                 <div class="section-content">
                     <div class="inline-inputs">
-                        <div class="form-group"><label for="completedBy">Questionnaire Completed By:</label><input type="text" id="completedBy" name="completedBy" required data-required="true"><span class="error-message">This field is required.</span></div>
-                        <div class="form-group"><label for="completionDate">Date:</label><input type="date" id="completionDate" name="completionDate" required data-required="true"><span class="error-message">This field is required.</span></div>
+                        <div class="form-group">
+                            <label for="completedBy">Questionnaire Completed By:</label>
+                            <input type="text" id="completedBy" name="completedBy" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="completionDate">Date:</label>
+                            <input type="date" id="completionDate" name="completionDate" required data-required="true">
+                            <span class="error-message">This field is required.</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 40px;" class="no-print">
-                 <button type="submit" class="btn btn-submit">Submit Assessment</button>
+            <div class="text-center mt-12 pb-12">
+                <button type="submit" class="btn-submit">Generate ROM & Report</button>
             </div>
         </form>
         </div>
-
     </main>
 
     <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
 
-    <div id="successModal" class="modal-overlay">
-        <div class="modal-content">
-            <div style="color: #10b981; font-size: 3rem; margin-bottom: 1rem;">&#10003;</div>
-            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: #111827;">Submission Successful!</h2>
-            <p style="color: #6b7280; margin-bottom: 1.5rem;">Thank you for completing the Unity Catalog Migration Assessment. Our team will review your details and reach out shortly.</p>
-            <button id="closeModalBtn" class="btn btn-submit">Close</button>
-        </div>
-    </div>
-
     <script src="cart.js"></script>
     <script src="load-components.js"></script>
+    <script src="modals.js"></script>
     
     <script>
-        
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('migrationForm');
-            const successModal = document.getElementById('successModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const naToggles = form.querySelectorAll('.na-checkbox');
+            // Set Date
+            const dateInput = document.getElementById('completionDate');
+            if(dateInput) dateInput.valueAsDate = new Date();
 
-            if(document.getElementById('completionDate')) {
-                document.getElementById('completionDate').valueAsDate = new Date();
-            }
-            
-            naToggles.forEach(toggle => {
+            // Toggle N/A sections
+            document.querySelectorAll('.na-checkbox').forEach(toggle => {
                 toggle.addEventListener('change', function() {
-                    const contentId = this.dataset.sectionContentId;
-                    const contentElement = document.getElementById(contentId);
-                    if (!contentElement) return;
-                    const inputs = contentElement.querySelectorAll('input, select, textarea');
-
-                    contentElement.classList.toggle('disabled', this.checked);
-                    inputs.forEach(input => {
-                        input.disabled = this.checked;
-                        if (this.checked) {
-                            input.required = false;
-                            input.classList.remove('is-invalid');
-                            let errorSpan = input.nextElementSibling;
-                            while(errorSpan && !errorSpan.classList.contains('error-message')) {
-                                errorSpan = errorSpan.nextElementSibling;
-                            }
-                            if (errorSpan) {
-                                errorSpan.style.display = 'none';
-                            }
-                        } else {
-                             if (input.hasAttribute('data-required')) {
-                                input.required = true;
-                            }
-                        }
-                    });
+                    const el = document.getElementById(this.dataset.sectionContentId);
+                    if(this.checked) {
+                        el.classList.add('disabled');
+                        el.querySelectorAll('input, textarea, select').forEach(i => i.disabled = true);
+                    } else {
+                        el.classList.remove('disabled');
+                        el.querySelectorAll('input, textarea, select').forEach(i => i.disabled = false);
+                    }
                 });
             });
 
+            // Dynamic Rows for Other Catalogs
+            const otherCatalogsContainer = document.getElementById('other-catalogs-container');
+            if (otherCatalogsContainer) {
+                document.querySelector('.btn-add-row[data-container="other-catalogs-container"]').addEventListener('click', function() {
+                    const newRow = document.createElement('div');
+                    newRow.className = 'dynamic-row';
+                    newRow.innerHTML = `<input type="text" name="other_catalogs[]" placeholder="e.g., Alation, Collibra..."><button type="button" class="btn-remove-row">&times;</button>`;
+                    otherCatalogsContainer.appendChild(newRow);
+                    
+                    // Add remove listener to new button
+                    newRow.querySelector('.btn-remove-row').addEventListener('click', function() {
+                        newRow.remove();
+                    });
+                });
+            }
+
+            // Form Validation Helper
             const validateField = (field) => {
-                if (field.disabled) return true;
                 let isValid = true;
                 const value = field.value.trim();
-                let errorSpan = field.nextElementSibling;
-                while(errorSpan && !errorSpan.classList.contains('error-message')) {
-                    errorSpan = errorSpan.nextElementSibling;
-                }
+                const errorSpan = field.nextElementSibling;
+
+                if (field.disabled) return true;
 
                 if (field.required && value === '') isValid = false;
                 if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) isValid = false;
-                
+
                 if (isValid) {
                     field.classList.remove('is-invalid');
-                    if (errorSpan) errorSpan.style.display = 'none';
+                    if (errorSpan && errorSpan.classList.contains('error-message')) errorSpan.style.display = 'none';
                 } else {
                     field.classList.add('is-invalid');
-                    if (errorSpan) errorSpan.style.display = 'block';
+                    if (errorSpan && errorSpan.classList.contains('error-message')) errorSpan.style.display = 'block';
                 }
                 return isValid;
             };
 
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
+            document.getElementById('migrationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validate
                 let isFormValid = true;
-                form.querySelectorAll('[data-required="true"]').forEach(field => {
+                this.querySelectorAll('[required]').forEach(field => {
                     if (!validateField(field)) isFormValid = false;
                 });
 
-                if (isFormValid) {
-                     const formData = new FormData(form);
-                     const submitButton = form.querySelector('button[type="submit"]');
-                     submitButton.textContent = 'Submitting...';
-                     submitButton.disabled = true;
-
-                     fetch(form.action, {
-                         method: 'POST',
-                         body: formData,
-                         headers: { 'Accept': 'application/json' }
-                     }).then(response => {
-                         if (response.ok) {
-                             successModal.classList.add('visible');
-                             form.reset();
-                             naToggles.forEach(t => { if(t.checked){ t.checked = false; t.dispatchEvent(new Event('change')); }});
-                             if(document.getElementById('completionDate')) document.getElementById('completionDate').valueAsDate = new Date();
-                         } else {
-                             alert('There was a problem submitting your form.');
-                         }
-                     }).catch(error => {
-                         alert('A network error occurred.');
-                     }).finally(() => {
-                         submitButton.textContent = 'Submit Assessment';
-                         submitButton.disabled = false;
-                     });
-                } else {
-                    const firstInvalidField = form.querySelector('.is-invalid');
-                    if (firstInvalidField) {
-                        firstInvalidField.focus();
-                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (!isFormValid) {
+                    const firstInvalid = this.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
+                    return;
                 }
-            });
 
-            form.querySelectorAll('[data-required="true"]').forEach(field => {
-                field.addEventListener('blur', () => validateField(field));
-            });
-            
-            const otherCatalogsContainer = document.getElementById('other-catalogs-container');
-            if (otherCatalogsContainer) {
-                form.addEventListener('click', function(event) {
-                    if (event.target && event.target.matches('.btn-add-row[data-container="other-catalogs-container"]')) {
-                        const newRow = document.createElement('div');
-                        newRow.className = 'dynamic-row';
-                        newRow.innerHTML = `<input type="text" name="other_catalogs[]" placeholder="e.g., Alation, Collibra..."><button type="button" class="btn-remove-row">&times;</button>`;
-                        otherCatalogsContainer.appendChild(newRow);
-                    }
-
-                    if (event.target && event.target.matches('.btn-remove-row')) {
-                        event.target.closest('.dynamic-row').remove();
+                // 1. CAPTURE DATA FOR REPORT
+                const formData = new FormData(e.target);
+                const fullState = {};
+                
+                // Capture Header Data
+                fullState['project'] = document.getElementById('appName').value; // Using App Name as Project
+                fullState['stakeholder'] = document.getElementById('businessOwner').value; // Using Business Owner
+                
+                formData.forEach((value, key) => {
+                    if (!fullState[key]) {
+                        fullState[key] = value;
+                    } else {
+                        if (!Array.isArray(fullState[key])) fullState[key] = [fullState[key]];
+                        fullState[key].push(value);
                     }
                 });
-            }
+                
+                sessionStorage.setItem('lastAssessmentReport', JSON.stringify(fullState));
 
-            closeModalBtn.addEventListener('click', () => successModal.classList.remove('visible'));
-            successModal.addEventListener('click', (e) => {
-                if (e.target === successModal) successModal.classList.remove('visible');
+                // 2. DISTRIBUTION LOGIC
+                function distribute(total, sliderVal) {
+                    let s = 0, m = 0, c = 0, v = 0;
+                    const t = parseInt(total) || 0;
+                    const val = parseInt(sliderVal) || 3;
+
+                    if (val === 1) { s = 0.8; m = 0.2; c = 0.0; v = 0.0; } 
+                    else if (val === 2) { s = 0.6; m = 0.3; c = 0.1; v = 0.0; }
+                    else if (val === 3) { s = 0.4; m = 0.4; c = 0.2; v = 0.0; }
+                    else if (val === 4) { s = 0.2; m = 0.4; c = 0.3; v = 0.1; }
+                    else if (val === 5) { s = 0.1; m = 0.2; c = 0.4; v = 0.3; }
+
+                    return {
+                        s: Math.floor(t * s),
+                        m: Math.floor(t * m),
+                        c: Math.floor(t * c),
+                        v: Math.floor(t * v)
+                    };
+                }
+
+                // 3. APPLY LOGIC
+                // Tables -> Tables (Managed/External/Complex)
+                const tableDist = distribute(document.getElementById('tableCount').value, document.getElementById('tableComplexity').value);
+                
+                // Notebooks/Code -> Scripts (Refactoring effort)
+                const scriptDist = distribute(document.getElementById('notebookCount').value, document.getElementById('codeComplexity').value);
+                
+                // Workspaces -> Orchestration (Environment setup/isolation effort)
+                const orchDist = distribute(document.getElementById('workspaceCount').value, document.getElementById('workspaceComplexity').value);
+
+                // 4. BUILD URL
+                const params = new URLSearchParams();
+                
+                // Tables
+                params.append('table_simple', tableDist.s);
+                params.append('table_medium', tableDist.m);
+                params.append('table_complex', tableDist.c);
+                params.append('table_vcomplex', tableDist.v);
+                
+                // Scripts (Refactoring)
+                params.append('script_simple', scriptDist.s);
+                params.append('script_medium', scriptDist.m);
+                params.append('script_complex', scriptDist.c);
+                params.append('script_vcomplex', scriptDist.v);
+                
+                // Orchestration (Environment/Workspace Setup)
+                params.append('orch_simple', orchDist.s);
+                params.append('orch_medium', orchDist.m);
+                params.append('orch_complex', orchDist.c);
+                params.append('orch_vcomplex', orchDist.v);
+
+                params.append('source', 'unity_catalog'); // Or generic 'other'
+
+                window.location.href = `calc.html?${params.toString()}`;
             });
         });
-    
     </script>
-
 </body>
 </html>
