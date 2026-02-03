@@ -7,7 +7,9 @@
 
 window.BlueprintModals = {
     
+    // ============================================
     // 1. THE TEMPLATES (HTML STRUCTURE)
+    // ============================================
     templates: `
         <div id="techArchModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50" style="background-color: rgba(0,0,0,0.8);">
             <div class="relative bg-white p-2 border border-gray-200 shadow-xl w-1/2 rounded-none">
@@ -47,16 +49,28 @@ window.BlueprintModals = {
 
         <div id="contactSalesModal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50" style="background-color: rgba(0,0,0,0.8);">
             <div class="bg-white shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col border-t-8 border-black rounded-none">
-                <header class="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-900">Contact Sales</h2>
-                        <p class="text-xs text-gray-500 mt-1 font-medium">
-                            Call us at <a href="tel:2064558326" class="text-blueprint-blue hover:underline">(206) 455-8326</a> 
-                            or email <a href="mailto:Info@bpcs.com" class="text-blueprint-blue hover:underline">Info@bpcs.com</a>
-                        </p>
+                
+                <header class="p-6 border-b border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-3xl font-bold text-gray-900">Contact Sales</h2>
+                        <button onclick="window.BlueprintModals.close('contactSalesModal')" class="text-gray-400 hover:text-gray-900 text-3xl leading-none">&times;</button>
                     </div>
-                    <button onclick="window.BlueprintModals.close('contactSalesModal')" class="text-gray-400 hover:text-gray-900 text-2xl">&times;</button>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blueprint-blue p-4">
+                        <p class="text-sm text-gray-600 font-medium mb-1">Prefer to speak directly?</p>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+                            <a href="tel:2064558326" class="flex items-center text-gray-900 font-bold hover:text-blueprint-blue transition-colors">
+                                <svg class="w-4 h-4 mr-2 text-blueprint-blue" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+                                (206) 455-8326
+                            </a>
+                            <a href="mailto:Info@bpcs.com" class="flex items-center text-gray-900 font-bold hover:text-blueprint-blue transition-colors">
+                                <svg class="w-4 h-4 mr-2 text-blueprint-blue" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                                Info@bpcs.com
+                            </a>
+                        </div>
+                    </div>
                 </header>
+                
                 <form id="contactSalesForm" action="https://formspree.io/f/mgozdqkj" method="POST" class="p-8 space-y-4">
                      <input type="hidden" name="form_subject" value="New Sales Inquiry from Marketplace">
                      <input type="hidden" name="product_page" id="hiddenPageTitle" value="">
@@ -93,7 +107,9 @@ window.BlueprintModals = {
         </div>
     `,
 
+    // ============================================
     // 2. INITIALIZE (Injects HTML into page)
+    // ============================================
     init() {
         if (!document.getElementById('blueprint-modals-container')) {
             const container = document.createElement('div');
@@ -105,12 +121,14 @@ window.BlueprintModals = {
         }
     },
 
+    // ============================================
     // 3. LOGIC HANDLERS (Open/Close)
+    // ============================================
     open(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Lock scroll
+            document.body.style.overflow = 'hidden'; 
         } else {
             console.error('Modal not found:', modalId);
         }
@@ -120,13 +138,15 @@ window.BlueprintModals = {
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.classList.add('hidden');
-            document.body.style.overflow = ''; // Unlock scroll
+            document.body.style.overflow = '';
         }
     },
 
+    // ============================================
     // 4. ATTACH EVENT LISTENERS
+    // ============================================
     attachLogic() {
-        // --- Logic for "Am I Ready?" Checklist ---
+        // Checklist Logic
         const checklistItems = document.querySelectorAll('#amIReadyModal .checklist-item');
         const proceedBtn = document.getElementById('proceedToCartBtn');
         
@@ -139,7 +159,6 @@ window.BlueprintModals = {
             });
 
             proceedBtn.addEventListener('click', () => {
-                // Add default item to Cart if global Cart object exists
                 if (typeof Cart !== 'undefined') {
                     Cart.add({ 
                         id: 'ciq-1', 
@@ -153,11 +172,11 @@ window.BlueprintModals = {
             });
         }
 
-        // --- Logic for "Contact Sales" Form ---
+        // Contact Form Logic
         const form = document.getElementById('contactSalesForm');
         if (form) {
             form.addEventListener('submit', async (e) => {
-                e.preventDefault(); // Stop normal submission
+                e.preventDefault();
                 
                 // Scrape page title
                 const titleField = document.getElementById('hiddenPageTitle');
@@ -196,5 +215,5 @@ window.BlueprintModals = {
     }
 };
 
-// Auto-initialize when the script loads
+// Auto-init on page load
 document.addEventListener('DOMContentLoaded', () => window.BlueprintModals.init());
