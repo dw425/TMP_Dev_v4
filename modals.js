@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampaignIQ | Blueprint Marketplace</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body class="antialiased">
+
+    <div id="global-header" class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm"></div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <header class="mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-2">CampaignIQ</h1>
+            <p class="text-lg text-blueprint-blue font-medium">
+                The AI-powered, ROAS analysis tool to maximize your advertising investment.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-10 gap-12">
+            <div class="lg:col-span-7 space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <section class="sharp-card p-1 border-t-0 border-l border-r border-b shadow-sm flex flex-col justify-center bg-black">
+                        <div class="aspect-video w-full">
+                            <iframe src="https://www.youtube.com/embed/smNEBimkSGI" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-6 border border-gray-200">
+                        <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-4">Summary</h2>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            CampaignIQ is a Databricks-native solution that empowers marketers with AI-driven ROAS forecasting, scenario simulation, and spend optimization. It unifies data, governance, and analytics to improve campaign performance and accelerate decision-making.
+                        </p>
+                    </section>
+                </div>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">What It Does</h2>
+                    <div class="space-y-4 text-gray-600 leading-relaxed">
+                        <h3 class="text-lg font-bold text-blueprint-blue">Unlock smarter media planning with CampaignIQ by Blueprint</h3>
+                        <p>Marketing leaders face a new level of complexity when planning and optimizing campaigns across digital, social, and traditional channels. CampaignIQ by Blueprint is an AI-powered marketing accelerator built on the Databricks Data Intelligence Platform.</p>
+                    </div>
+                </section>
+
+                <section class="bg-white p-8 border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900 border-b border-gray-100 pb-3 mb-5">Benefits</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">AI-driven ROAS Forecasting with in-depth Smart Scenario Simulation.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Intelligent Predictions to guide spending and see what outcomes you can achieve.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 border-l-4 border-blueprint-blue">
+                            <p class="font-bold text-sm text-gray-900">Governed, Trusted, Secure Insights for confident decision-making.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="lg:col-span-3">
+                <div class="sticky top-28 space-y-8">
+                    <div class="sharp-card p-6">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-blueprint-blue mb-6">Launch Pricing</h3>
+                        <div class="space-y-6">
+                            <div class="pb-6 border-b border-gray-100">
+                                <h4 class="text-md font-bold text-gray-900">Single User</h4>
+                                <p class="text-2xl font-bold text-blueprint-blue mt-1">$1,000.00<span class="text-xs text-gray-500 font-normal"> / mo</span></p>
+                                
+                                <button onclick="Cart.add({ id: 'ciq-1', title: 'CampaignIQ - Single User', price: 1000, type: 'Software', billing: 'monthly' })" class="add-to-cart-btn w-full mt-4 bg-blueprint-blue text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-blue-800 transition-colors">
+                                    Add to Cart
+                                </button>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="text-md font-bold text-gray-900">Team Account</h4>
+                                    <p class="text-sm text-gray-500 mt-1">Starting at $5,000.00/mo</p>
+                                    
+                                    <button onclick="BlueprintModals.open('contactSalesModal')" class="w-full mt-3 bg-black text-white font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-colors">
+                                        Contact Sales
+                                    </button>
+                                </div>
+                                
+                                <button onclick="BlueprintModals.open('amIReadyModal')" class="w-full bg-gray-200 text-gray-800 font-bold py-3 uppercase tracking-widest text-[10px] hover:bg-gray-300 transition-colors">
+                                    Am I Ready?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-gray-200">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Resources</h3>
+                        <ul class="space-y-4">
+                            <li><a href="#" onclick="event.preventDefault(); BlueprintModals.open('techArchModal')" class="text-sm font-bold text-blueprint-blue hover:underline">View Technical Architecture</a></li>
+                            <li><a href="https://bpcs.com/case-studies" class="text-sm font-bold text-blueprint-blue hover:underline">Case Studies</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div id="global-footer" class="bg-white border-t border-gray-200 mt-20"></div>
+
+    <script src="cart.js"></script>
+    <script src="load-components.js"></script>
+    
+    <script src="BlueprintModals.js"></script>
+
+</body>
+</html>
